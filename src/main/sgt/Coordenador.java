@@ -1,4 +1,4 @@
 package main.sgt;
 
-public class Coordenador extends Utilizador {
+public class Coordenador extends Docente {
 }
