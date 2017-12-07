@@ -31,7 +31,9 @@ public class UC {
     List<Turno> getTurnos() {
         throw new UnsupportedOperationException();
     }
-
+    Turno getTurno(String turno){
+        throw new UnsupportedOperationException();
+    }
     public void marcarPresenca(String aluno, int turno, int aula) {
         throw new UnsupportedOperationException();
     }
