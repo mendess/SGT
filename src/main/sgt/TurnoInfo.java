@@ -2,41 +2,41 @@ package main.sgt;
 
 import java.time.LocalTime;
 
-public class TurnoInfo {
+class TurnoInfo {
     private LocalTime horaInicio;
     private LocalTime horaFim;
     private int vagas;
-    public DiaSemana _dia;
+    private DiaSemana dia;
 
-    public LocalTime getHoraInicio() {
+    LocalTime getHoraInicio() {
         return this.horaInicio;
     }
 
-    public void setHoraInicio(LocalTime horaInicio) {
+    void setHoraInicio(LocalTime horaInicio) {
         this.horaInicio = horaInicio;
     }
 
-    public LocalTime getHoraFim() {
+    LocalTime getHoraFim() {
         return this.horaFim;
     }
 
-    public void setHoraFim(LocalTime horaFim) {
+    void setHoraFim(LocalTime horaFim) {
         this.horaFim = horaFim;
     }
 
-    public int getVagas() {
+    int getVagas() {
         return this.vagas;
     }
 
-    public void setVagas(int vagas) {
+    void setVagas(int vagas) {
         this.vagas = vagas;
     }
 
-    public DiaSemana getDia() {
+    DiaSemana getDia() {
         throw new UnsupportedOperationException();
     }
 
-    public void setDia(DiaSemana dia) {
+    void setDia(DiaSemana dia) {
         throw new UnsupportedOperationException();
     }
 }

@@ -11,46 +11,46 @@ public class Turno {
     private String docente;
     private boolean ePratico;
     private int vagas;
-    public List<TurnoInfo> tInfo = new ArrayList<>();
-    public AulaDAO aulas;
+    private List<TurnoInfo> tInfo = new ArrayList<>();
+    private AulaDAO aulas;
 
-    public boolean getEPratico() {
+    boolean getEPratico() {
         return this.ePratico;
     }
 
-    public void setEPratico(boolean ePratico) {
+    void setEPratico(boolean ePratico) {
         this.ePratico = ePratico;
     }
 
-    public List<String> getAlunos() {
+    List<String> getAlunos() {
         throw new UnsupportedOperationException();
     }
 
-    public void addAluno(String alunos) {
+    void addAluno(String alunos) {
         throw new UnsupportedOperationException();
     }
 
-    public void removeAluno(String aluno) {
+    void removeAluno(String aluno) {
         throw new UnsupportedOperationException();
     }
 
-    public int getId() {
+    int getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
 
-    public int getVagas() {
+    int getVagas() {
         return this.vagas;
     }
 
-    public void setVagas(int vagas) {
+    void setVagas(int vagas) {
         this.vagas = vagas;
     }
 
-    public void marcarPresenca(String aluno, int aula) {
+    void marcarPresenca(String aluno, int aula) {
         throw new UnsupportedOperationException();
     }
 }

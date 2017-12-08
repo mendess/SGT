@@ -10,21 +10,21 @@ public class UC {
     private String responsavel;
     private List<String> docentes;
     private List<String> alunos;
-    public TurnoDAO _turnos;
+    private TurnoDAO turnos;
 
-    public String getId() {
+    String getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    void setId(String id) {
         this.id = id;
     }
 
-    public String getNome() {
+    String getNome() {
         return this.nome;
     }
 
-    public void setNome(String nome) {
+    void setNome(String nome) {
         this.nome = nome;
     }
 
@@ -34,27 +34,27 @@ public class UC {
     Turno getTurno(int turno){
         throw new UnsupportedOperationException();
     }
-    public void marcarPresenca(String aluno, int turno, int aula) {
+    void marcarPresenca(String aluno, int turno, int aula) {
         throw new UnsupportedOperationException();
     }
 
-    public void removerAlunoDeTurno(String aluno, int turno) {
+    void removerAlunoDeTurno(String aluno, int turno) {
         throw new UnsupportedOperationException();
     }
 
-    public void adicionarAlunoTurno(String aluno, int turno) {
+    void adicionarAlunoTurno(String aluno, int turno) {
         throw new UnsupportedOperationException();
     }
 
-    public void trocarAlunos(String aluno1, String aluno2) {
+    void trocarAlunos(String aluno1, String aluno2) {
         throw new UnsupportedOperationException();
     }
 
-    public void addTurno(int id, boolean ePratico) {
+    void addTurno(int id, boolean ePratico) {
         throw new UnsupportedOperationException();
     }
 
-    public void removeTurno(int id) {
+    void removeTurno(int id) {
         throw new UnsupportedOperationException();
     }
 }
