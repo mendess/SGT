@@ -3,32 +3,43 @@ package main.sgt;
 import java.time.LocalDateTime;
 
 public class Troca {
-    private LocalDateTime data;
-    private String aluno;
-    private int turnoOrigem;
-    private int turnoDestino;
 
-    public String getAluno() {
-        return this.aluno;
-    }
+	private String aluno;
+	private String uc;
+	private int turnoOrigem;
+	private int turnoDestino;
+	private LocalDateTime data;
 
-    public void setAluno(String aluno) {
-        this.aluno = aluno;
-    }
+	/**
+	 * 
+	 * @param aluno
+	 * @param uc
+	 * @param turnoOrigem
+	 * @param turnoDestino
+	 */
+	Troca(String aluno, String uc, int turnoOrigem, int turnoDestino) {
+		// TODO - implement Troca.Troca
+		throw new UnsupportedOperationException();
+	}
 
-    public int getTurnoOrigem() {
-        return this.turnoOrigem;
-    }
+	String getAluno() {
+		return this.aluno;
+	}
 
-    public void setTurnoOrigem(int turnoOrigem) {
-        this.turnoOrigem = turnoOrigem;
-    }
+	String getUc() {
+		return this.uc;
+	}
 
-    public int getTurnoDestino() {
-        return this.turnoDestino;
-    }
+	int getTurnoOrigem() {
+		return this.turnoOrigem;
+	}
 
-    public void setTurnoDestino(int turnoDestino) {
-        this.turnoDestino = turnoDestino;
-    }
+	int getTurnoDestino() {
+		return this.turnoDestino;
+	}
+
+	LocalDateTime getData() {
+		return this.data;
+	}
+
 }

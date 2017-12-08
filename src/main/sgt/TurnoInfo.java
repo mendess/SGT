@@ -2,41 +2,58 @@ package main.sgt;
 
 import java.time.LocalTime;
 
-class TurnoInfo {
-    private LocalTime horaInicio;
-    private LocalTime horaFim;
-    private int vagas;
-    private DiaSemana dia;
+public class TurnoInfo {
 
-    LocalTime getHoraInicio() {
-        return this.horaInicio;
-    }
+	private LocalTime horaInicio;
+	private LocalTime horaFim;
 
-    void setHoraInicio(LocalTime horaInicio) {
-        this.horaInicio = horaInicio;
-    }
+	/**
+	 * 
+	 * @param horaInicio
+	 * @param horaFim
+	 * @param dia
+	 */
+	TurnoInfo(LocalTime horaInicio, LocalTime horaFim, DiaSemana dia) {
+		// TODO - implement TurnoInfo.TurnoInfo
+		throw new UnsupportedOperationException();
+	}
 
-    LocalTime getHoraFim() {
-        return this.horaFim;
-    }
+	LocalTime getHoraInicio() {
+		return this.horaInicio;
+	}
 
-    void setHoraFim(LocalTime horaFim) {
-        this.horaFim = horaFim;
-    }
+	/**
+	 * 
+	 * @param horaInicio
+	 */
+	void setHoraInicio(LocalTime horaInicio) {
+		this.horaInicio = horaInicio;
+	}
 
-    int getVagas() {
-        return this.vagas;
-    }
+	LocalTime getHoraFim() {
+		return this.horaFim;
+	}
 
-    void setVagas(int vagas) {
-        this.vagas = vagas;
-    }
+	/**
+	 * 
+	 * @param horaFim
+	 */
+	void setHoraFim(LocalTime horaFim) {
+		this.horaFim = horaFim;
+	}
 
-    DiaSemana getDia() {
-        throw new UnsupportedOperationException();
-    }
+	DiaSemana getDia() {
+		// TODO - implement TurnoInfo.getDia
+		throw new UnsupportedOperationException();
+	}
 
-    void setDia(DiaSemana dia) {
-        throw new UnsupportedOperationException();
-    }
+	/**
+	 * 
+	 * @param dia
+	 */
+	void setDia(DiaSemana dia) {
+		// TODO - implement TurnoInfo.setDia
+		throw new UnsupportedOperationException();
+	}
+
 }

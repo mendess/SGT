@@ -1,31 +1,70 @@
 package main.sgt;
 
 public class Utilizador {
-    private String userNum;
-    private String password;
-    private String email;
 
-    public String getUserNum() {
-        return this.userNum;
-    }
+	private String userNum;
+	private String password;
+	private String email;
+	private String name;
 
-    public void setUserNum(String userNum) {
-        this.userNum = userNum;
-    }
+	/**
+	 * 
+	 * @param userNum
+	 * @param password
+	 * @param email
+	 * @param name
+	 */
+	Utilizador(String userNum, String password, String email, String name) {
+		// TODO - implement Utilizador.Utilizador
+		throw new UnsupportedOperationException();
+	}
 
-    String getPassword() {
-        return this.password;
-    }
+	String getUserNum() {
+		return this.userNum;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	/**
+	 * 
+	 * @param userNum
+	 */
+	void setUserNum(String userNum) {
+		this.userNum = userNum;
+	}
 
-    public String getEmail() {
-        return this.email;
-    }
+	String getPassword() {
+		return this.password;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	/**
+	 * 
+	 * @param password
+	 */
+	void setPassword(String password) {
+		this.password = password;
+	}
+
+	String getEmail() {
+		return this.email;
+	}
+
+	/**
+	 * 
+	 * @param email
+	 */
+	void setEmail(String email) {
+		this.email = email;
+	}
+
+	String getName() {
+		return this.name;
+	}
+
+	/**
+	 * 
+	 * @param name
+	 */
+	void setName(String name) {
+		this.name = name;
+	}
+
 }

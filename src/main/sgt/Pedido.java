@@ -1,37 +1,33 @@
 package main.sgt;
 
 public class Pedido {
-    private String userNum;
-    private String uc;
-    private int turno;
 
-    Pedido(String userNum, String uc, int turno) {
-        this.userNum = userNum;
-        this.uc = uc;
-        this.turno = turno;
-    }
+	private String alunoNum;
+	private String uc;
+	private int turno;
 
-    String getUc() {
-        return this.uc;
-    }
+	/**
+	 * 
+	 * @param aluno
+	 * @param uc
+	 * @param id
+	 */
+	Pedido(String aluno, String uc, int id) {
+		// TODO - implement Pedido.Pedido
+		throw new UnsupportedOperationException();
+	}
 
-    public void setUc(String uc) {
-        this.uc = uc;
-    }
+	String getAlunoNum() {
+		return this.alunoNum;
+	}
 
-    int getTurno() {
-        return this.turno;
-    }
+	String getUc() {
+		return this.uc;
+	}
 
-    void setTurno(int turno) {
-        this.turno = turno;
-    }
+	int getTurno() {
+		// TODO - implement Pedido.getTurno
+		throw new UnsupportedOperationException();
+	}
 
-    String getUserNum() {
-        return userNum;
-    }
-
-    void setUserNum(String userNum) {
-        this.userNum = userNum;
-    }
 }
