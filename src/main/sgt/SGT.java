@@ -35,6 +35,9 @@ public class SGT {
 	 */
 	private final UserDAO utilizadores;
 
+	/**
+	 * Construtor do SGT
+	 */
 	public SGT() {
 		this.pedidosDAO = new PedidosDAO();
 		this.trocas = new TrocaDAO();
@@ -52,13 +55,14 @@ public class SGT {
 	}
 
 	/**
-	 * 
-	 * @param userNum
-	 * @param password
+	 * Autentica o utilizador
+	 * @param userNum Número do utilizador
+	 * @param password Password do utilizador
+	 * @throws WrongCredentialsException Se o utilizador
 	 */
 	public void login(String userNum, String password) throws WrongCredentialsException {
-		if(utilizadores.containsKey(userNum)){
-			Utilizador user = utilizadores.get(userNum);
+		if(this.utilizadores.containsKey(userNum)){
+			Utilizador user = this.utilizadores.get(userNum);
 			if(user.getPassword().equals(password)){
 				this.loggedUser=user;
 			}else{
@@ -70,23 +74,29 @@ public class SGT {
 	}
 
 	/**
-	 * 
-	 * @param uc
+	 * Devolve os Turnos de uma UC
+	 * @param uc UC
+	 * @return Lista de turnos da UC
 	 */
 	public List<Turno> getTurnosOfUC(String uc) {
-		return ucs.get(uc).getTurnos();
+		return this.ucs.get(uc).getTurnos();
 	}
 
+    /**
+	 * Devolve os turnos do utilizador que esta autenticado
+	 * @return Lista de turnos do utilizador autenticado
+	 * @throws InvalidUserTypeException Quando o utilizador autenticado não pode ter turnos
+	 */
 	public List<Turno> getTurnosUser() throws InvalidUserTypeException {
-		if(loggedUser instanceof Aluno){
-			Aluno aluno = (Aluno) loggedUser;
-			return aluno.getInscricoes().entrySet()
+		if(this.loggedUser instanceof Aluno){
+			Aluno aluno = (Aluno) this.loggedUser;
+			return aluno.getHorario().entrySet()
 					.stream()
-					.map(e -> ucs.get(e.getKey()).getTurnos().get(e.getValue()))
+					.map(e -> this.ucs.get(e.getKey()).getTurnos().get(e.getValue()))
 					.collect(Collectors.toList());
 		}
-		if(loggedUser instanceof Docente){
-			Docente docente = (Docente) loggedUser;
+		if(this.loggedUser instanceof Docente){
+			Docente docente = (Docente) this.loggedUser;
 			List<Turno> turnos = new ArrayList<>();
 			Set<Map.Entry<String,List<Integer>>> ucs = docente.getUcsEturnos().entrySet();
 			for (Map.Entry<String,List<Integer>> uc : ucs){
@@ -100,47 +110,83 @@ public class SGT {
 		}
 		throw new InvalidUserTypeException();
 	}
-
 	/**
-	 * 
-	 * @param aluno
-	 * @param uc
-	 * @param turno
-	 * @param aula
-	 */
-	public void marcarPresenca(String aluno, String uc, int turno, int aula) {
-		ucs.get(uc).marcarPresenca(aluno,turno,aula);
-	}
-
-	/**
-	 * 
-	 * @param uc
-	 * @param aluno
-	 * @param turno
+	 * Remove um aluno de um turno
+	 * @param uc Identificador da UC a que o turno pertence
+	 * @param aluno Numero do aluno a remover
+	 * @param turno Numero do turno de onde remover
 	 */
 	public void removerAlunoDeTurno(String uc, String aluno, int turno) {
-		ucs.get(uc).removerAlunoDeTurno(aluno,turno);
+		UC newUC = this.ucs.get(uc);
+		newUC.removerAlunoDeTurno(aluno,turno);
+		this.ucs.put(newUC.getId(),newUC);
 	}
 
+    /**
+     * Marca um aluno como presente
+     * @param aluno Numero do aluno
+     * @param uc Identificador da UC
+     * @param turno Numero do turno
+     * @param aula Aula
+     */
+    public void marcarPresenca(String aluno, String uc, int turno, int aula) {
+        UC newUC = this.ucs.get(uc);
+        newUC.marcarPresenca(aluno,turno,aula);
+        this.ucs.put(newUC.getId(),newUC);
+    }
+
 	/**
-	 * 
-	 * @param uc
-	 * @param aluno
-	 * @param turno
+	 * Adiciona um aluno a uma UC
+	 * @param uc Identificador da UC a que pertence o turno
+	 * @param aluno Numero do aluno a adicionar
+	 * @param turno Numero do turno onde adicionar
 	 */
 	public void adicionarAlunoTurno(String uc, String aluno, int turno) {
-		ucs.get(uc).adicionarAlunoTurno(aluno,turno);
+		this.ucs.get(uc).adicionarAlunoTurno(aluno,turno);
+		this.trocas.add(new Troca(aluno,uc,-1,turno));
 	}
 
 	/**
-	 * 
-	 * @param uc
-	 * @param turno
+	 * Verifica se o horario do utilizador autenticado conflite com o turno
+	 * @param uc Identificador da UC a que pertence o turno
+	 * @param turno Numero do turno
+     * @return Retorna <tt>true</tt> se o horario conflite com o turno
+	 */
+	public boolean horarioConfilcts(String uc, int turno) throws InvalidUserTypeException {
+		if(this.loggedUser instanceof Aluno){
+			Turno novoT = this.ucs.get(uc).getTurno(turno);
+			List<Turno> turnos = ((Aluno) this.loggedUser).getHorario().entrySet()
+					.stream()
+					.map(e -> this.ucs.get(e.getKey()).getTurno(e.getValue()))
+					.collect(Collectors.toList());
+			return turnos.stream()
+					.anyMatch(t ->turnoConflicts(t,novoT));
+		}else{
+			throw new InvalidUserTypeException();
+		}
+
+	}
+
+	/**
+	 * Verifica se dois turnos estao em conflito
+	 * @param t1 Turno 1
+	 * @param t2 Turno 2
+     * @return Retorna <tt>true</tt> se os turno conflitem
+	 */
+	private boolean turnoConflicts(Turno t1, Turno t2) {
+		// TODO - implement SGT.turnoConflicts
+		return true;
+	}
+
+	/**
+	 * Regista um pedido de troca do Aluno que esta autenticado
+	 * @param uc Identificador da UC a que pertence o turno
+	 * @param turno Numero do turno que pretende pedir
 	 */
 	public void pedirTroca(String uc, int turno) throws InvalidUserTypeException {
 		if(this.loggedUser instanceof Aluno){
-			Pedido newPedido = new Pedido(this.loggedUser.getUserNum(),uc,turno);
-			if(pedidos.containsKey(this.loggedUser.getUserNum())){
+			Pedido newPedido = new Pedido(this.loggedUser.getUserNum(),this.loggedUser.getName(),uc,turno);
+			if(this.pedidos.containsKey(this.loggedUser.getUserNum())){
 				this.pedidos.get(this.loggedUser.getUserNum()).add(newPedido);
 				this.pedidosDAO.put(this.loggedUser.getUserNum(),newPedido);
 			}else{
@@ -154,69 +200,166 @@ public class SGT {
 		}
 	}
 
-	public List<Sugestao> getSujestoesTroca() {
+    /**
+     * Devolve uma lista de sujestoes de troca, ou seja, os pedidos que o aluno autenticado pode aceitar
+     * @return Lista de pedidos que o aluno autenticado pode aceitar
+     */
+    public List<Pedido> getSujestoesTroca() {
 		if(this.loggedUser instanceof Aluno){
-			Map<String,Integer> inscricoes = ((Aluno) this.loggedUser).getInscricoes();
+			Map<String,Integer> inscricoes = ((Aluno) this.loggedUser).getHorario();
 			return this.pedidos.entrySet().stream()
 					.map(ps -> ps.getValue().stream()
-							.filter(p -> inscricoes.containsKey(p.getUc()) && inscricoes.get(p.getUc()).equals(p.getTurno()))
+							.filter(p -> inscricoes.containsKey(p.getUc())
+									&& inscricoes.get(p.getUc()).equals(p.getTurno()))
 							.findFirst()
 							.orElse(null))
-					.map(pedido -> new Sugestao(pedido.getUc(),pedido.getTurno(),pedido.getAlunoNum(),pedido.getAlunoNum()))
+					.map(pedido -> new Pedido(pedido.getAlunoNum(),
+                                                this.utilizadores.get(pedido.getAlunoNum()).getName(),
+                                                pedido.getUc(),
+												pedido.getTurno()))
 					.collect(Collectors.toList());
 		}
 		return null;
 	}
 
 	/**
-	 * 
-	 * @param aluno
-	 * @param uc
+	 * Realiza a troca de um pedido
+	 * @param pedido Pedido de troca
+     * @throws InvalidUserTypeException Quando o utilizador autenticado nao e um Aluno
+     * @throws AlunoNaoEstaInscritoNaUc Um dos alunos nao esta inscrito na UC
 	 */
-	public void realizarTroca(String aluno, String uc) {
-		// TODO - implement SGT.realizarTroca
-		throw new UnsupportedOperationException();
+	public void realizarTroca(Pedido pedido) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUc {
+		UC tmpUC = this.ucs.get(pedido.getUc());
+		Utilizador u = this.utilizadores.get(pedido.getAlunoNum());
+		if(this.loggedUser instanceof  Aluno && u instanceof Aluno){
+			Troca[] trocas = tmpUC.trocarAlunos((Aluno) this.loggedUser, (Aluno) u);
+			this.trocas.add(trocas[0]);
+			this.trocas.add(trocas[1]);
+		}else{
+			throw new InvalidUserTypeException();
+		}
 	}
+
+    /**
+     * Move um aluno para outro turno de uma UC
+     * @param aluno Numero do aluno
+     * @param uc UC onde pertence o turno
+     * @param turno Numero do turno para onde pretende ir
+     * @throws InvalidUserTypeException O numero de aluno nao e valido
+     * @throws AlunoNaoEstaInscritoNaUc O aluno nao esta inscrito na UC
+     */
+    public void moveAlunoToTurno(String aluno, String uc, int turno) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUc {
+        Utilizador u = this.utilizadores.get(aluno);
+        if(u instanceof Aluno){
+            this.trocas.add(this.ucs.get(uc).moveAlunoToTurno((Aluno) u,turno));
+        }else{
+            throw new InvalidUserTypeException();
+        }
+    }
 
 	/**
-	 * 
-	 * @param aluno
-	 * @param uc
+	 * Inscreve um aluno numa UC
+	 * @param aluno Numero do Aluno a inscrever
+	 * @param uc Numero da UC onde inscrever
+     * @throws UtilizadorJaExisteException Quando o aluno ja esta na UC
 	 */
-	public void addAlunoToUC(String aluno, String uc) {
-		// TODO - implement SGT.addAlunoToUC
-		throw new UnsupportedOperationException();
+	public void addAlunoToUC(String aluno, String uc) throws UtilizadorJaExisteException {
+		UC newUC = this.ucs.get(uc);
+		newUC.addAluno(aluno);
+		this.ucs.put(newUC.getId(),newUC);
 	}
 
+    /**
+     * Remove um aluno de uma UC
+     * @param aluno Numero do aluno a remover
+     * @param uc Numero da UC onde remover
+     * @throws UtilizadorNaoExisteException Quando o aluno nao esta inscrito a UC
+     */
+    public void removeAlunoFromUC(String aluno, String uc) throws UtilizadorNaoExisteException {
+        UC newUC = this.ucs.get(uc);
+        newUC.removeAluno(aluno);
+        this.ucs.put(newUC.getId(),newUC);
+    }
+
+    /**
+     * Devolve os docentes de uma UC
+     * @param uc Numero da UC
+     */
+    public List<String> getDocentesOfUC(String uc) {
+        return this.ucs.get(uc).getDocentes();
+    }
+
+    /**
+     * Altera o coordenador de uma UC
+     * @param uc Numero da UC
+     * @param reponsavel Numero do responsavel
+     */
+    public void setResponsavelOfUC(String uc, String reponsavel) {
+        UC newUC = this.ucs.get(uc);
+        newUC.setResponsavel(reponsavel);
+        this.ucs.put(newUC.getId(),newUC);
+    }
+
+    /**
+     * Adiciona um docente a uma UC
+     * @param docente Numero do docente a adicionar
+     * @param uc Numero da UC onde adicionar
+     * @throws UtilizadorJaExisteException Quando o docente ja leciona esta UC
+     */
+    public void addDocenteToUC(String docente, String uc) throws UtilizadorJaExisteException {
+        UC newUC = this.ucs.get(uc);
+        newUC.addDocente(docente);
+        this.ucs.put(newUC.getId(),newUC);
+    }
+
+    /**
+     * Adiciona um docente a uma UC
+     * @param docente Numero do docente a adicionar
+     * @param uc Numero da UC onde adicionar
+     * @throws UtilizadorNaoExisteException Quando o docente nao esta a lecionar esta na UC
+     */
+    public void removeDocenteFromUC(String docente, String uc) throws UtilizadorNaoExisteException {
+        UC newUC = this.ucs.get(uc);
+        newUC.removeDocente(docente);
+        this.ucs.put(newUC.getId(),newUC);
+    }
+
+    /**
+     * Devolve as todas as UCs
+     * @return Lista das UCs
+     */
 	public List<UC> getUCs() {
-		// TODO - implement SGT.getUCs
-		throw new UnsupportedOperationException();
+		return new ArrayList<>(this.ucs.values());
 	}
 
 	/**
-	 * 
-	 * @param id
-	 * @param uc
+	 * Remove um turno de uma UC
+	 * @param id Numero do turno a remover
+	 * @param uc Numero da UC onde remover
+     * @throws TurnoNaoVazioException Quando o turno tem alunos associados
 	 */
-	public void removeTurno(int id, String uc) {
-		// TODO - implement SGT.removeTurno
-		throw new UnsupportedOperationException();
+	public void removeTurno(int id, String uc) throws TurnoNaoVazioException {
+		UC newUC = this.ucs.get(uc);
+		newUC.removeTurno(id);
+		this.ucs.put(newUC.getId(),newUC);
 	}
 
 	/**
-	 * 
-	 * @param id
-	 * @param ePratico
-	 * @param uc
+	 * Adiciona um turno a uma UC
+	 * @param ePratico Se o turno e pratico
+	 * @param vagas O numero de vagas do turno
+	 * @param uc A UC do turno
 	 */
-	public void addTurno(int id, boolean ePratico, String uc) {
-		// TODO - implement SGT.addTurno
-		throw new UnsupportedOperationException();
+	public int addTurno(boolean ePratico, int vagas, String uc) {
+		UC newUC = this.ucs.get(uc);
+	    int newID = newUC.addTurno(ePratico,vagas);
+	    this.ucs.put(newUC.getId(),newUC);
+	    return newID;
 	}
 
 	/**
-	 * 
-	 * @param filepath
+	 * Importa os turnos de um ficheiro
+	 * @param filepath Caminho para o ficheiro
 	 */
 	public void importTurnos(String filepath) {
 		// TODO - implement SGT.importTurnos
@@ -224,8 +367,8 @@ public class SGT {
 	}
 
 	/**
-	 * 
-	 * @param filepath
+     * Importa os alunos de um ficheiro
+     * @param filepath Caminho para o ficheiro
 	 */
 	public void importAlunos(String filepath) {
 		// TODO - implement SGT.importAlunos
@@ -233,27 +376,38 @@ public class SGT {
 	}
 
 	/**
-	 * 
-	 * @param filepath
+     * Importa as UCs de um ficheiro
+     * @param filepath Caminho para o ficheiro
 	 */
 	public void importUCs(String filepath) {
 		// TODO - implement SGT.importUCs
 		throw new UnsupportedOperationException();
 	}
 
+    /**
+     * Atribui os turnos aos alunos
+     */
 	public void assignShifts() {
 		// TODO - implement SGT.assignShifts
 		throw new UnsupportedOperationException();
 	}
 
+    /**
+     * Ativa os logins para os alunos
+     */
 	public void activateLogins() {
-		// TODO - implement SGT.activateLogins
-		throw new UnsupportedOperationException();
+		this.utilizadores.values().forEach(utilizador -> {
+			if(utilizador instanceof Aluno){
+				((Aluno) utilizador).ativarLogin();
+			}
+		});
 	}
 
+    /**
+     * Devolve todas as trocas efetuadas
+     * @return Lista de trocas efetuadas
+     */
 	public List<Troca> getTrocas() {
-		// TODO - implement SGT.getTrocas
-		throw new UnsupportedOperationException();
+		return this.trocas;
 	}
-
 }

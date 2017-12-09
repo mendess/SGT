@@ -5,7 +5,7 @@ import java.util.Map;
 class Aluno extends Utilizador {
 
 	private boolean eEspecial;
-	private Map<String, Integer> inscricoes;
+	private Map<String, Integer> horario;
 
 	/**
 	 * 
@@ -36,8 +36,8 @@ class Aluno extends Utilizador {
 		throw new UnsupportedOperationException();
 	}
 
-	Map<String, Integer> getInscricoes() {
-		return this.inscricoes;
+	Map<String, Integer> getHorario() {
+		return this.horario;
 	}
 
 	/**

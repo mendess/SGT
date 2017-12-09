@@ -2,9 +2,7 @@ package main.dao;
 
 import main.sgt.Turno;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class TurnoDAO implements Map<Integer, Turno> {
     @Override
@@ -54,16 +52,21 @@ public class TurnoDAO implements Map<Integer, Turno> {
 
     @Override
     public Set<Integer> keySet() {
-        return null;
+        //TODO implement TurnoDAO.keySet
+        return new HashSet<>();
     }
 
     @Override
     public Collection<Turno> values() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public Set<Entry<Integer, Turno>> entrySet() {
-        return null;
+        return new HashSet<>();
+    }
+
+    public int maxID() {
+        return 0;
     }
 }
