@@ -29,3 +29,5 @@ build/
 build.xml
 manifest.mf
 SGT.iml
+out/
+src/main/sgt/test.java
