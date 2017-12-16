@@ -2,10 +2,7 @@ package main.dao;
 
 import main.sgt.Pedido;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PedidosDAO implements Map<String,List<Pedido>> {
     @Override
@@ -57,16 +54,16 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
 
     @Override
     public Set<String> keySet() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
     public Collection<List<Pedido>> values() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
     public Set<Entry<String, List<Pedido>>> entrySet() {
-        return null;
+        return new HashSet<>();
     }
 }

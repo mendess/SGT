@@ -15,6 +15,10 @@ public class UC {
      * Nome da UC
      */
 	private String nome;
+	/**
+	 * Acronimo da cadeira
+	 */
+	private String acron;
     /**
      * Docente responsavel pela UC (Coordenador)
      */
@@ -36,10 +40,12 @@ public class UC {
 	 * Construtor de UC que aceita o id e o nome
 	 * @param id Identificador da UC
 	 * @param nome Nome da UC
+	 * @param acron Acronimo da UC
 	 */
-	UC(String id, String nome) {
+	UC(String id, String nome, String acron) {
 		this.id = id;
 		this.nome = nome;
+		this.acron = acron;
 		this.responsavel = null;
 		this.docentes = new ArrayList<>();
 		this.alunos = new ArrayList<>();
@@ -76,6 +82,22 @@ public class UC {
 	 */
 	void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	/**
+	 * Retorna o acronimo da UC
+	 * @return O acronimo da UC
+	 */
+	public String getAcron() {
+		return acron;
+	}
+
+	/**
+	 * Altera o acronimo da UC
+	 * @param acron Novo acronimo da UC
+	 */
+	public void setAcron(String acron) {
+		this.acron = acron;
 	}
 
     /**

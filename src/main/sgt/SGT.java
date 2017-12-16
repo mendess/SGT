@@ -5,16 +5,14 @@ import main.dao.TrocaDAO;
 import main.dao.UCDAO;
 import main.dao.UserDAO;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonReaderFactory;
+import javax.json.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("WeakerAccess")
 public class SGT {
 
 	/**
@@ -393,6 +391,7 @@ public class SGT {
         }
         Set<String> keySet = jsonReader.readObject().keySet();
         */
+		//TODO implement SGT.importTurnos
         throw new UnsupportedOperationException();
     }
 
@@ -409,9 +408,16 @@ public class SGT {
      * Importa as UCs de um ficheiro
      * @param filepath Caminho para o ficheiro
 	 */
-	public void importUCs(String filepath) {
-		// TODO - implement SGT.importUCs
-		throw new UnsupportedOperationException();
+	public void importUCs(String filepath) throws FileNotFoundException {
+		JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
+		JsonArray jarray = jreader.readArray();
+        for (JsonValue j : jarray) {
+            JsonObject jobj = (JsonObject) j;
+            String id = jobj.getString("id");
+            String name = jobj.getString("name");
+            String acron = jobj.getString("acron");
+            this.ucs.put(id,new UC(id,name,acron));
+        }
 	}
 
     /**
