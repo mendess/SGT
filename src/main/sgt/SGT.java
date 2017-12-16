@@ -234,9 +234,9 @@ public class SGT {
 	 * Realiza a troca de um pedido
 	 * @param pedido Pedido de troca
      * @throws InvalidUserTypeException Quando o utilizador autenticado nao e um Aluno
-     * @throws AlunoNaoEstaInscritoNaUc Um dos alunos nao esta inscrito na UC
+     * @throws AlunoNaoEstaInscritoNaUcException Um dos alunos nao esta inscrito na UC
 	 */
-	public void realizarTroca(Pedido pedido) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUc {
+	public void realizarTroca(Pedido pedido) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUcException {
 		UC tmpUC = this.ucs.get(pedido.getUc());
 		Utilizador u = this.utilizadores.get(pedido.getAlunoNum());
 		if(this.loggedUser instanceof  Aluno && u instanceof Aluno){
@@ -254,9 +254,9 @@ public class SGT {
      * @param uc UC onde pertence o turno
      * @param turno Numero do turno para onde pretende ir
      * @throws InvalidUserTypeException O numero de aluno nao e valido
-     * @throws AlunoNaoEstaInscritoNaUc O aluno nao esta inscrito na UC
+     * @throws AlunoNaoEstaInscritoNaUcException O aluno nao esta inscrito na UC
      */
-    public void moveAlunoToTurno(String aluno, String uc, int turno) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUc {
+    public void moveAlunoToTurno(String aluno, String uc, int turno) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUcException {
         Utilizador u = this.utilizadores.get(aluno);
         if(u instanceof Aluno){
             this.trocas.add(this.ucs.get(uc).moveAlunoToTurno((Aluno) u,turno));

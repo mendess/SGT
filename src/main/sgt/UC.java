@@ -153,9 +153,9 @@ public class UC {
      * @param aluno1 Aluno 1
      * @param aluno2 Aluno 2
      * @return Lista das trocas efetuadas
-     * @throws AlunoNaoEstaInscritoNaUc Um dos alunos nao esta inscrito nesta UC
+     * @throws AlunoNaoEstaInscritoNaUcException Um dos alunos nao esta inscrito nesta UC
      */
-    Troca[] trocarAlunos(Aluno aluno1, Aluno aluno2) throws AlunoNaoEstaInscritoNaUc {
+    Troca[] trocarAlunos(Aluno aluno1, Aluno aluno2) throws AlunoNaoEstaInscritoNaUcException {
         Troca t1 = moveAlunoToTurno(aluno1,aluno2.getHorario().get(this.id));
         Troca t2 = moveAlunoToTurno(aluno2,aluno1.getHorario().get(this.id));
         return new Troca[]{t1,t2};
@@ -166,9 +166,9 @@ public class UC {
 	 * @param aluno Aluno
 	 * @param turno Numero do turno
      * @return Registo da Troca efetuada
-     * @throws AlunoNaoEstaInscritoNaUc O aluno nao esta inscrito nesta UC
+     * @throws AlunoNaoEstaInscritoNaUcException O aluno nao esta inscrito nesta UC
      */
-    Troca moveAlunoToTurno(Aluno aluno, int turno) throws AlunoNaoEstaInscritoNaUc {
+    Troca moveAlunoToTurno(Aluno aluno, int turno) throws AlunoNaoEstaInscritoNaUcException {
         if(this.alunos.contains(aluno.getUserNum())){
             Turno OldShift1 = this.getTurno(aluno.getHorario().get(this.id));
             Turno OldShift2 = this.getTurno(turno);
@@ -178,7 +178,7 @@ public class UC {
             this.turnos.put(OldShift2.getId(),OldShift2);
             return new Troca(aluno.getUserNum(), this.getId(),OldShift1.getId(),OldShift2.getId());
         }else{
-            throw new AlunoNaoEstaInscritoNaUc(aluno.getUserNum());
+            throw new AlunoNaoEstaInscritoNaUcException(aluno.getUserNum());
         }
     }
 
