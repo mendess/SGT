@@ -183,7 +183,19 @@ public class SGT {
      * @return Retorna <tt>true</tt> se os turno conflitem
 	 */
 	private boolean turnoConflicts(Turno t1, Turno t2) {
-		// TODO - implement SGT.turnoConflicts
+		List<TurnoInfo> tinf1 = t1.getTurnoInfos();
+		List<TurnoInfo> tinf2 = t2.getTurnoInfos();
+		for(TurnoInfo tif1 : tinf1){
+		    for(TurnoInfo tif2 : tinf2){
+		        if(tif1.getDia() == tif2.getDia()){
+		            if(tif1.getHoraInicio().isBefore(tif2.getHoraInicio())){
+                        if (!tif2.getHoraFim().isBefore(tif2.getHoraInicio())){return false;}
+                    }else{
+                        if (!tif1.getHoraInicio().isAfter(tif2.getHoraFim())) {return false;}
+                    }
+                }
+            }
+        }
 		return true;
 	}
 
