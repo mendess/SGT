@@ -1,6 +1,7 @@
 package main.sgt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ class Docente extends Utilizador {
      * @return UCs e turnos do docente
      */
     Map<String, List<Integer>> getUcsEturnos() {
-        return this.ucsEturnos;
+        return new HashMap<>(this.ucsEturnos);
     }
 
     /**

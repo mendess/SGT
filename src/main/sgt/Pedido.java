@@ -34,18 +34,34 @@ public class Pedido {
 		this.turno = turno;
 	}
 
+	/**
+	 * Retorna o numero do aluno que fez o pedido
+	 * @return O numero do aluno que fez o pedido
+	 */
 	public String getAlunoNum() {
 		return this.alunoNum;
 	}
 
+    /**
+     * Retorna o nome do aluno que fez o pedido
+     * @return O nome do aluno que fez o pedido
+     */
     public String getAlunoNome() {
         return this.alunoNome;
     }
 
+    /**
+     * Retorna o identificador da UC a que o turno pedido pertence
+     * @return O identificador da UC a que o turno pedido pertence
+     */
 	public String getUc() {
 		return this.uc;
 	}
 
+    /**
+     * Retorna o numero do turno pedido
+     * @return O numero do turno pedido
+     */
 	public int getTurno() {
 	    return this.turno;
 	}

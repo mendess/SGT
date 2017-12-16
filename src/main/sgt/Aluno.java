@@ -51,7 +51,7 @@ class Aluno extends Utilizador {
      * @return O horario do aluno
      */
 	Map<String, Integer> getHorario() {
-		return new HashMap<>(this.horario);
+        return new HashMap<>(this.horario);
 	}
 
 	/**
@@ -83,6 +83,11 @@ class Aluno extends Utilizador {
             tries++;
         }
 	}
+
+    /**
+     * Envia um email para o aluno para este poder fazer login
+     * @return <tt>true</tt> se o email foi enviado com sucesso, <tt>false</tt> caso contrario
+     */
     private boolean sendEmail(String to){
         String host = "smtp.gmail.com";
         Properties props = System.getProperties();
@@ -106,7 +111,7 @@ class Aluno extends Utilizador {
             transport.connect(host, "swap.dss.uminho@gmail.com", "swapdssuminho");
             transport.sendMessage(mimeMessage,mimeMessage.getAllRecipients());
             transport.close();
-        } catch (MessagingException e) {
+        } catch (Exception e){
             e.printStackTrace();
             return false;
         }

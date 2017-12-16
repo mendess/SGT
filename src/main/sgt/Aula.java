@@ -5,9 +5,21 @@ import java.util.List;
 
 public class Aula {
 
+    /**
+     * O numero da aula
+     */
 	private int numero;
-	private List<String> presencas;
+    /**
+     * A lista dos alunos que estiveram presentes nesta aula
+     */
+    private List<String> presencas;
+    /**
+     * O numero do turno a que a aula pertence
+     */
 	private int turno;
+    /**
+     * O identificador da UC a que a aula pertence
+     */
 	private String uc;
 
 	/**
@@ -22,6 +34,10 @@ public class Aula {
         this.presencas = new ArrayList<>();
 	}
 
+    /**
+     * Retorna o numero da Aula
+     * @return O numero da Aula
+     */
 	int getNumero() {
 		return this.numero;
 	}
@@ -36,12 +52,22 @@ public class Aula {
         }
 	}
 
+    /**
+     * Retorna o numero do turno a que a aula pertence
+     * @return O numero do turno a que a aula pertence
+     */
 	int getTurno() {
 		return this.turno;
 	}
 
+    /**
+     * Retorna o identificador da UC a que a aula pertence
+     * @return O identificador da UC a que a aula pertence
+     */
 	String getUc() {
 		return this.uc;
 	}
+
+
 
 }
