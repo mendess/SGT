@@ -148,8 +148,9 @@ public class SGT {
 	 * @param uc Identificador da UC a que pertence o turno
 	 * @param aluno Numero do aluno a adicionar
 	 * @param turno Numero do turno onde adicionar
+     * @throws UtilizadorJaExisteException Se o aluno ja esta inscrito no turno
 	 */
-	public void adicionarAlunoTurno(String uc, String aluno, int turno) {
+	public void adicionarAlunoTurno(String uc, String aluno, int turno) throws UtilizadorJaExisteException {
 		this.ucs.get(uc).adicionarAlunoTurno(aluno,turno);
 		this.trocas.add(new Troca(aluno,uc,-1,turno));
 	}

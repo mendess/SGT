@@ -144,7 +144,7 @@ public class UC {
 	 * @param aluno Aluno a adicionar
 	 * @param turno Turno onde adicionar
 	 */
-	void adicionarAlunoTurno(String aluno, int turno) {
+	void adicionarAlunoTurno(String aluno, int turno) throws UtilizadorJaExisteException {
 		this.turnos.get(turno).addAluno(aluno);
 	}
 
@@ -172,8 +172,13 @@ public class UC {
         if(this.alunos.contains(aluno.getUserNum())){
             Turno OldShift1 = this.getTurno(aluno.getHorario().get(this.id));
             Turno OldShift2 = this.getTurno(turno);
+            try {
+                OldShift2.addAluno(aluno.getUserNum());
+            } catch (UtilizadorJaExisteException e) {
+                e.printStackTrace();
+                return null;
+            }
             OldShift1.removeAluno(aluno.getUserNum());
-            OldShift2.addAluno(aluno.getUserNum());
             this.turnos.put(OldShift1.getId(),OldShift1);
             this.turnos.put(OldShift2.getId(),OldShift2);
             return new Troca(aluno.getUserNum(), this.getId(),OldShift1.getId(),OldShift2.getId());
