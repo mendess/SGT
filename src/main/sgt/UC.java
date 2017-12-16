@@ -46,6 +46,10 @@ public class UC {
 		this.turnos = new TurnoDAO();
 	}
 
+    /**
+     * Retorna o identificador da UC
+     * @return O identificador da UC
+     */
 	String getId() {
 		return this.id;
 	}
@@ -58,6 +62,10 @@ public class UC {
 		this.id = id;
 	}
 
+    /**
+     * Retorna o nome da UC
+     * @return O nome da UC
+     */
 	String getNome() {
 		return this.nome;
 	}
@@ -70,6 +78,10 @@ public class UC {
 		this.nome = nome;
 	}
 
+    /**
+     * Retorna o identificador do Docente responsavel
+     * @return O identificador do Docente responsavel
+     */
     String getResponsavel() {
         return this.responsavel;
     }
@@ -82,6 +94,10 @@ public class UC {
         this.responsavel = responsavel;
     }
 
+    /**
+     * Retorna os docentes que lecionam a UC
+     * @return Os docentes que lecionam a UC
+     */
     List<String> getDocentes() {
         return this.docentes;
     }
