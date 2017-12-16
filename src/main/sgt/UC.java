@@ -198,6 +198,7 @@ public class UC {
         this.turnos.put(this.turnos.maxID(),new Turno(id,ePratico,vagas,this.id));
         return id;
     }
+
     /**
 	 * Remove um turno da UC
 	 * @param id Identificador do turno a remover
@@ -243,5 +244,26 @@ public class UC {
         }else{
 	        throw new UtilizadorNaoExisteException();
         }
+	}
+
+	/**
+	 * Adiciona uma nova aula a um turno
+	 * @param turno Numero do turno
+	 */
+    void addAula(int turno) {
+	    Turno tmpTurno = this.turnos.get(turno);
+	    tmpTurno.addAula();
+	    this.turnos.put(tmpTurno.getId(),tmpTurno);
+	}
+
+	/**
+	 * Remove uma aula a um turno
+	 * @param turno Numero do turno onde remover
+	 * @param aula Numero da aula a remover
+	 */
+    void removeAula(int turno, int aula) {
+        Turno tmpTurno = this.turnos.get(turno);
+        tmpTurno.removeAula(aula);
+        this.turnos.put(tmpTurno.getId(),tmpTurno);
 	}
 }

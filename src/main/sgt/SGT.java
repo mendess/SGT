@@ -428,4 +428,23 @@ public class SGT {
 	public List<Troca> getTrocas() {
 		return this.trocas;
 	}
+
+	/**
+	 * Adiciona uma aula a um turno
+	 * @param uc Identificador da UC to turno
+	 * @param turno Numero do turno
+	 */
+	public void addAula(String uc, int turno) {
+	    this.ucs.get(uc).addAula(turno);
+	}
+
+	/**
+	 * Remove uma aula de um turno
+	 * @param uc Identificador da UC do turno
+	 * @param turno Numero do turno
+	 * @param aula Numero da aula a remover
+	 */
+	public void removeAula(String uc, int turno, int aula) {
+	    this.ucs.get(uc).removeAula(turno,aula);
+	}
 }

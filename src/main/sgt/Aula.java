@@ -1,5 +1,6 @@
 package main.sgt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Aula {
@@ -10,13 +11,15 @@ public class Aula {
 	private String uc;
 
 	/**
-	 * 
-	 * @param turno
-	 * @param uc
-	 */
-	Aula(int turno, String uc) {
-		//TODO - implement Aula.Aula
-		throw new UnsupportedOperationException();
+	 * Construtor de aula
+	 * @param uc A UC do turno
+     * @param turno O numero do turno da aula
+     */
+    Aula(int turno, String uc, int numero) {
+        this.uc = uc;
+        this.turno = turno;
+        this.numero = numero;
+        this.presencas = new ArrayList<>();
 	}
 
 	int getNumero() {
@@ -24,12 +27,13 @@ public class Aula {
 	}
 
 	/**
-	 * 
-	 * @param aluno
+	 * Marca presenca a um aluno
+	 * @param aluno Identificador do aluno
 	 */
 	void marcarPresenca(String aluno) {
-		//TODO - implement Aula.marcarPresenca
-		throw new UnsupportedOperationException();
+	    if(!this.presencas.contains(aluno)){
+	        this.presencas.add(aluno);
+        }
 	}
 
 	int getTurno() {

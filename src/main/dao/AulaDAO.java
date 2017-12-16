@@ -2,9 +2,7 @@ package main.dao;
 
 import main.sgt.Aula;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class AulaDAO implements Map<Integer, Aula> {
     @Override
@@ -54,16 +52,21 @@ public class AulaDAO implements Map<Integer, Aula> {
 
     @Override
     public Set<Integer> keySet() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
     public Collection<Aula> values() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public Set<Entry<Integer, Aula>> entrySet() {
-        return null;
+        return new HashSet<>();
+    }
+
+    public int maxID() {
+        //TODO implement AulaDAO.maxID
+        return 0;
     }
 }

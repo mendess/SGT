@@ -15,8 +15,9 @@ public class Turno {
 	private int vagas;
 	private String ucId;
 	private AulaDAO aulas;
+    private List<TurnoInfo> tinfo;
 
-	/**
+    /**
 	 * Construtor completamente parametrizado do <tt>Turno</tt>.
 	 * @param id Numero do turno
 	 * @param ePratico Se o turno é pratico ou teorico
@@ -64,7 +65,7 @@ public class Turno {
      * @return Lista de alunos do turno.
      */
     List<String> getAlunos() {
-        return this.alunos;
+        return new ArrayList<>(this.alunos);
     }
 
     /**
@@ -108,6 +109,29 @@ public class Turno {
     }
 
     /**
+     * Retorna as informacoes do turno
+     * @return As informacoes do turno
+     */
+    List<TurnoInfo> getTurnoInfos() {
+        List<TurnoInfo> tinfos = new ArrayList<>(this.tinfo.size());
+        for(TurnoInfo tinfo : this.tinfo){
+            tinfos.add(new TurnoInfo(tinfo));
+        }
+        return tinfos;
+    }
+
+    /**
+     * Define as informacoes do turno
+     * @param turnoInfos As novas informacoes do turno
+     */
+    void setTurnoInfos(List<TurnoInfo> turnoInfos) {
+        this.tinfo = new ArrayList<>(turnoInfos.size());
+        for(TurnoInfo t : turnoInfos){
+            this.tinfo.add(new TurnoInfo(t));
+        }
+    }
+
+    /**
      *
      * @param ucId Novo identificador da UC
      */
@@ -140,9 +164,9 @@ public class Turno {
 	}
 
     /**
-     * Adiciona um aluno ao turno.
-     * @param aluno Identificador do aluno
-     */
+	 * Adiciona um aluno ao turno
+	 * @param aluno Identificador do aluno a adicionar
+	 */
     void addAluno(String aluno) throws UtilizadorJaExisteException {
         if (this.alunos.contains(aluno)){
             throw new UtilizadorJaExisteException();
@@ -168,6 +192,22 @@ public class Turno {
 	    Aula a = this.aulas.get(aula);
 	    a.marcarPresenca(aluno);
 	    this.aulas.put(a.getNumero(),a);
+	}
+
+    /**
+     * Adiciona uma aula ao turno
+     */
+	void addAula() {
+        int num = this.aulas.maxID();
+        this.aulas.put(num,new Aula(this.id,this.ucId,num));
+    }
+
+	/**
+	 * Remove uma aula do turno
+	 * @param aula Numero da aula a remover
+	 */
+    void removeAula(int aula) {
+	    this.aulas.remove(aula);
 	}
 
 }
