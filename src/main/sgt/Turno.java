@@ -21,7 +21,7 @@ public class Turno {
 	 * @param docente
 	 */
 	Turno(int id, boolean ePratico, int vagas, String ucId, List<String> alunos, String docente) {
-		// TODO - implement Turno.Turno
+		//TODO - implement Turno.Turno
 		throw new UnsupportedOperationException();
 	}
 
@@ -33,7 +33,7 @@ public class Turno {
 	 * @param ucId
 	 */
 	Turno(int id, boolean ePratico, int vagas, String ucId) {
-		// TODO - implement Turno.Turno
+		//TODO - implement Turno.Turno
 		throw new UnsupportedOperationException();
 	}
 
@@ -58,7 +58,7 @@ public class Turno {
 	 * @param alunos
 	 */
 	void addAluno(String alunos) {
-		// TODO - implement Turno.addAluno
+		//TODO - implement Turno.addAluno
 		throw new UnsupportedOperationException();
 	}
 
@@ -67,7 +67,7 @@ public class Turno {
 	 * @param aluno
 	 */
 	void removeAluno(String aluno) {
-		// TODO - implement Turno.removeAluno
+		//TODO - implement Turno.removeAluno
 		throw new UnsupportedOperationException();
 	}
 
@@ -101,7 +101,7 @@ public class Turno {
 	 * @param aula
 	 */
 	void marcarPresenca(String aluno, int aula) {
-		// TODO - implement Turno.marcarPresenca
+		//TODO - implement Turno.marcarPresenca
 		throw new UnsupportedOperationException();
 	}
 

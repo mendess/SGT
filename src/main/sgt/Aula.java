@@ -15,7 +15,7 @@ public class Aula {
 	 * @param uc
 	 */
 	Aula(int turno, String uc) {
-		// TODO - implement Aula.Aula
+		//TODO - implement Aula.Aula
 		throw new UnsupportedOperationException();
 	}
 
@@ -28,7 +28,7 @@ public class Aula {
 	 * @param aluno
 	 */
 	void marcarPresenca(String aluno) {
-		// TODO - implement Aula.marcarPresenca
+		//TODO - implement Aula.marcarPresenca
 		throw new UnsupportedOperationException();
 	}
 

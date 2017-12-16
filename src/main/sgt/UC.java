@@ -112,6 +112,10 @@ public class UC {
         }
     }
 
+	/**
+	 * Retorna a lista de turno desta UC
+	 * @return A lista de turnos desta UC
+	 */
 	List<Turno> getTurnos() {
 		return new ArrayList<>(this.turnos.values());
 	}

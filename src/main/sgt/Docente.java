@@ -22,7 +22,7 @@ public class Docente extends Utilizador {
 	}
 
 	List<String> getUCs() {
-		// TODO - implement Docente.getUCs
+		//TODO - implement Docente.getUCs
 		throw new UnsupportedOperationException();
 	}
 
@@ -31,7 +31,7 @@ public class Docente extends Utilizador {
 	 * @param UC
 	 */
 	void addUC(String UC) {
-		// TODO - implement Docente.addUC
+		//TODO - implement Docente.addUC
 		throw new UnsupportedOperationException();
 	}
 
@@ -41,7 +41,7 @@ public class Docente extends Utilizador {
 	 * @param turnos
 	 */
 	void addTurno(String uc, int turnos) {
-		// TODO - implement Docente.addTurno
+		//TODO - implement Docente.addTurno
 		throw new UnsupportedOperationException();
 	}
 
@@ -51,7 +51,7 @@ public class Docente extends Utilizador {
 	 * @param turno
 	 */
 	void removeTurno(String uc, int turno) {
-		// TODO - implement Docente.removeTurno
+		//TODO - implement Docente.removeTurno
 		throw new UnsupportedOperationException();
 	}
 
@@ -60,7 +60,7 @@ public class Docente extends Utilizador {
 	 * @param uc
 	 */
 	void removeUC(String uc) {
-		// TODO - implement Docente.removeUC
+		//TODO - implement Docente.removeUC
 		throw new UnsupportedOperationException();
 	}
 

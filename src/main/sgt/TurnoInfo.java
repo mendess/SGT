@@ -14,7 +14,7 @@ public class TurnoInfo {
 	 * @param dia
 	 */
 	TurnoInfo(LocalTime horaInicio, LocalTime horaFim, DiaSemana dia) {
-		// TODO - implement TurnoInfo.TurnoInfo
+		//TODO - implement TurnoInfo.TurnoInfo
 		throw new UnsupportedOperationException();
 	}
 
@@ -43,7 +43,7 @@ public class TurnoInfo {
 	}
 
 	DiaSemana getDia() {
-		// TODO - implement TurnoInfo.getDia
+		//TODO - implement TurnoInfo.getDia
 		throw new UnsupportedOperationException();
 	}
 
@@ -52,7 +52,7 @@ public class TurnoInfo {
 	 * @param dia
 	 */
 	void setDia(DiaSemana dia) {
-		// TODO - implement TurnoInfo.setDia
+		//TODO - implement TurnoInfo.setDia
 		throw new UnsupportedOperationException();
 	}
 

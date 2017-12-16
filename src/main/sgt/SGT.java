@@ -5,6 +5,13 @@ import main.dao.TrocaDAO;
 import main.dao.UCDAO;
 import main.dao.UserDAO;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonReaderFactory;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -110,6 +117,7 @@ public class SGT {
 		}
 		throw new InvalidUserTypeException();
 	}
+
 	/**
 	 * Remove um aluno de um turno
 	 * @param uc Identificador da UC a que o turno pertence
@@ -362,9 +370,18 @@ public class SGT {
 	 * @param filepath Caminho para o ficheiro
 	 */
 	public void importTurnos(String filepath) {
-		// TODO - implement SGT.importTurnos
-		throw new UnsupportedOperationException();
-	}
+		/*File file = new File(filePath);
+        JsonReader jsonReader;
+        try {
+            jsonReader = Json.createReader(new FileReader(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+        Set<String> keySet = jsonReader.readObject().keySet();
+        */
+        throw new UnsupportedOperationException();
+    }
 
 	/**
      * Importa os alunos de um ficheiro
