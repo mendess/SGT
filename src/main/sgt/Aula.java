@@ -38,7 +38,7 @@ public class Aula {
      * Retorna o numero da Aula
      * @return O numero da Aula
      */
-	int getNumero() {
+	public int getNumero() {
 		return this.numero;
 	}
 
@@ -56,7 +56,7 @@ public class Aula {
      * Retorna o numero do turno a que a aula pertence
      * @return O numero do turno a que a aula pertence
      */
-	int getTurno() {
+	public int getTurno() {
 		return this.turno;
 	}
 
@@ -64,7 +64,7 @@ public class Aula {
      * Retorna o identificador da UC a que a aula pertence
      * @return O identificador da UC a que a aula pertence
      */
-	String getUc() {
+	public String getUc() {
 		return this.uc;
 	}
 
