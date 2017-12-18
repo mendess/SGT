@@ -198,7 +198,7 @@ public class Turno {
      * Adiciona uma aula ao turno
      */
 	void addAula() {
-        int num = this.aulas.maxID();
+        int num = this.aulas.maxID(this.ucId,this.id);
         Aula a = new Aula(this.id,this.ucId,num);
         this.aulas.put(new AulaKey(a),a);
     }

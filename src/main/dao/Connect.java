@@ -8,13 +8,13 @@ package main.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-class Connect {
+public class Connect {
     private static final String URL = "localhost";
     private static final String DATABASE = "SGT";
     private static final String USERNAME = "aplicacao";
     private static final String PASSWORD = "ap123";
     
-    static Connection connect() {
+    public static Connection connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection("jdbc:mysql://"+URL

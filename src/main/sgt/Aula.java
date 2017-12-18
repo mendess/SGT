@@ -75,6 +75,23 @@ public class Aula {
 		return this.uc;
 	}
 
+    public List<String> getPresencas() {
+        return new ArrayList<>(presencas);
+    }
 
-
+    @Override
+	public boolean equals(Object o) {
+		if(this == o){
+			return true;
+		}
+		if(o == null || o.getClass() != this.getClass()){
+		    return false;
+        }
+        Aula a = (Aula) o;
+		return super.equals(o)
+                && this.numero == a.getNumero()
+                && this.turno == a.getTurno()
+                && this.uc.equals(a.getUc())
+                && this.presencas.equals(a.getPresencas());
+	}
 }
