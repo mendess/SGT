@@ -4,7 +4,6 @@ import main.dao.AulaDAO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Turno {
 
@@ -189,9 +188,10 @@ public class Turno {
 	 * @param aula Numero da aula
 	 */
 	void marcarPresenca(String aluno, int aula) {
-	    Aula a = this.aulas.get(aula);
+	    AulaKey aKey = new AulaKey(this.ucId,this.id,aula);
+		Aula a = this.aulas.get(aKey);
 	    a.marcarPresenca(aluno);
-	    this.aulas.put(a.getNumero(),a);
+	    this.aulas.put(aKey,a);
 	}
 
     /**
@@ -199,7 +199,8 @@ public class Turno {
      */
 	void addAula() {
         int num = this.aulas.maxID();
-        this.aulas.put(num,new Aula(this.id,this.ucId,num));
+        Aula a = new Aula(this.id,this.ucId,num);
+        this.aulas.put(new AulaKey(a),a);
     }
 
 	/**
@@ -207,7 +208,7 @@ public class Turno {
 	 * @param aula Numero da aula a remover
 	 */
     void removeAula(int aula) {
-	    this.aulas.remove(aula);
+	    this.aulas.remove(new AulaKey(this.ucId,this.id,aula));
 	}
 
 }

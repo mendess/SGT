@@ -1,10 +1,11 @@
 package main.dao;
 
 import main.sgt.Turno;
+import main.sgt.TurnoKey;
 
 import java.util.*;
 
-public class TurnoDAO implements Map<Integer, Turno> {
+public class TurnoDAO implements Map<TurnoKey,Turno> {
     @Override
     public int size() {
         return 0;
@@ -31,7 +32,7 @@ public class TurnoDAO implements Map<Integer, Turno> {
     }
 
     @Override
-    public Turno put(Integer key, Turno value) {
+    public Turno put(TurnoKey key, Turno value) {
         return null;
     }
 
@@ -41,7 +42,7 @@ public class TurnoDAO implements Map<Integer, Turno> {
     }
 
     @Override
-    public void putAll(Map<? extends Integer, ? extends Turno> m) {
+    public void putAll(Map<? extends TurnoKey, ? extends Turno> m) {
 
     }
 
@@ -51,7 +52,7 @@ public class TurnoDAO implements Map<Integer, Turno> {
     }
 
     @Override
-    public Set<Integer> keySet() {
+    public Set<TurnoKey> keySet() {
         //TODO implement TurnoDAO.keySet
         return new HashSet<>();
     }
@@ -62,7 +63,7 @@ public class TurnoDAO implements Map<Integer, Turno> {
     }
 
     @Override
-    public Set<Entry<Integer, Turno>> entrySet() {
+    public Set<Entry<TurnoKey, Turno>> entrySet() {
         return new HashSet<>();
     }
 

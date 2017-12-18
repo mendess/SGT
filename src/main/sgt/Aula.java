@@ -27,12 +27,19 @@ public class Aula {
 	 * @param uc A UC do turno
      * @param turno O numero do turno da aula
      */
-    Aula(int turno, String uc, int numero) {
+    public Aula(int turno, String uc, int numero) {
         this.uc = uc;
         this.turno = turno;
         this.numero = numero;
         this.presencas = new ArrayList<>();
 	}
+
+    public Aula(int numero, String uc, int turno, List<String> presencas) {
+        this.numero = numero;
+        this.uc = uc;
+        this.turno = turno;
+        this.presencas = presencas;
+    }
 
     /**
      * Retorna o numero da Aula

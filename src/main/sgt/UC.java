@@ -165,7 +165,7 @@ public class UC {
 	 * @param aula Aula
 	 */
 	void marcarPresenca(String aluno, int turno, int aula) {
-		this.turnos.get(turno).marcarPresenca(aluno,aula);
+		this.turnos.get(new TurnoKey(this.id,turno)).marcarPresenca(aluno,aula);
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class UC {
 	 * @param turno Turno de onde remover
 	 */
 	void removerAlunoDeTurno(String aluno, int turno) {
-		this.turnos.get(turno).removeAluno(aluno);
+		this.turnos.get(new TurnoKey(this.id,turno)).removeAluno(aluno);
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class UC {
 	 * @param turno Turno onde adicionar
 	 */
 	void adicionarAlunoTurno(String aluno, int turno) throws UtilizadorJaExisteException {
-		this.turnos.get(turno).addAluno(aluno);
+		this.turnos.get(new TurnoKey(this.id,turno)).addAluno(aluno);
 	}
 
 	/**
@@ -217,8 +217,8 @@ public class UC {
                 return null;
             }
             OldShift1.removeAluno(aluno.getUserNum());
-            this.turnos.put(OldShift1.getId(),OldShift1);
-            this.turnos.put(OldShift2.getId(),OldShift2);
+            this.turnos.put(new TurnoKey(OldShift1),OldShift1);
+            this.turnos.put(new TurnoKey(OldShift2),OldShift2);
             return new Troca(aluno.getUserNum(), this.getId(),OldShift1.getId(),OldShift2.getId());
         }else{
             throw new AlunoNaoEstaInscritoNaUcException(aluno.getUserNum());
@@ -233,7 +233,8 @@ public class UC {
      */
     int addTurno(boolean ePratico, int vagas) {
         int id = this.turnos.maxID();
-        this.turnos.put(this.turnos.maxID(),new Turno(id,ePratico,vagas,this.id));
+        Turno t = new Turno(id,ePratico,vagas,this.id);
+        this.turnos.put(new TurnoKey(t),t);
         return id;
     }
 
@@ -242,8 +243,9 @@ public class UC {
 	 * @param id Identificador do turno a remover
 	 */
 	void removeTurno(int id) throws TurnoNaoVazioException {
-	    if(this.turnos.get(id).getAlunos().isEmpty()){
-	        this.turnos.remove(id);
+	    TurnoKey tKey = new TurnoKey(this.id,id);
+		if(this.turnos.get(tKey).getAlunos().isEmpty()){
+	        this.turnos.remove(tKey);
         }else{
 	        throw new TurnoNaoVazioException();
         }
@@ -255,7 +257,7 @@ public class UC {
      * @return O turno com o dado id
 	 */
 	Turno getTurno(int turno) {
-	    return this.turnos.get(turno);
+	    return this.turnos.get(new TurnoKey(this.id,turno));
 	}
 
     /**
@@ -289,9 +291,9 @@ public class UC {
 	 * @param turno Numero do turno
 	 */
     void addAula(int turno) {
-	    Turno tmpTurno = this.turnos.get(turno);
+	    Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno));
 	    tmpTurno.addAula();
-	    this.turnos.put(tmpTurno.getId(),tmpTurno);
+	    this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
 	}
 
 	/**
@@ -300,8 +302,8 @@ public class UC {
 	 * @param aula Numero da aula a remover
 	 */
     void removeAula(int turno, int aula) {
-        Turno tmpTurno = this.turnos.get(turno);
+        Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno));
         tmpTurno.removeAula(aula);
-        this.turnos.put(tmpTurno.getId(),tmpTurno);
+        this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
 	}
 }
