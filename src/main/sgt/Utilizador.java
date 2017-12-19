@@ -1,6 +1,6 @@
 package main.sgt;
 
-public class Utilizador {
+public abstract class Utilizador {
 
     /**
      * O identificador do utilizador
@@ -37,7 +37,7 @@ public class Utilizador {
      * Retorna o identificador do utilizador
      * @return O identificador do utilizador
      */
-	String getUserNum() {
+	public String getUserNum() {
 		return this.userNum;
 	}
 
@@ -53,7 +53,7 @@ public class Utilizador {
      * Retorna a password do utilizador
      * @return A password do utilizador
      */
-	String getPassword() {
+	public String getPassword() {
 		return this.password;
 	}
 
@@ -69,7 +69,7 @@ public class Utilizador {
      * Retorna o email do utilizador
      * @return O email do utilizador
      */
-	String getEmail() {
+	public String getEmail() {
 		return this.email;
 	}
 
@@ -85,7 +85,7 @@ public class Utilizador {
      * Retorna o nome do utilizador
      * @return O nome do utilizador
      */
-	String getName() {
+	public String getName() {
 		return this.name;
 	}
 
@@ -97,4 +97,19 @@ public class Utilizador {
 		this.name = name;
 	}
 
+    @Override
+    public boolean equals(Object o) {
+        if(this==o){
+            return true;
+        }
+        if(o==null || o.getClass() != this.getClass()){
+            return false;
+        }
+        Utilizador u = (Utilizador) o;
+        return super.equals(o)
+                && this.email.equals(u.getEmail())
+                && this.name.equals(u.getName())
+                && this.password.equals(u.getPassword())
+                && this.userNum.equals(u.getUserNum());
+    }
 }

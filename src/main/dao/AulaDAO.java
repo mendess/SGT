@@ -64,8 +64,7 @@ public class AulaDAO implements Map<AulaKey,Aula> {
 
     @Override
     public boolean containsValue(Object value) {
-        Aula aula = (Aula) value;
-        return this.containsKey(new AulaKey(aula));
+        return this.get(value).equals(value);
     }
 
     @Override
@@ -142,7 +141,7 @@ public class AulaDAO implements Map<AulaKey,Aula> {
                     s.append("(?,?,?,?)\n");
                 }
             }
-            s.append("ON DUPLICATE KEY UPDATE `Aula_id`=VALUES(Aula_id), Turno_id=VALUES(Turno_id), `UC_id`=VALUES(UC_id), `Aula_id`=VALUES(Aluno_id)");
+            s.append("ON DUPLICATE KEY UPDATE `Aula_id`=VALUES(Aula_id), Turno_id=VALUES(Turno_id), `UC_id`=VALUES(UC_id), `Aula_id`=VALUES(Aluno_id);");
 
             PreparedStatement stm = connection.prepareStatement(s.toString(), Statement.RETURN_GENERATED_KEYS);
             stm.setInt(1, value.getNumero());

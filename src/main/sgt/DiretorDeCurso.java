@@ -9,8 +9,12 @@ public class DiretorDeCurso extends Utilizador {
 	 * @param email O email do utilizador
 	 * @param name O nome do utilizador
 	 */
-	DiretorDeCurso(String userNum, String password, String email, String name) {
+    public DiretorDeCurso(String userNum, String password, String email, String name) {
 		super(userNum,password,email,name);
 	}
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

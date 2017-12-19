@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-class Aluno extends Utilizador {
+public class Aluno extends Utilizador {
 
 	private boolean eEspecial;
-    private Map<String, Integer> horario;
+	private Map<String, Integer> horario;
 
 	/**
 	 * O construtor do aluno
@@ -23,7 +23,7 @@ class Aluno extends Utilizador {
 	 * @param eEspecial <tt>true</tt> se o aluno tiver estatuto especial
 	 * @param inscricoes As ucs e turnos a que o aluno esta inscrito
 	 */
-    Aluno(String userNum, String password, String email, String name, boolean eEspecial, Map<String, Integer> inscricoes) {
+	public Aluno(String userNum, String password, String email, String name, boolean eEspecial, Map<String, Integer> inscricoes) {
 		super(userNum,password,email,name);
 		this.eEspecial = eEspecial;
 		this.horario = inscricoes;
@@ -33,7 +33,7 @@ class Aluno extends Utilizador {
      * Retorna se o aluno tem estatuto especial
      * @return <tt>true</tt> se o aluno tem estatuto especial, <tt>false</tt> caso contrario.
      */
-	boolean eEspecial() {
+	public boolean eEspecial() {
 	    return this.eEspecial;
 	}
 
@@ -49,7 +49,7 @@ class Aluno extends Utilizador {
      * Retorna o horario do aluno.
      * @return O horario do aluno
      */
-	Map<String, Integer> getHorario() {
+	public Map<String, Integer> getHorario() {
         return new HashMap<>(this.horario);
 	}
 
@@ -115,5 +115,19 @@ class Aluno extends Utilizador {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this==o){
+            return true;
+        }
+        if(o==null || o.getClass() != this.getClass()){
+            return false;
+        }
+        Aluno a = (Aluno) o;
+        return super.equals(o)
+                && this.eEspecial == a.eEspecial()
+                && this.horario.equals(a.getHorario());
     }
 }

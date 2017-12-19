@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Docente extends Utilizador {
+public class Docente extends Utilizador {
 
     /**
-     * UCs e turnos do docente
+	 * UCs e turnos do docente
      */
 	private Map<String, List<Integer>> ucsEturnos;
 
@@ -20,7 +20,7 @@ class Docente extends Utilizador {
 	 * @param name O nome do docente
 	 * @param ucsEturnos As ucsEturnos do docente
 	 */
-	Docente(String userNum, String password, String email, String name, Map<String, List<Integer>> ucsEturnos) {
+	public Docente(String userNum, String password, String email, String name, Map<String, List<Integer>> ucsEturnos) {
 		super(userNum,password,email,name);
 		this.ucsEturnos = ucsEturnos;
 	}
@@ -29,7 +29,7 @@ class Docente extends Utilizador {
      * Retorna as UCs e turnos do Docente
      * @return UCs e turnos do docente
      */
-    Map<String, List<Integer>> getUcsEturnos() {
+	public Map<String, List<Integer>> getUcsEturnos() {
         return new HashMap<>(this.ucsEturnos);
     }
 
@@ -84,4 +84,16 @@ class Docente extends Utilizador {
 	    this.ucsEturnos.remove(uc);
 	}
 
+    @Override
+    public boolean equals(Object o) {
+        if(this==o){
+            return true;
+        }
+        if(o==null || o.getClass() != this.getClass()){
+            return false;
+        }
+        Docente d = (Docente) o;
+        return super.equals(o)
+                && this.ucsEturnos.equals(d.getUcsEturnos());
+    }
 }
