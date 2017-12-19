@@ -106,10 +106,18 @@ public abstract class Utilizador {
             return false;
         }
         Utilizador u = (Utilizador) o;
-        return super.equals(o)
-                && this.email.equals(u.getEmail())
+        return this.email.equals(u.getEmail())
                 && this.name.equals(u.getName())
                 && this.password.equals(u.getPassword())
                 && this.userNum.equals(u.getUserNum());
+    }
+
+    @Override
+    public String toString() {
+        return "Utilizador: \t"
+                +"User Number: "+this.userNum+"\t"
+                +"Nome: "+this.name+"\t"
+                +"Email: "+this.email+"\t"
+                +"Password: "+this.password+"\t";
     }
 }

@@ -32,7 +32,7 @@ public class Coordenador extends Docente {
      * @param name O nome do docente
      * @param ucsEturnos As ucsEturnos do docente
      */
-	Coordenador(String userNum, String password, String email, String name, Map<String, List<Integer>> ucsEturnos) {
+	public Coordenador(String userNum, String password, String email, String name, Map<String, List<Integer>> ucsEturnos) {
 		super(userNum,password,email,name,ucsEturnos);
 		this.ucRegida = null;
 	}
@@ -41,7 +41,7 @@ public class Coordenador extends Docente {
      * Retorna a UC que este Coordenador rege.
      * @return A UC que este Coordenador rege.
      */
-	String getUcRegida() {
+	public String getUcRegida() {
 		return this.ucRegida;
 	}
 
@@ -64,5 +64,12 @@ public class Coordenador extends Docente {
         Coordenador c = (Coordenador) o;
         return super.equals(o)
                 && this.ucRegida.equals(c.getUcRegida());
+    }
+
+    @Override
+    public String toString() {
+        return "Coordenador:\t"
+                + super.toString()+"\t"
+                +"UC regida: "+this.ucRegida+"\t";
     }
 }

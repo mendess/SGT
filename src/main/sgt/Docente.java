@@ -96,4 +96,11 @@ public class Docente extends Utilizador {
         return super.equals(o)
                 && this.ucsEturnos.equals(d.getUcsEturnos());
     }
+
+    @Override
+    public String toString() {
+        return "Docente:\t"
+                +super.toString()+"\t"
+                +"UC e Turnos: "+this.ucsEturnos+"\t";
+    }
 }

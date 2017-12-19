@@ -150,7 +150,7 @@ public class SGT {
 	 */
 	public void adicionarAlunoTurno(String uc, String aluno, int turno) throws UtilizadorJaExisteException {
 		this.ucs.get(uc).adicionarAlunoTurno(aluno,turno);
-		this.trocas.add(new Troca(aluno,uc,-1,turno));
+		this.trocas.add(new Troca(this.trocas.maxID(),aluno,uc,-1,turno));
 	}
 
 	/**
@@ -424,7 +424,20 @@ public class SGT {
      * Atribui os turnos aos alunos
      */
 	public void assignShifts() {
-		// TODO - implement SGT.assignShifts
+		Map<String,List<Turno>> turnos = new HashMap<>();
+		for(Map.Entry<String,UC> e : this.ucs.entrySet()){
+		    turnos.put(e.getKey(),e.getValue().getTurnos());
+        }
+	    Set<Map.Entry<String, Aluno>> alunos = new HashSet<>();
+        for (Map.Entry<String, Utilizador> e : this.utilizadores.entrySet()) {
+            if (e.getValue() instanceof Aluno) {
+                AbstractMap.SimpleEntry<String, Aluno> stringAlunoSimpleEntry = new AbstractMap.SimpleEntry<>(e.getKey(), (Aluno) e.getValue());
+                alunos.add(stringAlunoSimpleEntry);
+            }
+        }
+
+
+        // TODO - implement SGT.assignShifts
 		throw new UnsupportedOperationException();
 	}
 

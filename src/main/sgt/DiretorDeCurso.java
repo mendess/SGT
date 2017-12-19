@@ -17,4 +17,10 @@ public class DiretorDeCurso extends Utilizador {
     public boolean equals(Object o) {
         return super.equals(o);
     }
+
+    @Override
+    public String toString() {
+        return "Diretor de Curso:"
+                + super.toString();
+    }
 }

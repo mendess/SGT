@@ -219,7 +219,8 @@ public class UC {
             OldShift1.removeAluno(aluno.getUserNum());
             this.turnos.put(new TurnoKey(OldShift1),OldShift1);
             this.turnos.put(new TurnoKey(OldShift2),OldShift2);
-            return new Troca(aluno.getUserNum(), this.getId(),OldShift1.getId(),OldShift2.getId());
+            // TODO CHANGE THIS
+            return new Troca(1,aluno.getUserNum(), this.getId(),OldShift1.getId(),OldShift2.getId());
         }else{
             throw new AlunoNaoEstaInscritoNaUcException(aluno.getUserNum());
         }

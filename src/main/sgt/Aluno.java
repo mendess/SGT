@@ -130,4 +130,12 @@ public class Aluno extends Utilizador {
                 && this.eEspecial == a.eEspecial()
                 && this.horario.equals(a.getHorario());
     }
+
+    @Override
+    public String toString() {
+        return "Aluno: \t"
+                +super.toString()+"\t"
+                +"e Especial: "+this.eEspecial+"\t"
+                +"Horario: "+this.horario+"\t";
+    }
 }

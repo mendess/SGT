@@ -8,19 +8,20 @@ package main.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class Connect {
+class Connect {
     private static final String URL = "localhost";
     private static final String DATABASE = "SGT";
     private static final String USERNAME = "aplicacao";
     private static final String PASSWORD = "ap123";
-    
-    public static Connection connect() {
+
+    static Connection connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection("jdbc:mysql://"+URL
                     +"/"+DATABASE
                     +"?user="+USERNAME
-                    +"&password="+PASSWORD);
+                    +"&password="+PASSWORD
+                    +"&allowMultiQueries=true");
         }
         catch (Exception e) {
             e.printStackTrace();
