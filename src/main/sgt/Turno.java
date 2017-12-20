@@ -18,29 +18,29 @@ public class Turno {
      */
 	private int id;
     /**
-     * Lista dos alunos
+     * Identificador a que o turno pertence
      */
-	private List<String> alunos;
+    private String ucId;
     /**
      * Docente que leciona o turno
      */
 	private String docente;
     /**
-     * Se e um turno pratico
-     */
-	private boolean ePratico;
-    /**
      * Numero de vagas do turno
      */
 	private int vagas;
     /**
-     * Identificador a que o turno pertence
+     * Se e um turno pratico
      */
-	private String ucId;
+    private boolean ePratico;
     /**
      * Aulas do turno
      */
 	private AulaDAO aulas;
+    /**
+     * Lista dos alunos
+     */
+    private List<String> alunos;
     /**
      * Informacoes do turno
      */
@@ -48,14 +48,14 @@ public class Turno {
 
     /**
 	 * Construtor completamente parametrizado do <tt>Turno</tt>.
-	 * @param id Numero do turno
-	 * @param ePratico Se o turno é pratico ou teorico
-	 * @param vagas Numero de vagas do turno
-	 * @param ucId Identificador da UC a que pertence
-	 * @param alunos Alunos do turno
-	 * @param docente Docentes do turno
-	 */
-	public Turno(int id, boolean ePratico, int vagas, String ucId, List<String> alunos, String docente, List<TurnoInfo> tinfo) {
+     * @param id Numero do turno
+     * @param ucId Identificador da UC a que pertence
+     * @param docente Docentes do turno
+     * @param vagas Numero de vagas do turno
+     * @param ePratico Se o turno é pratico ou teorico
+     * @param alunos Alunos do turno
+     */
+	public Turno(int id, String ucId, String docente, int vagas, boolean ePratico, List<String> alunos, List<TurnoInfo> tinfo) {
 		this.id = id;
 		this.ePratico = ePratico;
 		this.vagas = vagas;

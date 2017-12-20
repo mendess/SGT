@@ -2,7 +2,7 @@ package main.sgt;
 
 import java.time.LocalTime;
 
-class TurnoInfo {
+public class TurnoInfo {
 
 	private LocalTime horaInicio;
 	private LocalTime horaFim;
@@ -14,17 +14,17 @@ class TurnoInfo {
 	 * @param horaFim Hora de fim
 	 * @param dia Dia da semana
 	 */
-	TurnoInfo(LocalTime horaInicio, LocalTime horaFim, DiaSemana dia) {
+	public TurnoInfo(LocalTime horaInicio, LocalTime horaFim, DiaSemana dia) {
 		this.horaInicio = horaInicio;
 		this.horaFim = horaFim;
 		this.dia = dia;
 	}
 
     /**
-     * Construtor de copia
+	 * Construtor de copia
      * @param tinfo <tt>TurnoInfo</tt> a copiar
      */
-	TurnoInfo(TurnoInfo tinfo) {
+	public TurnoInfo(TurnoInfo tinfo) {
 		this.horaInicio = tinfo.getHoraInicio();
 		this.horaFim = tinfo.getHoraFim();
 		this.dia = tinfo.getDia();
@@ -34,7 +34,7 @@ class TurnoInfo {
      * Retorna a hora de inicio
      * @return A hora de inicio
      */
-	LocalTime getHoraInicio() {
+	public LocalTime getHoraInicio() {
 		return this.horaInicio;
 	}
 
@@ -50,7 +50,7 @@ class TurnoInfo {
      * Retorna a hora de fim
      * @return A hora de fim
      */
-	LocalTime getHoraFim() {
+	public LocalTime getHoraFim() {
 		return this.horaFim;
 	}
 
@@ -66,7 +66,7 @@ class TurnoInfo {
      * Retorna o dia
      * @return O dia
      */
-	DiaSemana getDia() {
+	public DiaSemana getDia() {
 		return this.dia;
 	}
 
