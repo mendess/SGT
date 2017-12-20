@@ -47,7 +47,7 @@ public class Turno {
     private List<TurnoInfo> tinfo;
 
     /**
-	 * Construtor completamente parametrizado do <tt>Turno</tt>.
+	 * Construtor completamente parametrizado do <tt>Turno<\tt>.
      * @param id Numero do turno
      * @param ucId Identificador da UC a que pertence
      * @param docente Docentes do turno
@@ -67,7 +67,7 @@ public class Turno {
 	}
 
 	/**
-	 * Construtor com apenas o estritamente necessario para criar um <tt>Turno</tt>, ou seja, nao inclui os participantes
+	 * Construtor com apenas o estritamente necessario para criar um <tt>Turno<\tt>, ou seja, nao inclui os participantes
      * no mesmo.
 	 * @param id Numero do turno
      * @param ePratico Se o turno é pratico ou teorico
@@ -110,8 +110,8 @@ public class Turno {
     }
 
     /**
-     * Retorna <tt>true</tt> se o turno for pratico, <tt>false</tt> caso contrario.
-     * @return <tt>true</tt> se o turno for pratico, <tt>false</tt> caso contrario.
+     * Retorna <tt>true<\tt> se o turno for pratico, <tt>false<\tt> caso contrario.
+     * @return <tt>true<\tt> se o turno for pratico, <tt>false<\tt> caso contrario.
      */
 	public boolean ePratico() {
 		return this.ePratico;
@@ -253,4 +253,29 @@ public class Turno {
 	    this.aulas.remove(new AulaKey(this.ucId,this.id,aula));
 	}
 
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        }
+        if(o==null || o.getClass() != this.getClass()){
+            return false;
+        }
+        Turno a = (Turno) o;
+        return this.id == a.getId() &&
+                this.ucId.equals(a.getUcId()) &&
+                this.docente.equals(a.getDocente()) &&
+                this.vagas == a.getVagas() &&
+                this.ePratico==(a.ePratico()) &&
+                this.alunos.equals(a.getAlunos()) &&
+                this.tinfo.equals(a.getTurnoInfos());
+    }
+    public String toString() {
+        return "Turno " + this.id + ": \t"
+                + "Id do Turno: " + this.ucId + "\t"
+                + "Docente: " + this.docente + "\t"
+                + "Vagas: " + this.vagas + "\t"
+                + "Pratico: " + this.ePratico + "\t"
+                + "Alunos: " + this.alunos.toString() + "\t"
+                + "Informações: " + this.tinfo.toString();
+    }
 }

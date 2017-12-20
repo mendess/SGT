@@ -21,4 +21,17 @@ public enum DiaSemana {
 			default: return null;
 		}
 	}
+
+	public static String toString(DiaSemana dia){
+	    switch (dia){
+            case SEGUNDA: return "SEG";
+            case TERCA: return "TER";
+            case QUARTA: return "QUA";
+            case QUINTA: return "QUI";
+            case SEXTA: return "SEX";
+            case SABADO: return "SAB";
+            case DOMINGO: return "DOM";
+            default: return null;
+        }
+    }
 }

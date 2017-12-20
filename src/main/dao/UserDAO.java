@@ -156,9 +156,9 @@ public class UserDAO implements Map<String, Utilizador> {
 
     @Override
     public Utilizador put(String key, Utilizador value) {
-        Utilizador u = null;
         connection = Connect.connect();
         if(connection==null) return null;
+        Utilizador u = null;
         try {
             connection.setAutoCommit(false);
             //language=MySQL
