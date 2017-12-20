@@ -356,4 +356,31 @@ public class UC {
         }
         return count;
     }
+
+    public boolean equals(Object o) {
+        if(this==o){
+            return true;
+        }
+        if(o==null || o.getClass() != this.getClass()){
+            return false;
+        }
+        UC a =(UC) o;
+        return this.id.equals(a.getId()) &&
+                this.nome.equals(a.getNome()) &&
+                this.acron.equals(a.getAcron()) &&
+                this.responsavel.equals(a.getResponsavel()) &&
+                this.docentes.equals(a.getDocentes()) &&
+                this.alunos.equals(a.getAlunos());
+    }
+
+    public String toString() {
+        return "UC: \t" +
+                "ID: " + this.id + "\t" +
+                "Nome: " + this.nome + "\t" +
+                "Acronimo: " + this.acron + "\t" +
+                "responsavel: " + this.responsavel + "\t" +
+                "Docentes: " + this.docentes.toString() + "\t" +
+                "Alunos: " + this.alunos.toString() + "\t";
+    }
+
 }

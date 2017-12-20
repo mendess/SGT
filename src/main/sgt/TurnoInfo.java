@@ -78,4 +78,26 @@ public class TurnoInfo {
         this.dia = dia;
     }
 
+	public boolean equals(Object o) {
+        if(this==o){
+            return true;
+        }
+        if(o==null || o.getClass() != this.getClass()){
+            return false;
+        }
+
+        TurnoInfo a = (TurnoInfo) o;
+
+        return this.horaInicio.equals(a.getHoraInicio()) &&
+        			this.horaFim.equals(a.getHoraFim()) &&
+        			this.dia.equals(a.getDia());
+	}
+
+	public String toString() {
+        return "Hora Inicio: " + this.horaFim.toString() + "/t"
+        			+ "Hora fim: " + this.horaInicio.toString() + "/t"
+        			+ "Dia: " + this.dia.toString();
+    }
+
+
 }
