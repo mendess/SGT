@@ -1,9 +1,9 @@
-package main.sgt;
+package main.sgt.exceptions;
 
-class AlunoNaoEstaInscritoNaUcException extends Throwable {
+public class AlunoNaoEstaInscritoNaUcException extends Throwable {
     private final String message;
 
-    AlunoNaoEstaInscritoNaUcException(String message) {
+    public AlunoNaoEstaInscritoNaUcException(String message) {
         this.message = message;
     }
 

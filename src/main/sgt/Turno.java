@@ -1,19 +1,49 @@
 package main.sgt;
 
 import main.dao.AulaDAO;
+import main.sgt.exceptions.UtilizadorJaExisteException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Turno {
 
+
+	public static Turno emptyShift(String uc){
+	    return new Turno(0,false,Integer.MAX_VALUE,uc);
+    }
+
+    /**
+     * Numero do turno
+     */
 	private int id;
+    /**
+     * Lista dos alunos
+     */
 	private List<String> alunos;
+    /**
+     * Docente que leciona o turno
+     */
 	private String docente;
+    /**
+     * Se e um turno pratico
+     */
 	private boolean ePratico;
+    /**
+     * Numero de vagas do turno
+     */
 	private int vagas;
+    /**
+     * Identificador a que o turno pertence
+     */
 	private String ucId;
+    /**
+     * Aulas do turno
+     */
 	private AulaDAO aulas;
+    /**
+     * Informacoes do turno
+     */
     private List<TurnoInfo> tinfo;
 
     /**
@@ -25,14 +55,15 @@ public class Turno {
 	 * @param alunos Alunos do turno
 	 * @param docente Docentes do turno
 	 */
-	Turno(int id, boolean ePratico, int vagas, String ucId, List<String> alunos, String docente) {
+	public Turno(int id, boolean ePratico, int vagas, String ucId, List<String> alunos, String docente, List<TurnoInfo> tinfo) {
 		this.id = id;
 		this.ePratico = ePratico;
 		this.vagas = vagas;
 		this.ucId = ucId;
 		this.alunos = alunos;
 		this.docente = docente;
-		this.aulas = new AulaDAO();
+        this.tinfo = tinfo;
+        this.aulas = new AulaDAO();
 	}
 
 	/**
@@ -43,19 +74,22 @@ public class Turno {
      * @param vagas Numero de vagas do turno
      * @param ucId Identificador da UC a que pertence
 	 */
-	Turno(int id, boolean ePratico, int vagas, String ucId) {
+	public Turno(int id, boolean ePratico, int vagas, String ucId) {
         this.id = id;
+        this.alunos = new ArrayList<>();
+        this.docente= null;
         this.ePratico = ePratico;
         this.vagas = vagas;
         this.ucId = ucId;
         this.aulas = new AulaDAO();
+        this.tinfo = new ArrayList<>();
 	}
 
     /**
      * Retorna o numero do turno.
      * @return O numero do turno.
      */
-    int getId() {
+	public int getId() {
         return this.id;
     }
 
@@ -63,7 +97,7 @@ public class Turno {
      * Retorna a lista de alunos do turno.
      * @return Lista de alunos do turno.
      */
-    List<String> getAlunos() {
+	public List<String> getAlunos() {
         return new ArrayList<>(this.alunos);
     }
 
@@ -71,7 +105,7 @@ public class Turno {
      * Retorna o identificador do docente.
      * @return O identificador do docente.
      */
-    String getDocente(){
+	public String getDocente(){
         return this.docente;
     }
 
@@ -79,7 +113,7 @@ public class Turno {
      * Retorna <tt>true</tt> se o turno for pratico, <tt>false</tt> caso contrario.
      * @return <tt>true</tt> se o turno for pratico, <tt>false</tt> caso contrario.
      */
-	boolean ePratico() {
+	public boolean ePratico() {
 		return this.ePratico;
 	}
 
@@ -87,7 +121,7 @@ public class Turno {
      * Retorna o numero de vagas
      * @return O numero de vagas
      */
-    int getVagas() {
+	public int getVagas() {
         return this.vagas;
     }
 
@@ -95,7 +129,7 @@ public class Turno {
      * Retorna o identificador da UC a que o turno pertence.
      * @return o identificador da UC a que o turno pertence.
      */
-    String getUcId() {
+	public String getUcId() {
         return this.ucId;
     }
 
@@ -103,7 +137,7 @@ public class Turno {
      * A lista de aulas a que o turno tem.
      * @return Lista de aulas que o turno tem.
      */
-    List<Aula> getAulas(){
+	public List<Aula> getAulas(){
 	    return new ArrayList<>(this.aulas.values());
     }
 
@@ -111,7 +145,7 @@ public class Turno {
      * Retorna as informacoes do turno
      * @return As informacoes do turno
      */
-    List<TurnoInfo> getTurnoInfos() {
+	public List<TurnoInfo> getTurnoInfos() {
         List<TurnoInfo> tinfos = new ArrayList<>(this.tinfo.size());
         for(TurnoInfo tinfo : this.tinfo){
             tinfos.add(new TurnoInfo(tinfo));

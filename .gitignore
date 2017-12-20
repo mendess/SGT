@@ -30,5 +30,5 @@ build.xml
 manifest.mf
 SGT.iml
 out/
-test.java
+*test.java
 lib/

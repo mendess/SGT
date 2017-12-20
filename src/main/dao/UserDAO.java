@@ -12,14 +12,12 @@ public class UserDAO implements Map<String, Utilizador> {
     public int size() {
         connection = Connect.connect();
         int i = -1;
+        if(connection==null) return i;
         try {
-            connection = Connect.connect();
-            if (connection != null) {
-                Statement stm = connection.createStatement();
-                ResultSet rs = stm.executeQuery("SELECT count(*) FROM Aluno");
-                if(rs.next()) {
-                    i = rs.getInt(1);
-                }
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT count(*) FROM Aluno");
+            if(rs.next()) {
+                i = rs.getInt(1);
             }
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
@@ -36,22 +34,20 @@ public class UserDAO implements Map<String, Utilizador> {
 
     @Override
     public boolean containsKey(Object key) {
+        this.connection = Connect.connect();
+        if(connection==null) return false;
         if(!(key instanceof String)){
             return false;
         }
         String user = (String) key;
         boolean r = false;
         try {
-            this.connection = Connect.connect();
-            String sql = "SELECT `id` FROM `Utilizador` WHERE `id`=?;";
-            if (connection != null) {
-                PreparedStatement stm = connection.prepareStatement(sql);
-                stm.setString(1, user);
-                ResultSet rs = stm.executeQuery();
-                r = rs.next();
-            }
+            PreparedStatement stm = connection.prepareStatement("SELECT `id` FROM `Utilizador` WHERE `id`=?;");
+            stm.setString(1, user);
+            ResultSet rs = stm.executeQuery();
+            r = rs.next();
         } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
+            e.printStackTrace();
         } finally {
             Connect.close(connection);
         }
@@ -65,6 +61,8 @@ public class UserDAO implements Map<String, Utilizador> {
 
     @Override
     public Utilizador get(Object key) {
+        connection = Connect.connect();
+        if(connection==null) return null;
         String user;
         if(key instanceof String){
             user = (String) key;
@@ -75,36 +73,34 @@ public class UserDAO implements Map<String, Utilizador> {
         }
         Utilizador u = null;
         try {
-            connection = Connect.connect();
-            if (connection != null) {
-                PreparedStatement stm = connection.prepareStatement(
-                        "SELECT * FROM Utilizador \n" +
-                                "LEFT JOIN Docente ON Utilizador.id = Docente.Utilizador_id \n" +
-                                "LEFT JOIN Aluno ON Utilizador.id = Aluno.Utilizador_id \n" +
-                                "LEFT JOIN DiretorDeCurso ON Utilizador.id = DiretorDeCurso.Utilizador_id\n" +
-                                "WHERE id=?");
-                stm.setString(1 , user);
-                ResultSet rs = stm.executeQuery();
-                if (rs.next()) {
-                    String id = rs.getString("id");
-                    String nome = rs.getString("nome");
-                    String password = rs.getString("pass");
-                    String email = rs.getString("Email");
-                    if(rs.getString("Docente.Utilizador_id")!=null){
-                        // Descobrir se ele é docente ou coordenador
-                        Map<String,List<Integer>> ucsEturnos = this.getUCsETurnosDocente(id);
-                        String ucRegida = this.getUcRegida(id);
-                        u = ucRegida==null ?
-                                new Docente(id, password, email, nome, ucsEturnos) :
-                                new Coordenador(id, password, email, nome, ucsEturnos, ucRegida);
-                    }else if(rs.getString("Aluno.Utilizador_id")!=null){
-                        Map<String,Integer> inscricoes = this.getInscricoesAluno(id);
-                        u = new Aluno(id,password,email,nome,rs.getBoolean("eEspecial"),inscricoes);
-                    }else if(rs.getString("DiretorDeCurso.Utilizador_id")!=null){
-                        u = new DiretorDeCurso(id,password,email,nome);
-                    }
+            PreparedStatement stm = connection.prepareStatement(
+                    "SELECT * FROM Utilizador \n" +
+                            "LEFT JOIN Docente ON Utilizador.id = Docente.Utilizador_id \n" +
+                            "LEFT JOIN Aluno ON Utilizador.id = Aluno.Utilizador_id \n" +
+                            "LEFT JOIN DiretorDeCurso ON Utilizador.id = DiretorDeCurso.Utilizador_id\n" +
+                            "WHERE id=?");
+            stm.setString(1 , user);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                String id = rs.getString("id");
+                String nome = rs.getString("nome");
+                String password = rs.getString("pass");
+                String email = rs.getString("Email");
+                if(rs.getString("Docente.Utilizador_id")!=null){
+                    Map<String,List<Integer>> ucsEturnos = this.getUCsETurnosDocente(id);
+                    // Descobrir se ele é docente ou coordenador
+                    String ucRegida = this.getUcRegida(id);
+                    u = ucRegida==null ?
+                            new Docente(id, password, email, nome, ucsEturnos) :
+                            new Coordenador(id, password, email, nome, ucsEturnos, ucRegida);
+                }else if(rs.getString("Aluno.Utilizador_id")!=null){
+                    Map<String,Integer> inscricoes = this.getInscricoesAluno(id);
+                    u = new Aluno(id,password,email,nome,rs.getBoolean("eEspecial"),inscricoes);
+                }else if(rs.getString("DiretorDeCurso.Utilizador_id")!=null){
+                    u = new DiretorDeCurso(id,password,email,nome);
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -127,9 +123,8 @@ public class UserDAO implements Map<String, Utilizador> {
 
     private Map<String, List<Integer>> getUCsETurnosDocente(String id) throws Exception {
         PreparedStatement stm = connection.prepareStatement(
-                "SELECT * FROM Turno_has_Docente\n" +
-                        "INNER JOIN UC ON Turno_has_Docente.UC_id = UC.id\n" +
-                        "WHERE Turno_has_Docente.Docente_id=?;");
+                "SELECT * FROM Turno\n" +
+                        "WHERE Turno.Docente_id=?;");
         Map<String,List<Integer>> ucsEturnos = new HashMap<>();
         stm.setString(1,id);
         ResultSet rs = stm.executeQuery();
@@ -138,7 +133,7 @@ public class UserDAO implements Map<String, Utilizador> {
                 ucsEturnos.get(rs.getString("UC_id")).add(rs.getInt("Turno_id"));
             }else{
                 List<Integer> turnos = new ArrayList<>();
-                turnos.add(rs.getInt("Turno_id"));
+                turnos.add(rs.getInt("id"));
                 ucsEturnos.put(rs.getString("UC_id"),turnos);
             }
         }
@@ -161,8 +156,9 @@ public class UserDAO implements Map<String, Utilizador> {
     @Override
     public Utilizador put(String key, Utilizador value) {
         Utilizador u = null;
+        connection = Connect.connect();
+        if(connection==null) return null;
         try {
-            connection = Connect.connect();
             connection.setAutoCommit(false);
             //language=MySQL
             String sql =
@@ -179,7 +175,7 @@ public class UserDAO implements Map<String, Utilizador> {
                 sql2 = "INSERT INTO `Docente` (Utilizador_id)\n" +
                          "VALUES (?)\n" +
                          "ON DUPLICATE KEY UPDATE Utilizador_id=VALUES(Utilizador_id);" +
-                        "DELETE FROM Turno_has_Docente WHERE Docente_id=?";
+                        "UPDATE Turno SET Docente_id=NULL WHERE Docente_id=?";
                 stmTurnos = updateTurnosDocente((Docente) value);
             }else if (value instanceof Aluno){
                 sql2 = "INSERT INTO `Aluno` (Utilizador_id, eEspecial)\n" +
@@ -204,7 +200,7 @@ public class UserDAO implements Map<String, Utilizador> {
             PreparedStatement stm2 = connection.prepareStatement(sql2);
             stm2.setString(1, value.getUserNum());
             if(value instanceof Docente){
-                stm2.setString(2,value.getUserNum());
+                stm2.setString(2, value.getUserNum());
             }
             if(value instanceof Aluno) {
                 stm2.setBoolean(2, ((Aluno) value).eEspecial());
@@ -249,9 +245,9 @@ public class UserDAO implements Map<String, Utilizador> {
     }
 
     private PreparedStatement updateTurnosDocente(Docente value) throws SQLException {
+        System.out.println("BEEP!");
         PreparedStatement stm = connection.prepareStatement("" +
-                "INSERT INTO Turno_has_Docente (Docente_id, Turno_id, UC_id) " +
-                "VALUES (?,?,?);");
+                "UPDATE Turno SET Docente_id=? WHERE id=? AND UC_id=?;\n");
         for(String uc : value.getUcsEturnos().keySet()){
             List<Integer> turnos = value.getUcsEturnos().get(uc);
             for (Integer turno : turnos){
@@ -266,9 +262,10 @@ public class UserDAO implements Map<String, Utilizador> {
 
     @Override
     public Utilizador remove(Object key) {
+        connection = Connect.connect();
+        if(connection==null) return null;
         Utilizador u = this.get(key);
         try {
-            this.connection = Connect.connect();
             if(u instanceof Coordenador){
                 PreparedStatement stm = connection.prepareStatement(""+
                         "UPDATE UC\n" +
@@ -280,7 +277,7 @@ public class UserDAO implements Map<String, Utilizador> {
             PreparedStatement stm = connection.prepareStatement(""+
                     "DELETE FROM Presencas WHERE Aluno_id=?;\n" +
                     "DELETE FROM Trocas WHERE aluno_id=?;\n" +
-                    "DELETE FROM Turno_has_Docente WHERE Docente_id=?;\n" +
+                    "UPDATE Turno SET Docente_id=NULL WHERE Docente_id=?;\n" +
                     "DELETE FROM Turno_has_Aluno WHERE Aluno_id=?;\n" +
                     "DELETE FROM Pedido WHERE Aluno_id=?;\n" +
                     "DELETE FROM Docente WHERE Utilizador_id=?;\n" +
@@ -316,9 +313,10 @@ public class UserDAO implements Map<String, Utilizador> {
 
     @Override
     public Set<String> keySet() {
+        connection = Connect.connect();
         Set<String> keySet = new HashSet<>();
+        if(connection==null) return keySet;
         try {
-            connection = Connect.connect();
             PreparedStatement stm = connection.prepareStatement("" +
                     "SELECT id FROM `Utilizador`;");
             ResultSet rs = stm.executeQuery();

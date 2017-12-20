@@ -1,8 +1,8 @@
-package main.sgt;
+package main.sgt.exceptions;
 
 public class WrongCredentialsException extends Throwable {
     private String message;
-    WrongCredentialsException(String message) {
+    public WrongCredentialsException(String message) {
         this.message = message;
     }
 

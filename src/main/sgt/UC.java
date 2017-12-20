@@ -1,6 +1,10 @@
 package main.sgt;
 
 import main.dao.TurnoDAO;
+import main.sgt.exceptions.AlunoNaoEstaInscritoNaUcException;
+import main.sgt.exceptions.TurnoNaoVazioException;
+import main.sgt.exceptions.UtilizadorJaExisteException;
+import main.sgt.exceptions.UtilizadorNaoExisteException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +46,7 @@ public class UC {
 	 * @param nome Nome da UC
 	 * @param acron Acronimo da UC
 	 */
-	UC(String id, String nome, String acron) {
+    public UC(String id, String nome, String acron) {
 		this.id = id;
 		this.nome = nome;
 		this.acron = acron;
@@ -52,11 +56,18 @@ public class UC {
 		this.turnos = new TurnoDAO();
 	}
 
+	public UC(String id, String nome, String acron, String responsavel){
+        this.id = id;
+        this.nome = nome;
+        this.acron = acron;
+        this.responsavel = responsavel;
+    }
+
     /**
      * Retorna o identificador da UC
      * @return O identificador da UC
      */
-	String getId() {
+    public String getId() {
 		return this.id;
 	}
 
@@ -72,7 +83,7 @@ public class UC {
      * Retorna o nome da UC
      * @return O nome da UC
      */
-	String getNome() {
+    public String getNome() {
 		return this.nome;
 	}
 
@@ -104,7 +115,7 @@ public class UC {
      * Retorna o identificador do Docente responsavel
      * @return O identificador do Docente responsavel
      */
-    String getResponsavel() {
+    public String getResponsavel() {
         return this.responsavel;
     }
 
@@ -120,7 +131,7 @@ public class UC {
      * Retorna os docentes que lecionam a UC
      * @return Os docentes que lecionam a UC
      */
-    List<String> getDocentes() {
+    public List<String> getDocentes() {
         return this.docentes;
     }
 
@@ -154,7 +165,7 @@ public class UC {
 	 * Retorna a lista de turno desta UC
 	 * @return A lista de turnos desta UC
 	 */
-	List<Turno> getTurnos() {
+    public List<Turno> getTurnos() {
 		return new ArrayList<>(this.turnos.values());
 	}
 
@@ -257,7 +268,7 @@ public class UC {
 	 * @param turno Identificador do turno
      * @return O turno com o dado id
 	 */
-	Turno getTurno(int turno) {
+    public Turno getTurno(int turno) {
 	    return this.turnos.get(new TurnoKey(this.id,turno));
 	}
 

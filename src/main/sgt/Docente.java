@@ -1,5 +1,8 @@
 package main.sgt;
 
+import main.sgt.exceptions.TurnoJaExisteException;
+import main.sgt.exceptions.UCJaExisteException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
