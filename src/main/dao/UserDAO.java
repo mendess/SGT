@@ -43,7 +43,8 @@ public class UserDAO implements Map<String, Utilizador> {
         String user = (String) key;
         boolean r = false;
         try {
-            PreparedStatement stm = connection.prepareStatement("SELECT `id` FROM `Utilizador` WHERE `id`=?;");
+            PreparedStatement stm = connection.prepareStatement("" +
+                    "SELECT `id` FROM `Utilizador` WHERE `id`=?;");
             stm.setString(1, user);
             ResultSet rs = stm.executeQuery();
             r = rs.next();
@@ -233,7 +234,7 @@ public class UserDAO implements Map<String, Utilizador> {
 
     private PreparedStatement updateTurnosAluno(Aluno value) throws SQLException {
         PreparedStatement stm = connection.prepareStatement("" +
-                "INSERT INTO Turno_has_Aluno (idTurno, UC_id, Aluno_id) " +
+                "INSERT INTO Turno_has_Aluno (Turno_id, UC_id, Aluno_id) " +
                 "VALUES (?,?,?);");
         for(String uc : value.getHorario().keySet()){
             Integer turno = value.getHorario().get(uc);
@@ -263,9 +264,9 @@ public class UserDAO implements Map<String, Utilizador> {
 
     @Override
     public Utilizador remove(Object key) {
+        Utilizador u = this.get(key);
         connection = Connect.connect();
         if(connection==null) return null;
-        Utilizador u = this.get(key);
         try {
             if(u instanceof Coordenador){
                 PreparedStatement stm = connection.prepareStatement(""+

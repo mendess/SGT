@@ -5,12 +5,13 @@ import main.sgt.exceptions.UtilizadorJaExisteException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Turno {
 
 
     public static Turno emptyShift(String uc){
-        return new Turno(0,false,Integer.MAX_VALUE,uc);
+        return new Turno(0, uc, Integer.MAX_VALUE, false);
     }
 
     /**
@@ -36,7 +37,7 @@ public class Turno {
     /**
      * Aulas do turno
      */
-    private AulaDAO aulas;
+    private AulaDAO aulas = new AulaDAO();
     /**
      * Lista dos alunos
      */
@@ -63,25 +64,23 @@ public class Turno {
         this.alunos = alunos;
         this.docente = docente;
         this.tinfo = tinfo;
-        this.aulas = new AulaDAO();
     }
 
     /**
      * Construtor com apenas o estritamente necessario para criar um <tt>Turno<\tt>, ou seja, nao inclui os participantes
      * no mesmo.
      * @param id Numero do turno
-     * @param ePratico Se o turno é pratico ou teorico
-     * @param vagas Numero de vagas do turno
      * @param ucId Identificador da UC a que pertence
+     * @param vagas Numero de vagas do turno
+     * @param ePratico Se o turno é pratico ou teorico
      */
-    public Turno(int id, boolean ePratico, int vagas, String ucId) {
+    public Turno(int id, String ucId, int vagas, boolean ePratico) {
         this.id = id;
         this.alunos = new ArrayList<>();
         this.docente= null;
         this.ePratico = ePratico;
         this.vagas = vagas;
         this.ucId = ucId;
-        this.aulas = new AulaDAO();
         this.tinfo = new ArrayList<>();
     }
 
@@ -138,7 +137,10 @@ public class Turno {
      * @return Lista de aulas que o turno tem.
      */
     public List<Aula> getAulas(){
-        return new ArrayList<>(this.aulas.values());
+        return new ArrayList<>(this.aulas.values()
+                            .stream()
+                            .filter(a->a.getUc().equals(this.ucId) && a.getTurno()==this.id)
+                            .collect(Collectors.toList()));
     }
 
     /**
@@ -241,7 +243,7 @@ public class Turno {
      */
     void addAula() {
         int num = this.aulas.maxID(this.ucId,this.id);
-        Aula a = new Aula(this.id,this.ucId,num);
+        Aula a = new Aula(num, this.ucId, this.id);
         this.aulas.put(new AulaKey(a),a);
     }
 
@@ -270,8 +272,9 @@ public class Turno {
                 this.tinfo.equals(a.getTurnoInfos());
     }
     public String toString() {
-        return "Turno " + this.id + ": \t"
-                + "Id do Turno: " + this.ucId + "\t"
+        return "Turno \t"
+                + "Id: "+ this.id + ": \t"
+                + "UC do Turno: " + this.ucId + "\t"
                 + "Docente: " + this.docente + "\t"
                 + "Vagas: " + this.vagas + "\t"
                 + "Pratico: " + this.ePratico + "\t"

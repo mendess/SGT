@@ -28,4 +28,12 @@ public class AulaKey {
     public int getAula_id() {
         return this.aula_id;
     }
+
+    @Override
+    public String toString() {
+        return "AulaKey: \t"
+                + "Num: " + this.aula_id +"\t"
+                + "Turno: " + this.turno_id + "\t"
+                + "UC: " + this.uc_id +"\t";
+    }
 }

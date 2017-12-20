@@ -7,8 +7,8 @@ import main.sgt.exceptions.UtilizadorJaExisteException;
 import main.sgt.exceptions.UtilizadorNaoExisteException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UC {
 
@@ -39,7 +39,7 @@ public class UC {
     /**
      * Turnos desta UC
      */
-    private TurnoDAO turnos;
+    private TurnoDAO turnos = new TurnoDAO();
 
     /**
      * Construtor de UC que aceita o id e o nome
@@ -54,7 +54,6 @@ public class UC {
         this.responsavel = null;
         this.docentes = new ArrayList<>();
         this.alunos = new ArrayList<>();
-        this.turnos = new TurnoDAO();
     }
 
     public UC(String id, String nome, String acron, String responsavel){
@@ -186,7 +185,10 @@ public class UC {
      * @return A lista de turnos desta UC
      */
     public List<Turno> getTurnos() {
-        return new ArrayList<>(this.turnos.values());
+        return new ArrayList<>(this.turnos.values()
+                .stream()
+                .filter(t->t.getUcId().equals(this.id))
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -265,7 +267,7 @@ public class UC {
      */
     int addTurno(boolean ePratico, int vagas) {
         int id = this.turnos.maxID();
-        Turno t = new Turno(id,ePratico,vagas,this.id);
+        Turno t = new Turno(id, this.id, vagas, ePratico);
         this.turnos.put(new TurnoKey(t),t);
         return id;
     }

@@ -21,4 +21,10 @@ public class TurnoKey {
     public int getTurno_id() {
         return this.turno_id;
     }
+
+    public String toString() {
+        return "TurnoKey: \t"
+                + "Turno: " + this.turno_id + "\t"
+                + "UC: " + this.uc_id +"\t";
+    }
 }

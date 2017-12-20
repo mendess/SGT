@@ -27,7 +27,7 @@ public class Aula {
      * @param uc A UC do turno
      * @param turno O numero do turno da aula
      */
-    public Aula(int turno, String uc, int numero) {
+    public Aula(int numero, String uc, int turno) {
         this.uc = uc;
         this.turno = turno;
         this.numero = numero;
@@ -93,5 +93,14 @@ public class Aula {
                 && this.turno == a.getTurno()
                 && this.uc.equals(a.getUc())
                 && this.presencas.equals(a.getPresencas());
+    }
+
+    @Override
+    public String toString() {
+        return  "Aula: \t"
+                +"Numero: "+this.numero+"\t"
+                +"Turno: "+this.turno+"\t"
+                +"UC: "+this.uc+"\t"
+                +"Presencas: "+this.presencas.toString();
     }
 }

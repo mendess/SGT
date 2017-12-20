@@ -83,15 +83,15 @@ public class UCDAO implements Map<String, UC> {
                             "  Turno_has_Aluno.Aluno_id AS aluno\n" +
                             "FROM UC " +
                             "INNER JOIN Turno ON UC.id = Turno.UC_id\n" +
-                            "LEFT JOIN Turno_has_Aluno ON Turno.id = Turno_has_Aluno.idTurno AND Turno.UC_id = Turno_has_Aluno.UC_id\n" +
+                            "LEFT JOIN Turno_has_Aluno ON Turno.id = Turno_has_Aluno.Turno_id AND Turno.UC_id = Turno_has_Aluno.UC_id\n" +
                             "WHERE UC.id=?");
             stm.setString(1 , user);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
-                String id = rs.getString("id");
+                String id = rs.getString("UC_id");
                 String nome = rs.getString("nome");
                 String acron = rs.getString("acron");
-                String responsavel_id = rs.getString("responsavel_id");
+                String responsavel_id = rs.getString("responsavel");
 
                 List<String> docentes = new ArrayList<>();
                 List<String> alunos = new ArrayList<>();
@@ -146,11 +146,11 @@ public class UCDAO implements Map<String, UC> {
     public UC remove(Object key) {
         UC uc = this.get(key);
         this.connection = Connect.connect();
-        if(connection==null){
-            return null;
-        }
+        if(connection==null) return null;
         try {
-            uc.getTurnos().forEach(t -> new TurnoDAO().remove(t.getId()));
+            for (Turno t : uc.getTurnos()) {
+                new TurnoDAO().remove(new TurnoKey(t));
+            }
             PreparedStatement stm = connection.prepareStatement("" +
                     "DELETE FROM UC WHERE id=?;");
             stm.setString(1,uc.getId());

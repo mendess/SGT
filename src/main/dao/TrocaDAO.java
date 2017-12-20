@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class TrocaDAO implements List<Troca> {
-    Connection connection;
+    private Connection connection;
     @Override
     public int size() {
         this.connection = Connect.connect();
