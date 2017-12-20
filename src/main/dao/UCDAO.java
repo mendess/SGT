@@ -4,6 +4,7 @@ import main.sgt.*;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UCDAO implements Map<String, UC> {
     private Connection connection;
@@ -162,16 +163,12 @@ public class UCDAO implements Map<String, UC> {
 
     @Override
     public void putAll(Map<? extends String, ? extends UC> m) {
-        for(UC uc : m.values()){
-            this.put(uc.getId(),uc);
-        }
+        m.values().forEach(uc -> this.put(uc.getId(), uc));
     }
 
     @Override
     public void clear() {
-        for(String uc : this.keySet()){
-            this.remove(uc);
-        }
+        this.keySet().forEach(this::remove);
     }
 
     @Override
@@ -194,11 +191,10 @@ public class UCDAO implements Map<String, UC> {
 
     @Override
     public Collection<UC> values() {
-        Collection<UC> values = new ArrayList<>();
-        for(String uc: this.keySet()){
-            values.add(this.get(uc));
-        }
-        return values;
+        return this.keySet()
+                .stream()
+                .map(this::get)
+                .collect(Collectors.toList());
     }
 
     @Override

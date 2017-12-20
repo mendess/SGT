@@ -4,6 +4,7 @@ import main.sgt.*;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserDAO implements Map<String, Utilizador> {
     private Connection connection;
@@ -299,16 +300,12 @@ public class UserDAO implements Map<String, Utilizador> {
 
     @Override
     public void putAll(Map<? extends String, ? extends Utilizador> m) {
-        for(Utilizador u : m.values()){
-            this.put(u.getUserNum(),u);
-        }
+        m.values().forEach(u -> this.put(u.getUserNum(), u));
     }
 
     @Override
     public void clear() {
-        for(String k : this.keySet()){
-            this.remove(k);
-        }
+        this.keySet().forEach(this::remove);
     }
 
     @Override
@@ -333,22 +330,19 @@ public class UserDAO implements Map<String, Utilizador> {
 
     @Override
     public Collection<Utilizador> values() {
-        Collection<Utilizador> values = new HashSet<>();
-        Set<String> keySet = this.keySet();
-        for(String k : keySet){
-            values.add(this.get(k));
-        }
-        return values;
+        return this.keySet()
+                .stream()
+                .map(this::get)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Set<Entry<String, Utilizador>> entrySet() {
         Set<Entry<String,Utilizador>> entrySet = new HashSet<>();
-        Set<String> keySet = this.keySet();
-        for(String uk : keySet){
+        this.keySet().forEach(uk -> {
             Utilizador u = this.get(uk);
-            entrySet.add(new AbstractMap.SimpleEntry<>(uk,u));
-        }
+            entrySet.add(new AbstractMap.SimpleEntry<>(uk, u));
+        });
         return entrySet;
     }
 }
