@@ -197,6 +197,14 @@ public class Turno {
 	}
 
     /**
+     * Altera o docente que leciona o turno
+     * @param docente Novo docente
+     */
+	void setDocente(String docente){
+	    this.docente=docente;
+    }
+
+    /**
 	 * Adiciona um aluno ao turno
 	 * @param aluno Identificador do aluno a adicionar
 	 */

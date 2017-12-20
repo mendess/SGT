@@ -7,6 +7,7 @@ import main.sgt.exceptions.UtilizadorJaExisteException;
 import main.sgt.exceptions.UtilizadorNaoExisteException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class UC {
@@ -149,6 +150,7 @@ public class UC {
      * @param docente Numero do docente a adicionar
      * @throws UtilizadorJaExisteException Quando o docente já leciona a UC
      */
+    @Deprecated
     void addDocente(String docente) throws UtilizadorJaExisteException {
         if(!this.docentes.contains(docente)){
             this.docentes.add(docente);
@@ -162,6 +164,7 @@ public class UC {
      * @param docente Numero do docente a remover
      * @throws UtilizadorNaoExisteException Quando o docente nao leciona a UC
      */
+    @Deprecated
     void removeDocente(String docente) throws UtilizadorNaoExisteException {
         if(this.docentes.contains(docente)){
             this.docentes.add(docente);
@@ -327,4 +330,30 @@ public class UC {
         tmpTurno.removeAula(aula);
         this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
 	}
+
+    void addDocenteToTurno(int turno, String docente) {
+        if(this.docentes.contains(docente)){
+            this.docentes.add(docente);
+        }
+        Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno));
+        tmpTurno.setDocente(docente);
+        this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
+    }
+
+    void removeDocenteFromTurno(int turno, String docente) {
+        Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno));
+        tmpTurno.setDocente(null);
+        this.turnos.put(new TurnoKey(this.id,tmpTurno.getId()),tmpTurno);
+        if(this.numTurnosLecionados(docente)==1){
+            this.docentes.remove(docente);
+        }
+    }
+
+    private int numTurnosLecionados(String docente) {
+        int count=0;
+        for(Turno t: this.turnos.values()){
+            if(t.getDocente().equals(docente)) count++;
+        }
+        return count;
+    }
 }

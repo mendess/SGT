@@ -272,7 +272,7 @@ public class UserDAO implements Map<String, Utilizador> {
                         "SET responsavel_id = NULL\n" +
                         "WHERE responsavel_id=?");
                 stm.setString(1,u.getUserNum());
-                int rows = stm.executeUpdate();
+                stm.executeUpdate();
             }
             PreparedStatement stm = connection.prepareStatement(""+
                     "DELETE FROM Presencas WHERE Aluno_id=?;\n" +

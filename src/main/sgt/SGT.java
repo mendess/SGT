@@ -321,11 +321,30 @@ public class SGT {
     }
 
     /**
+     * Adiciona um docente a um turno
+     * @param uc O identificador da UC do turno
+     * @param turno O numero do turno
+     * @param docente O identificador do docente
+     */
+    public void setDocenteOfTurno(String uc, int turno, String docente){
+        UC tmpUC = this.ucs.get(uc);
+        tmpUC.addDocenteToTurno(turno,docente);
+        this.ucs.put(tmpUC.getId(),tmpUC);
+    }
+
+    public void removeDocenteFromTurno(String uc, int turno, String docente){
+        UC tmpUC = this.ucs.get(uc);
+        tmpUC.removeDocenteFromTurno(turno,docente);
+        this.ucs.put(tmpUC.getId(),tmpUC);
+    }
+
+    /**
      * Adiciona um docente a uma UC
      * @param docente Numero do docente a adicionar
      * @param uc Numero da UC onde adicionar
      * @throws UtilizadorJaExisteException Quando o docente ja leciona esta UC
      */
+    @Deprecated
     public void addDocenteToUC(String docente, String uc) throws UtilizadorJaExisteException {
         UC newUC = this.ucs.get(uc);
         newUC.addDocente(docente);
@@ -338,6 +357,7 @@ public class SGT {
      * @param uc Numero da UC onde adicionar
      * @throws UtilizadorNaoExisteException Quando o docente nao esta a lecionar esta na UC
      */
+    @Deprecated
     public void removeDocenteFromUC(String docente, String uc) throws UtilizadorNaoExisteException {
         UC newUC = this.ucs.get(uc);
         newUC.removeDocente(docente);
