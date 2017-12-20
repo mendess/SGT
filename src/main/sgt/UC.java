@@ -142,7 +142,15 @@ public class UC {
      * @return Os docentes que lecionam a UC
      */
     public List<String> getDocentes() {
-        return this.docentes;
+        return new ArrayList<>(this.docentes);
+    }
+
+    /**
+     * Retorna a lista de alunos do turno
+     * @return A lista de alunos do turno
+     */
+    public List<String> getAlunos(){
+        return new ArrayList<>(this.alunos);
     }
 
     /**
