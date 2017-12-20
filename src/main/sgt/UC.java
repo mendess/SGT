@@ -63,6 +63,15 @@ public class UC {
         this.responsavel = responsavel;
     }
 
+    public UC(String id, String nome, String acron, String responsavel,List<String> docentes,List<String> alunos){
+        this.id = id;
+        this.nome = nome;
+        this.acron = acron;
+        this.responsavel = responsavel;
+        this.docentes = docentes;
+        this.alunos = alunos;
+    }
+
     /**
      * Retorna o identificador da UC
      * @return O identificador da UC
