@@ -11,28 +11,28 @@ import java.util.Map;
 public class Docente extends Utilizador {
 
     /**
-	 * UCs e turnos do docente
+     * UCs e turnos do docente
      */
-	private Map<String, List<Integer>> ucsEturnos;
+    private Map<String, List<Integer>> ucsEturnos;
 
-	/**
-	 * Construtor do Docente
-	 * @param userNum O identificador do docente
-	 * @param password A password do docente
-	 * @param email O email do docente
-	 * @param name O nome do docente
-	 * @param ucsEturnos As ucsEturnos do docente
-	 */
-	public Docente(String userNum, String password, String email, String name, Map<String, List<Integer>> ucsEturnos) {
-		super(userNum,password,email,name);
-		this.ucsEturnos = ucsEturnos;
-	}
+    /**
+     * Construtor do Docente
+     * @param userNum O identificador do docente
+     * @param password A password do docente
+     * @param email O email do docente
+     * @param name O nome do docente
+     * @param ucsEturnos As ucsEturnos do docente
+     */
+    public Docente(String userNum, String password, String email, String name, Map<String, List<Integer>> ucsEturnos) {
+        super(userNum,password,email,name);
+        this.ucsEturnos = ucsEturnos;
+    }
 
     /**
      * Retorna as UCs e turnos do Docente
      * @return UCs e turnos do docente
      */
-	public Map<String, List<Integer>> getUcsEturnos() {
+    public Map<String, List<Integer>> getUcsEturnos() {
         return new HashMap<>(this.ucsEturnos);
     }
 
@@ -44,48 +44,48 @@ public class Docente extends Utilizador {
         this.ucsEturnos = ucsEturnos;
     }
 
-	/**
-	 * Adiciona uma UC ao Docente
-	 * @param uc Identificador da UC a adicionar
+    /**
+     * Adiciona uma UC ao Docente
+     * @param uc Identificador da UC a adicionar
      * @throws UCJaExisteException Se o docente ja da aulas a esta UC
-	 */
-	void addUC(String uc) throws UCJaExisteException {
-	    if(!this.ucsEturnos.containsKey(uc)){
+     */
+    void addUC(String uc) throws UCJaExisteException {
+        if(!this.ucsEturnos.containsKey(uc)){
             this.ucsEturnos.put(uc, new ArrayList<>());
         }else{
-	        throw new UCJaExisteException();
+            throw new UCJaExisteException();
         }
-	}
+    }
 
-	/**
-	 * Adiciona um turno ao docente
-	 * @param uc Identificador da UC do turno a remover
-	 * @param turno Numero do turno
-	 */
-	void addTurno(String uc, int turno) throws TurnoJaExisteException {
-	    if(!this.ucsEturnos.get(uc).contains(turno)){
-	        this.ucsEturnos.get(uc).add(turno);
+    /**
+     * Adiciona um turno ao docente
+     * @param uc Identificador da UC do turno a remover
+     * @param turno Numero do turno
+     */
+    void addTurno(String uc, int turno) throws TurnoJaExisteException {
+        if(!this.ucsEturnos.get(uc).contains(turno)){
+            this.ucsEturnos.get(uc).add(turno);
         }else{
-	        throw new TurnoJaExisteException();
+            throw new TurnoJaExisteException();
         }
-	}
+    }
 
-	/**
-	 * Remove um turno ao docente
-	 * @param uc Identificador da UC do turno a remover
-	 * @param turno Numero do turno a remover
-	 */
-	void removeTurno(String uc, int turno) {
-	    this.ucsEturnos.get(uc).remove(turno);
-	}
+    /**
+     * Remove um turno ao docente
+     * @param uc Identificador da UC do turno a remover
+     * @param turno Numero do turno a remover
+     */
+    void removeTurno(String uc, int turno) {
+        this.ucsEturnos.get(uc).remove(turno);
+    }
 
-	/**
-	 * Remove uma UC do Docente
-	 * @param uc Identificador da UC a remover
-	 */
-	void removeUC(String uc) {
-	    this.ucsEturnos.remove(uc);
-	}
+    /**
+     * Remove uma UC do Docente
+     * @param uc Identificador da UC a remover
+     */
+    void removeUC(String uc) {
+        this.ucsEturnos.remove(uc);
+    }
 
     @Override
     public boolean equals(Object o) {

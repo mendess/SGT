@@ -15,49 +15,49 @@ public class UC {
     /**
      * Id da UC
      */
-	private String id;
+    private String id;
     /**
      * Nome da UC
      */
-	private String nome;
-	/**
-	 * Acronimo da cadeira
-	 */
-	private String acron;
+    private String nome;
+    /**
+     * Acronimo da cadeira
+     */
+    private String acron;
     /**
      * Docente responsavel pela UC (Coordenador)
      */
-	private String responsavel;
+    private String responsavel;
     /**
      * Docentes da UC
      */
-	private List<String> docentes;
+    private List<String> docentes;
     /**
      * Alunos da UC
      */
-	private List<String> alunos;
+    private List<String> alunos;
     /**
      * Turnos desta UC
      */
     private TurnoDAO turnos;
 
-	/**
-	 * Construtor de UC que aceita o id e o nome
-	 * @param id Identificador da UC
-	 * @param nome Nome da UC
-	 * @param acron Acronimo da UC
-	 */
+    /**
+     * Construtor de UC que aceita o id e o nome
+     * @param id Identificador da UC
+     * @param nome Nome da UC
+     * @param acron Acronimo da UC
+     */
     public UC(String id, String nome, String acron) {
-		this.id = id;
-		this.nome = nome;
-		this.acron = acron;
-		this.responsavel = null;
-		this.docentes = new ArrayList<>();
-		this.alunos = new ArrayList<>();
-		this.turnos = new TurnoDAO();
-	}
+        this.id = id;
+        this.nome = nome;
+        this.acron = acron;
+        this.responsavel = null;
+        this.docentes = new ArrayList<>();
+        this.alunos = new ArrayList<>();
+        this.turnos = new TurnoDAO();
+    }
 
-	public UC(String id, String nome, String acron, String responsavel){
+    public UC(String id, String nome, String acron, String responsavel){
         this.id = id;
         this.nome = nome;
         this.acron = acron;
@@ -78,48 +78,48 @@ public class UC {
      * @return O identificador da UC
      */
     public String getId() {
-		return this.id;
-	}
+        return this.id;
+    }
 
-	/**
-	 * Altera o identificador da UC
-	 * @param id Novo identificador
-	 */
-	void setId(String id) {
-		this.id = id;
-	}
+    /**
+     * Altera o identificador da UC
+     * @param id Novo identificador
+     */
+    void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * Retorna o nome da UC
      * @return O nome da UC
      */
     public String getNome() {
-		return this.nome;
-	}
+        return this.nome;
+    }
 
-	/**
-	 * Altera o Nome da UC
-	 * @param nome Novo nome
-	 */
-	void setNome(String nome) {
-		this.nome = nome;
-	}
+    /**
+     * Altera o Nome da UC
+     * @param nome Novo nome
+     */
+    void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	/**
-	 * Retorna o acronimo da UC
-	 * @return O acronimo da UC
-	 */
-	public String getAcron() {
-		return acron;
-	}
+    /**
+     * Retorna o acronimo da UC
+     * @return O acronimo da UC
+     */
+    public String getAcron() {
+        return acron;
+    }
 
-	/**
-	 * Altera o acronimo da UC
-	 * @param acron Novo acronimo da UC
-	 */
-	public void setAcron(String acron) {
-		this.acron = acron;
-	}
+    /**
+     * Altera o acronimo da UC
+     * @param acron Novo acronimo da UC
+     */
+    public void setAcron(String acron) {
+        this.acron = acron;
+    }
 
     /**
      * Retorna o identificador do Docente responsavel
@@ -173,43 +173,43 @@ public class UC {
         }
     }
 
-	/**
-	 * Retorna a lista de turno desta UC
-	 * @return A lista de turnos desta UC
-	 */
+    /**
+     * Retorna a lista de turno desta UC
+     * @return A lista de turnos desta UC
+     */
     public List<Turno> getTurnos() {
-		return new ArrayList<>(this.turnos.values());
-	}
+        return new ArrayList<>(this.turnos.values());
+    }
 
-	/**
-	 * Marca um aluno como presente numa aula
-	 * @param aluno Aluno
-	 * @param turno Turno a que a aula pertence
-	 * @param aula Aula
-	 */
-	void marcarPresenca(String aluno, int turno, int aula) {
-		this.turnos.get(new TurnoKey(this.id,turno)).marcarPresenca(aluno,aula);
-	}
+    /**
+     * Marca um aluno como presente numa aula
+     * @param aluno Aluno
+     * @param turno Turno a que a aula pertence
+     * @param aula Aula
+     */
+    void marcarPresenca(String aluno, int turno, int aula) {
+        this.turnos.get(new TurnoKey(this.id,turno)).marcarPresenca(aluno,aula);
+    }
 
-	/**
-	 * Remove um aluno de um turno
-	 * @param aluno Aluno a remover
-	 * @param turno Turno de onde remover
-	 */
-	void removerAlunoDeTurno(String aluno, int turno) {
-		this.turnos.get(new TurnoKey(this.id,turno)).removeAluno(aluno);
-	}
+    /**
+     * Remove um aluno de um turno
+     * @param aluno Aluno a remover
+     * @param turno Turno de onde remover
+     */
+    void removerAlunoDeTurno(String aluno, int turno) {
+        this.turnos.get(new TurnoKey(this.id,turno)).removeAluno(aluno);
+    }
 
-	/**
-	 * Adiciona um aluno a um turno
-	 * @param aluno Aluno a adicionar
-	 * @param turno Turno onde adicionar
-	 */
-	void adicionarAlunoTurno(String aluno, int turno) throws UtilizadorJaExisteException {
-		this.turnos.get(new TurnoKey(this.id,turno)).addAluno(aluno);
-	}
+    /**
+     * Adiciona um aluno a um turno
+     * @param aluno Aluno a adicionar
+     * @param turno Turno onde adicionar
+     */
+    void adicionarAlunoTurno(String aluno, int turno) throws UtilizadorJaExisteException {
+        this.turnos.get(new TurnoKey(this.id,turno)).addAluno(aluno);
+    }
 
-	/**
+    /**
      * Troca dois alunos entre si
      * @param aluno1 Aluno 1
      * @param aluno2 Aluno 2
@@ -223,9 +223,9 @@ public class UC {
     }
 
     /**
-	 * Move um aluno do turno em que esta para outro
-	 * @param aluno Aluno
-	 * @param turno Numero do turno
+     * Move um aluno do turno em que esta para outro
+     * @param aluno Aluno
+     * @param turno Numero do turno
      * @return Registo da Troca efetuada
      * @throws AlunoNaoEstaInscritoNaUcException O aluno nao esta inscrito nesta UC
      */
@@ -263,26 +263,26 @@ public class UC {
     }
 
     /**
-	 * Remove um turno da UC
-	 * @param id Identificador do turno a remover
-	 */
-	void removeTurno(int id) throws TurnoNaoVazioException {
-	    TurnoKey tKey = new TurnoKey(this.id,id);
-		if(this.turnos.get(tKey).getAlunos().isEmpty()){
-	        this.turnos.remove(tKey);
+     * Remove um turno da UC
+     * @param id Identificador do turno a remover
+     */
+    void removeTurno(int id) throws TurnoNaoVazioException {
+        TurnoKey tKey = new TurnoKey(this.id,id);
+        if(this.turnos.get(tKey).getAlunos().isEmpty()){
+            this.turnos.remove(tKey);
         }else{
-	        throw new TurnoNaoVazioException();
+            throw new TurnoNaoVazioException();
         }
-	}
+    }
 
     /**
-	 * Retorna um <tt>Turno</tt>
-	 * @param turno Identificador do turno
+     * Retorna um <tt>Turno</tt>
+     * @param turno Identificador do turno
      * @return O turno com o dado id
-	 */
+     */
     public Turno getTurno(int turno) {
-	    return this.turnos.get(new TurnoKey(this.id,turno));
-	}
+        return this.turnos.get(new TurnoKey(this.id,turno));
+    }
 
     /**
      * Adiciona um aluno a um curso
@@ -297,39 +297,39 @@ public class UC {
         }
     }
 
-	/**
-	 * Remove um aluno do turno
-	 * @param aluno Numero do aluno a remover
+    /**
+     * Remove um aluno do turno
+     * @param aluno Numero do aluno a remover
      * @throws UtilizadorNaoExisteException Quando o aluno não esta inscrito na UC
-	 */
-	void removeAluno(String aluno) throws UtilizadorNaoExisteException {
-	    if(this.alunos.contains(aluno)){
-	        this.alunos.remove(aluno);
+     */
+    void removeAluno(String aluno) throws UtilizadorNaoExisteException {
+        if(this.alunos.contains(aluno)){
+            this.alunos.remove(aluno);
         }else{
-	        throw new UtilizadorNaoExisteException();
+            throw new UtilizadorNaoExisteException();
         }
-	}
+    }
 
-	/**
-	 * Adiciona uma nova aula a um turno
-	 * @param turno Numero do turno
-	 */
+    /**
+     * Adiciona uma nova aula a um turno
+     * @param turno Numero do turno
+     */
     void addAula(int turno) {
-	    Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno));
-	    tmpTurno.addAula();
-	    this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
-	}
+        Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno));
+        tmpTurno.addAula();
+        this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
+    }
 
-	/**
-	 * Remove uma aula a um turno
-	 * @param turno Numero do turno onde remover
-	 * @param aula Numero da aula a remover
-	 */
+    /**
+     * Remove uma aula a um turno
+     * @param turno Numero do turno onde remover
+     * @param aula Numero da aula a remover
+     */
     void removeAula(int turno, int aula) {
         Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno));
         tmpTurno.removeAula(aula);
         this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
-	}
+    }
 
     void addDocenteToTurno(int turno, String docente) {
         if(this.docentes.contains(docente)){
