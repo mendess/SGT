@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package userInterface;
+package main.userInterface;
 
 import javax.swing.JOptionPane;
 import main.sgt.exceptions.WrongCredentialsException;
