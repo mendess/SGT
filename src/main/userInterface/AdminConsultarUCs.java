@@ -11,6 +11,7 @@ import main.sgt.Turno;
 import main.sgt.UC;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
  *
  * @author pedro
  */
-@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
+@SuppressWarnings("ALL")
 public class AdminConsultarUCs extends javax.swing.JFrame {
 
     private final SGT sgt;
@@ -212,8 +213,21 @@ public class AdminConsultarUCs extends javax.swing.JFrame {
         List<Aluno> alunos = t.getAlunos().stream()
                                           .map(this.sgt::getAluno)
                                           .collect(Collectors.toList());
-        
-        //TODO finish this
+        DefaultTableModel model = (DefaultTableModel) this.jTableAlunos.getModel();
+        while (alunos.size()>model.getRowCount()){
+            model.addRow(new String[2]);
+        }
+        while (alunos.size()<model.getRowCount()){
+            model.removeRow(model.getRowCount()-1);
+        }
+        int i=0;
+        for (Aluno a: alunos){
+            model.setValueAt(a.getUserNum(),i,0);
+            model.setValueAt(a.getName(),i,1);
+            i++;
+        }
+
+        this.jTableAlunos.setModel(model);
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
 
     private int shiftFromString(String turno) {
