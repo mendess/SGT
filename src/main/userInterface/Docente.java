@@ -44,8 +44,18 @@ public class Docente extends javax.swing.JFrame {
         });
 
         jComboBoxUC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxUC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxUCActionPerformed(evt);
+            }
+        });
 
         jComboBoxTurno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxTurno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTurnoActionPerformed(evt);
+            }
+        });
 
         jTableAlunos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -112,6 +122,14 @@ public class Docente extends javax.swing.JFrame {
     private void jButtonMarcarPresencasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMarcarPresencasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonMarcarPresencasActionPerformed
+
+    private void jComboBoxUCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxUCActionPerformed
+
+    private void jComboBoxTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxTurnoActionPerformed
 
     /**
      * @param args the command line arguments

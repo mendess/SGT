@@ -37,6 +37,11 @@ public class AlunoEspecialMudarTurno extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jComboBoxUCs.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxUCs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxUCsActionPerformed(evt);
+            }
+        });
 
         jLabelUCs.setText("UCs");
 
@@ -111,6 +116,10 @@ public class AlunoEspecialMudarTurno extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     /**
      * @param args the command line arguments

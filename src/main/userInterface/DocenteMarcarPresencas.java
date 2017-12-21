@@ -37,6 +37,11 @@ public class DocenteMarcarPresencas extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jComboBoxAula.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxAula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxAulaActionPerformed(evt);
+            }
+        });
 
         jLabelAulas.setText("Aulas");
 
@@ -129,6 +134,10 @@ public class DocenteMarcarPresencas extends javax.swing.JFrame {
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonFecharActionPerformed
+
+    private void jComboBoxAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAulaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxAulaActionPerformed
 
     /**
      * @param args the command line arguments
