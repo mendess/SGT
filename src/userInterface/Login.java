@@ -6,7 +6,6 @@
 package userInterface;
 
 import javax.swing.JOptionPane;
-import main.sgt.SGT;
 import main.sgt.exceptions.WrongCredentialsException;
 
 /**
@@ -14,7 +13,7 @@ import main.sgt.exceptions.WrongCredentialsException;
  * @author pedro
  */
 public class Login extends javax.swing.JFrame {
-    private final SGT sgt = new SGT();
+    private final main.sgt.SGT sgt = new main.sgt.SGT();
     /**
      * Creates new form Login
      */
@@ -34,7 +33,7 @@ public class Login extends javax.swing.JFrame {
         jLabelNumero = new javax.swing.JLabel();
         jTextFieldNumero = new javax.swing.JTextField();
         jLabelPassword = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        jPasswordField = new javax.swing.JPasswordField();
         jButtonLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,7 +61,7 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(jLabelPassword)
                             .addComponent(jLabelNumero)
                             .addComponent(jTextFieldNumero)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(163, 163, 163)
                         .addComponent(jButtonLogin)))
@@ -78,7 +77,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabelPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(jButtonLogin)
                 .addGap(37, 37, 37))
@@ -89,10 +88,10 @@ public class Login extends javax.swing.JFrame {
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
         try {
-            this.sgt.login(this.jTextFieldNumero.getText(),this.jPasswordField1.getText());
+            this.sgt.login(this.jTextFieldNumero.getText(),this.jPasswordField.getText());
             JOptionPane.showMessageDialog(null,"Logged in!");
         } catch (WrongCredentialsException ex) {
-            JOptionPane.showMessageDialog(null, "Wrong Credenti");
+            JOptionPane.showMessageDialog(null, "Wrong Credentials");
         }
     }//GEN-LAST:event_jButtonLoginActionPerformed
 
@@ -135,7 +134,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton jButtonLogin;
     private javax.swing.JLabel jLabelNumero;
     private javax.swing.JLabel jLabelPassword;
-    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JTextField jTextFieldNumero;
     // End of variables declaration//GEN-END:variables
 }
