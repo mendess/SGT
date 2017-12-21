@@ -5,18 +5,33 @@
  */
 package main.userInterface;
 
+import main.sgt.Aluno;
+import main.sgt.SGT;
+import main.sgt.Turno;
+import main.sgt.UC;
+
+import javax.swing.*;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  *
  * @author pedro
  */
+@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class AdminConsultarUCs extends javax.swing.JFrame {
 
+    private SGT sgt;
     /**
      * Creates new form AdminConsultarUCs
      */
-    public AdminConsultarUCs() {
+    public AdminConsultarUCs(SGT sgt) {
         initComponents();
-        // TODO update lists
+        this.sgt = sgt;
+        List<UC> ucs = this.sgt.getUCs();
+        this.jComboBoxUCs.removeAllItems();
+        this.jComboBoxTurnos.removeAllItems();
+        ucs.forEach(uc -> this.jComboBoxUCs.addItem(uc.getId()));
     }
 
     /**
@@ -120,12 +135,54 @@ public class AdminConsultarUCs extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
-        // TODO add your handling code here:
+        JComboBox ucs = (JComboBox) evt.getSource();
+        String ucID = (String) ucs.getSelectedItem();
+        if(ucID == null) return;
+        updateComboBoxTurnos(ucID);
+        UC uc = this.sgt.getUC(ucID);
+        if(uc==null) return;
+        this.jLabelCoordenadorNome.setText(uc.getResponsavel());
+        this.jLabelDocentesNomes.setText(uc.getDocentes()
+                                                    .stream()
+                                                    .reduce("",(d1,d2)->d1+"\n"+d2));
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
+    private void updateComboBoxTurnos(String uc) {
+        if(uc==null) return;
+        List<Turno> turnos = this.sgt.getTurnosOfUC(uc);
+        this.jComboBoxTurnos.removeAllItems();
+        turnos.forEach(t -> this.jComboBoxTurnos.addItem(makeShiftString(t)));
+    }
+
+    private String makeShiftString(Turno t){
+        if(t.ePratico()){
+            return "TP"+t.getId();
+        }else{
+            return "T"+t.getId();
+        }
+    }
+
     private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
-        // TODO add your handling code here:
+        JComboBox turnos = (JComboBox) evt.getSource();
+        String turno = (String) turnos.getSelectedItem();
+        if(turno==null) return;
+        UC uc = this.sgt.getUCs()
+                        .stream()
+                        .filter(u->u.getId().equals(this.jComboBoxUCs.getSelectedItem()))
+                        .findFirst()
+                        .orElse(null);
+        if(uc==null) return;
+        Turno t = uc.getTurno(shiftFromString(turno));
+        List<Aluno> alunos = t.getAlunos().stream()
+                                          .map(this.sgt::getAluno)
+                                          .collect(Collectors.toList());
+        ListModel<String> model = this.jListAlunos.getModel();
+        //TODO finish this
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
+
+    private int shiftFromString(String turno) {
+        return Integer.parseInt(turno.replaceAll("[^\\d.]", ""));
+    }
 
     /**
      * @param args the command line arguments
@@ -157,7 +214,7 @@ public class AdminConsultarUCs extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminConsultarUCs().setVisible(true);
+                new AdminConsultarUCs(new SGT()).setVisible(true);
             }
         });
     }

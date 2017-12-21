@@ -7,6 +7,7 @@ import main.dao.UserDAO;
 import main.sgt.exceptions.*;
 
 import javax.json.*;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -501,5 +502,18 @@ public class SGT extends Observable{
      */
     public void removeAula(String uc, int turno, int aula) {
         this.ucs.get(uc).removeAula(turno,aula);
+    }
+
+    public Aluno getAluno(String a) {
+        Utilizador u = this.utilizadores.get(a);
+        if(u instanceof Aluno){
+            return (Aluno) u;
+        }else {
+            return null;
+        }
+    }
+
+    public UC getUC(String uc) {
+        return this.ucs.get(uc);
     }
 }

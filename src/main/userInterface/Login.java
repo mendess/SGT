@@ -5,13 +5,15 @@
  */
 package main.userInterface;
 
-import javax.swing.JOptionPane;
 import main.sgt.exceptions.WrongCredentialsException;
+
+import javax.swing.*;
 
 /**
  *
  * @author pedro
  */
+@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class Login extends javax.swing.JFrame {
     private final main.sgt.SGT sgt = new main.sgt.SGT();
     /**
