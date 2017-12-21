@@ -79,6 +79,9 @@ public class SGT extends Observable{
         }
     }
 
+    public Utilizador getLoggedUser(){
+        return this.loggedUser;
+    }
     /**
      * Devolve os Turnos de uma UC
      * @param uc UC
