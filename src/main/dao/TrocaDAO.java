@@ -1,11 +1,12 @@
 package main.dao;
 
-import com.sun.org.apache.regexp.internal.RE;
 import main.sgt.Troca;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class TrocaDAO implements List<Troca> {
     private Connection connection;

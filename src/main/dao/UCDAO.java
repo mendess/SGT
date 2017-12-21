@@ -1,6 +1,8 @@
 package main.dao;
 
-import main.sgt.*;
+import main.sgt.Turno;
+import main.sgt.TurnoKey;
+import main.sgt.UC;
 
 import java.sql.*;
 import java.util.*;
