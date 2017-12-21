@@ -20,7 +20,7 @@ public class UCDAO implements Map<String, UC> {
                 i = rs.getInt(1);
             }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
+        catch (SQLException e) {throw new NullPointerException(e.getMessage());}
         finally {
             Connect.close(connection);
         }
@@ -107,7 +107,7 @@ public class UCDAO implements Map<String, UC> {
                 }while (rs.next());
                 uc = new UC(id,nome,acron,responsavel_id,docentes,alunos);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Connect.close(connection);
@@ -134,7 +134,7 @@ public class UCDAO implements Map<String, UC> {
             stm.setString(4,value.getResponsavel());
             stm.executeUpdate();
             uc = value;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Connect.close(connection);
@@ -146,7 +146,7 @@ public class UCDAO implements Map<String, UC> {
     public UC remove(Object key) {
         UC uc = this.get(key);
         this.connection = Connect.connect();
-        if(connection==null) return null;
+        if(uc==null && connection==null) return null;
         try {
             for (Turno t : uc.getTurnos()) {
                 new TurnoDAO().remove(new TurnoKey(t));
@@ -157,6 +157,8 @@ public class UCDAO implements Map<String, UC> {
             stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            Connect.close(connection);
         }
         return null;
     }
@@ -185,6 +187,8 @@ public class UCDAO implements Map<String, UC> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            Connect.close(connection);
         }
         return keySet;
     }

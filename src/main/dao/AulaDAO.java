@@ -109,7 +109,7 @@ public class AulaDAO implements Map<AulaKey,Aula> {
 
                 al = new Aula(id,uc,turno,presencas);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Connect.close(connection);
@@ -170,7 +170,7 @@ public class AulaDAO implements Map<AulaKey,Aula> {
     public Aula remove(Object key) {
         Aula al = this.get(key);
         connection = Connect.connect();
-        if(connection==null) return null;
+        if(al==null && connection==null) return null;
         try {
             PreparedStatement stm = connection.prepareStatement("" +
                     "DELETE FROM Presencas WHERE Aula_id=? AND Turno_id=? AND UC_id=?;" +
@@ -181,7 +181,7 @@ public class AulaDAO implements Map<AulaKey,Aula> {
                 stm.setString((3*i)+3,al.getUc());
             }
             stm.executeUpdate();
-        } catch (SQLException | NullPointerException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Connect.close(connection);
@@ -252,6 +252,8 @@ public class AulaDAO implements Map<AulaKey,Aula> {
             if(rs.next()) maxID = rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            Connect.close(connection);
         }
         return maxID;
     }

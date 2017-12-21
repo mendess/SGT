@@ -20,7 +20,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
                 i = rs.getInt(1);
             }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
+        catch (SQLException e) {throw new NullPointerException(e.getMessage());}
         finally {
             Connect.close(connection);
         }
@@ -47,7 +47,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
             stm.setInt(1, turno);
             ResultSet rs = stm.executeQuery();
             r = rs.next();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Connect.close(connection);
@@ -111,6 +111,8 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            Connect.close(connection);
         }
         return t;
     }
@@ -160,6 +162,8 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
             t = value;
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            Connect.close(connection);
         }
         return t;
     }
@@ -198,7 +202,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
     public Turno remove(Object key) {
         Turno t = this.get(key);
         connection = Connect.connect();
-        if(connection==null) return null;
+        if(t==null && connection==null) return null;
         try {
             for (Aula a : t.getAulas()) {
                 new AulaDAO().remove(new AulaKey(a));
@@ -219,7 +223,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
                 }
             }
             stm.executeUpdate();
-        } catch (SQLException | NullPointerException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }finally {
             Connect.close(connection);
@@ -251,6 +255,8 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            Connect.close(connection);
         }
         return keySet;
     }
@@ -286,6 +292,8 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            Connect.close(connection);
         }
         return i;
     }

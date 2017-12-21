@@ -13,7 +13,7 @@ import java.io.FileReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class SGT {
 
     /**
@@ -208,7 +208,7 @@ public class SGT {
             Pedido newPedido = new Pedido(this.loggedUser.getUserNum(),this.loggedUser.getName(),uc,turno);
             if(this.pedidos.containsKey(this.loggedUser.getUserNum())){
                 this.pedidos.get(this.loggedUser.getUserNum()).add(newPedido);
-                this.pedidosDAO.put(this.loggedUser.getUserNum(),newPedido);
+                this.pedidosDAO.put(newPedido);
             }else{
                 List<Pedido> newPedidos = new ArrayList<>();
                 newPedidos.add(newPedido);

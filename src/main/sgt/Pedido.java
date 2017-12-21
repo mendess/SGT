@@ -1,6 +1,6 @@
 package main.sgt;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings("WeakerAccess")
 public class Pedido {
 
     /**
@@ -27,7 +27,7 @@ public class Pedido {
      * @param uc Identificador da UC a que pertence o turno pedido
      * @param turno Numero do turno pedido
      */
-    Pedido(String alunoNum, String alunoNome, String uc, int turno) {
+    public Pedido(String alunoNum, String alunoNome, String uc, int turno) {
         this.alunoNum = alunoNum;
         this.alunoNome = alunoNome;
         this.uc = uc;
@@ -64,5 +64,14 @@ public class Pedido {
      */
     public int getTurno() {
         return this.turno;
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido: "
+                +"Aluno#: "+ this.alunoNum+"\t"
+                +"AlunoNome: "+ this.alunoNome+"\t"
+                +"Turno: "+ this.turno+"\t"
+                +"UC: "+this.uc;
     }
 }

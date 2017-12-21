@@ -21,8 +21,9 @@ public class UserDAO implements Map<String, Utilizador> {
                 i = rs.getInt(1);
             }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
-        finally {
+        catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
             Connect.close(connection);
         }
         return i;
@@ -48,7 +49,7 @@ public class UserDAO implements Map<String, Utilizador> {
             stm.setString(1, user);
             ResultSet rs = stm.executeQuery();
             r = rs.next();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Connect.close(connection);
@@ -103,7 +104,7 @@ public class UserDAO implements Map<String, Utilizador> {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Connect.close(connection);
@@ -123,7 +124,7 @@ public class UserDAO implements Map<String, Utilizador> {
         }
     }
 
-    private Map<String, List<Integer>> getUCsETurnosDocente(String id) throws Exception {
+    private Map<String, List<Integer>> getUCsETurnosDocente(String id) throws SQLException {
         PreparedStatement stm = connection.prepareStatement(
                 "SELECT * FROM Turno\n" +
                         "WHERE Turno.Docente_id=?;");
@@ -142,7 +143,7 @@ public class UserDAO implements Map<String, Utilizador> {
         return ucsEturnos;
     }
 
-    private Map<String, Integer> getInscricoesAluno(String id) throws Exception {
+    private Map<String, Integer> getInscricoesAluno(String id) throws SQLException {
         PreparedStatement stm = connection.prepareStatement(
                 "SELECT * FROM Turno_has_Aluno\n" +
                         "WHERE Aluno_id=?;");
@@ -150,7 +151,7 @@ public class UserDAO implements Map<String, Utilizador> {
         stm.setString(1,id);
         ResultSet rs = stm.executeQuery();
         while(rs.next()){
-            inscricoes.put(rs.getString("UC_id"),rs.getInt("idTurno"));
+            inscricoes.put(rs.getString("UC_id"),rs.getInt("Turno_id"));
         }
         return inscricoes;
     }
@@ -224,7 +225,7 @@ public class UserDAO implements Map<String, Utilizador> {
 
             connection.commit();
             u = value;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Connect.close(connection);
@@ -247,7 +248,6 @@ public class UserDAO implements Map<String, Utilizador> {
     }
 
     private PreparedStatement updateTurnosDocente(Docente value) throws SQLException {
-        System.out.println("BEEP!");
         PreparedStatement stm = connection.prepareStatement("" +
                 "UPDATE Turno SET Docente_id=? WHERE id=? AND UC_id=?;\n");
         for(String uc : value.getUcsEturnos().keySet()){
@@ -266,7 +266,7 @@ public class UserDAO implements Map<String, Utilizador> {
     public Utilizador remove(Object key) {
         Utilizador u = this.get(key);
         connection = Connect.connect();
-        if(connection==null) return null;
+        if(u==null && connection==null) return null;
         try {
             if(u instanceof Coordenador){
                 PreparedStatement stm = connection.prepareStatement(""+
@@ -291,7 +291,7 @@ public class UserDAO implements Map<String, Utilizador> {
                 stm.setString(i,uNum);
             }
             stm.executeUpdate();
-        }catch (Exception e){
+        }catch (SQLException e){
             e.printStackTrace();
         }finally {
             Connect.close(connection);
@@ -321,7 +321,7 @@ public class UserDAO implements Map<String, Utilizador> {
             while(rs.next()){
                 keySet.add(rs.getString(1));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Connect.close(connection);
