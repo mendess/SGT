@@ -29,12 +29,18 @@
               <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabelAlunos" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="jComboBoxUC" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jComboBoxTurno" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Component id="jScrollPaneAlunos" min="-2" pref="312" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jComboBoxUC" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
+                          <Component id="jLabelUC" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelTurno" min="-2" max="-2" attributes="0"/>
+                          <Component id="jComboBoxTurno" min="-2" pref="71" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
               <EmptySpace pref="29" max="32767" attributes="0"/>
           </Group>
@@ -43,7 +49,12 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelUC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelTurno" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButtonMarcarPresencas" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jComboBoxUC" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -70,12 +81,7 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxUC">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
+          <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
@@ -88,12 +94,7 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxTurno">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
+          <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
@@ -142,6 +143,16 @@
     <Component class="javax.swing.JLabel" name="jLabelAlunos">
       <Properties>
         <Property name="text" type="java.lang.String" value="Alunos"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelUC">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="UCs:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelTurno">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Turnos:"/>
       </Properties>
     </Component>
   </SubComponents>

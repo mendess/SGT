@@ -36,8 +36,6 @@ public class AlunoPedirTroca extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jComboBoxUCs.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabelUCs.setText("UCs");
 
         jTableTurnos.setModel(new javax.swing.table.DefaultTableModel(
