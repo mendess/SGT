@@ -9,12 +9,12 @@ package main.userInterface;
  *
  * @author pedro
  */
-public class AlunoEspecialMudarTurno extends javax.swing.JFrame {
+public class JAlunoPedirTroca extends javax.swing.JFrame {
 
     /**
-     * Creates new form AlunoEspecialMudarTurno
+     * Creates new form AlunoPedirTroca
      */
-    public AlunoEspecialMudarTurno() {
+    public JAlunoPedirTroca() {
         initComponents();
     }
 
@@ -31,16 +31,10 @@ public class AlunoEspecialMudarTurno extends javax.swing.JFrame {
         jLabelUCs = new javax.swing.JLabel();
         jScrollPaneTurnos = new javax.swing.JScrollPane();
         jTableTurnos = new javax.swing.JTable();
-        jButtonMudar = new javax.swing.JButton();
+        jButtonPedir = new javax.swing.JButton();
         jButtonFechar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jComboBoxUCs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxUCsActionPerformed(evt);
-            }
-        });
 
         jLabelUCs.setText("UCs");
 
@@ -69,7 +63,7 @@ public class AlunoEspecialMudarTurno extends javax.swing.JFrame {
         });
         jScrollPaneTurnos.setViewportView(jTableTurnos);
 
-        jButtonMudar.setText("Mudar");
+        jButtonPedir.setText("Pedir");
 
         jButtonFechar.setText("Fechar");
 
@@ -84,8 +78,8 @@ public class AlunoEspecialMudarTurno extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jComboBoxUCs, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
-                                .addComponent(jButtonMudar))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                                .addComponent(jButtonPedir))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelUCs)
                                 .addGap(0, 0, Short.MAX_VALUE))))
@@ -105,20 +99,16 @@ public class AlunoEspecialMudarTurno extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxUCs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonMudar))
+                    .addComponent(jButtonPedir))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonFechar)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -137,27 +127,28 @@ public class AlunoEspecialMudarTurno extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AlunoEspecialMudarTurno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAlunoPedirTroca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AlunoEspecialMudarTurno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAlunoPedirTroca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AlunoEspecialMudarTurno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAlunoPedirTroca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AlunoEspecialMudarTurno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAlunoPedirTroca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AlunoEspecialMudarTurno().setVisible(true);
+                new JAlunoPedirTroca().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonFechar;
-    private javax.swing.JButton jButtonMudar;
+    private javax.swing.JButton jButtonPedir;
     private javax.swing.JComboBox<String> jComboBoxUCs;
     private javax.swing.JLabel jLabelUCs;
     private javax.swing.JScrollPane jScrollPaneTurnos;

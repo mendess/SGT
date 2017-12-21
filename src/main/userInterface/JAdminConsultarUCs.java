@@ -20,14 +20,14 @@ import java.util.stream.Collectors;
  * @author pedro
  */
 @SuppressWarnings("ALL")
-public class AdminConsultarUCs extends javax.swing.JFrame {
+public class JAdminConsultarUCs extends javax.swing.JFrame {
 
     private final SGT sgt;
     /**
      * Creates new form AdminConsultarUCs
      * @param sgt
      */
-    public AdminConsultarUCs(SGT sgt) {
+    public JAdminConsultarUCs(SGT sgt) {
         initComponents();
         this.sgt = sgt;
         List<UC> ucs = this.sgt.getUCs();
@@ -251,20 +251,21 @@ public class AdminConsultarUCs extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminConsultarUCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAdminConsultarUCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminConsultarUCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAdminConsultarUCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminConsultarUCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAdminConsultarUCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminConsultarUCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAdminConsultarUCs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminConsultarUCs(new SGT()).setVisible(true);
+                new JAdminConsultarUCs(new SGT()).setVisible(true);
             }
         });
     }
