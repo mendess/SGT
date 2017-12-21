@@ -1,5 +1,6 @@
 package main.dao;
 
+import com.sun.org.apache.regexp.internal.RE;
 import main.sgt.Troca;
 
 import java.sql.*;
@@ -71,7 +72,29 @@ public class TrocaDAO implements List<Troca> {
 
     @Override
     public Object[] toArray() {
-        throw new UnsupportedOperationException();
+        int size = this.size();
+        this.connection = Connect.connect();
+        if(connection==null) return null;
+        Object[] array = null;
+        try {
+            PreparedStatement stm = connection.prepareStatement("" +
+                    "SELECT * FROM Trocas;");
+            ResultSet rs = stm.executeQuery();
+            array = new Object[size];
+            for(int i=0;i<size && rs.next();i++){
+                array[i] = new Troca(rs.getInt("id"),
+                                     rs.getString("aluno_id"),
+                                     rs.getString("UC_id"),
+                                     rs.getInt("turnoOrigem_id"),
+                                     rs.getInt("turnoDestino_id"),
+                                     rs.getTimestamp("dataRealizacao").toLocalDateTime());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Connect.close(connection);
+        }
+        return array;
     }
 
     @Override
@@ -86,26 +109,27 @@ public class TrocaDAO implements List<Troca> {
         boolean r = false;
         try {
             PreparedStatement stm = connection.prepareStatement(
-        "INSERT INTO `Trocas` (id, dataRealizacao, aluno_id, turnoOrigem_id, UC_id, turnoDesino_id, UC_id1) \n" +
-                "VALUES (?,?,?,?,?,?,?)" +
-                "ON DUPLICATE KEY UPDATE id=VALUES(id)," +
-                "                        dataRealizacao=VALUES(dataRealizacao)," +
+        "INSERT INTO `Trocas` (dataRealizacao, aluno_id, turnoOrigem_id, UC_id, turnoDestino_id, UC_id1) \n" +
+                "VALUES (NOW(),?,?,?,?,?)" +
+                "ON DUPLICATE KEY UPDATE dataRealizacao=VALUES(dataRealizacao)," +
                 "                        aluno_id=VALUES(aluno_id)," +
                 "                        turnoOrigem_id=VALUES(turnoOrigem_id)," +
                 "                        UC_id=VALUES(UC_id)," +
-                "                        turnoDesino_id=VALUES(turnoDesino_id)," +
-                "                        UC_id1=VALUES(UC_id1);");
-            stm.setInt(1,troca.getId());
-            //TODO fix this!
-//            Timestamp t = new Timestamp(troca.getData().getLong())
-//            stm.setTimestamp(2,Timestamp())
-            stm.setString(3,troca.getAluno());
-            stm.setInt(4,troca.getTurnoOrigem());
+                "                        turnoDestino_id=VALUES(turnoDestino_id)," +
+                "                        UC_id1=VALUES(UC_id1);",
+                    Statement.RETURN_GENERATED_KEYS);
+//            stm.setInt(1,troca.getId());
+            stm.setString(1,troca.getAluno());
+            stm.setInt(2,troca.getTurnoOrigem());
+            stm.setString(3,troca.getUc());
+            stm.setInt(4,troca.getTurnoDestino());
             stm.setString(5,troca.getUc());
-            stm.setInt(6,troca.getTurnoDestino());
-            stm.setString(7,troca.getUc());
             stm.executeUpdate();
-            r = true;
+            /*ResultSet rs = stm.getGeneratedKeys();
+            if(rs.next()){
+                troca = this.get(rs.getInt(1));
+                r = true;
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
@@ -150,7 +174,7 @@ public class TrocaDAO implements List<Troca> {
         if(connection==null) return;
         try {
             Statement stm = connection.createStatement();
-            stm.execute("TRUNCATE Trocas;");
+            stm.execute("DELETE FROM Trocas WHERE TRUE;");
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {

@@ -64,6 +64,14 @@ public class Troca {
         this.data = LocalDateTime.now();
     }
 
+    public Troca(String aluno, String uc, int turnoOrigem, int turnoDestino){
+        this.id=1;
+        this.aluno = aluno;
+        this.uc = uc;
+        this.turnoOrigem = turnoOrigem;
+        this.turnoDestino = turnoDestino;
+    }
+
     /**
      * Retorna o identificador do aluno
      * @return o identificador do aluno
@@ -127,5 +135,16 @@ public class Troca {
                 && this.aluno.equals(t.getAluno())
                 && this.turnoOrigem == t.getTurnoOrigem()
                 && this.turnoDestino == t.getTurnoDestino();
+    }
+
+    @Override
+    public String toString() {
+        return "Troca: \t"
+                +"Id: "+this.id+"\t"
+                +"Aluno: "+this.aluno+"\t"
+                +"UC: "+this.uc+"\t"
+                +"TurnoOrigem: "+this.turnoOrigem+"\t"
+                +"TurnoDestino: "+this.turnoDestino+"\t"
+                +"Data: "+this.data;
     }
 }

@@ -24,7 +24,7 @@ public class TurnoInfo {
      * Construtor de copia
      * @param tinfo <tt>TurnoInfo</tt> a copiar
      */
-    public TurnoInfo(TurnoInfo tinfo) {
+    TurnoInfo(TurnoInfo tinfo) {
         this.horaInicio = tinfo.getHoraInicio();
         this.horaFim = tinfo.getHoraFim();
         this.dia = tinfo.getDia();
@@ -94,8 +94,8 @@ public class TurnoInfo {
 	}
 
 	public String toString() {
-        return "Hora Inicio: " + this.horaFim.toString() + "/t"
-        			+ "Hora fim: " + this.horaInicio.toString() + "/t"
+        return "Hora Inicio: " + this.horaFim.toString() + "\t"
+        			+ "Hora fim: " + this.horaInicio.toString() + "\t"
         			+ "Dia: " + this.dia.toString();
     }
 
