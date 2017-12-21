@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class SGT {
+public class SGT extends Observable{
 
     /**
      * Utilizador que está neste momento a utilizar a aplicação

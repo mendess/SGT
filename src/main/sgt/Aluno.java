@@ -72,7 +72,7 @@ public class Aluno extends Utilizador {
     }
 
     /**
-     * Ativa o login deste aluno, enviando lhe um email com o seu numero e a sua password.
+     * Ativa o Login deste aluno, enviando lhe um email com o seu numero e a sua password.
      */
     void ativarLogin() {
         int tries = 0;
@@ -84,7 +84,7 @@ public class Aluno extends Utilizador {
     }
 
     /**
-     * Envia um email para o aluno para este poder fazer login
+     * Envia um email para o aluno para este poder fazer Login
      * @return <tt>true</tt> se o email foi enviado com sucesso, <tt>false</tt> caso contrario
      */
     private boolean sendEmail(String to){
