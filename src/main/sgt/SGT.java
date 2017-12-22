@@ -7,6 +7,7 @@ import javax.json.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -516,7 +517,17 @@ public class SGT extends Observable{
                 JsonObject jTurno = (JsonObject) j;
                 boolean ePratico = jTurno.getBoolean("ePratico");
                 int id = ePratico ? tpCount++ : tCount++;
-                Turno t = new Turno(id,key,jTurno.getInt("vagas"), ePratico);
+                List<TurnoInfo> tInfos = new ArrayList<>();
+                JsonArray jTinfos = jTurno.getJsonArray("tinfo");
+                for (JsonValue jvInfo: jTinfos){
+                    JsonObject jTinfo = (JsonObject) jvInfo;
+                    LocalTime horaInicio = LocalTime.parse(jTinfo.getString("horaInicio"));
+                    LocalTime horaFim = LocalTime.parse(jTinfo.getString("horaFim"));
+                    DiaSemana dia = DiaSemana.fromString(jTinfo.getString("dia"));
+                    TurnoInfo tinfo = new TurnoInfo(horaInicio,horaFim,dia);
+                    tInfos.add(tinfo);
+                }
+                Turno t = new Turno(id,key,jTurno.getInt("vagas"),ePratico, tInfos);
                 new TurnoDAO().put(new TurnoKey(t),t);
             }
         }

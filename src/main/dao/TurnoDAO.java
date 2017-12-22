@@ -194,7 +194,14 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
     private PreparedStatement updateTInfos(Turno value) throws SQLException {
         PreparedStatement stm = connection.prepareStatement("" +
                 "INSERT INTO TurnoInfo (id, Turno_id, UC_id, dia_id, horaInicio, horaFim,ePratico) " +
-                "   VALUES (?,?,?,?,?,?,?);");
+                "   VALUES (?,?,?,?,?,?,?)" +
+                "ON DUPLICATE KEY UPDATE id=VALUES(id)," +
+                "                        Turno_id=VALUES(Turno_id)," +
+                "                        UC_id=VALUES(UC_id)," +
+                "                        dia_id=VALUES(dia_id)," +
+                "                        horaInicio=VALUES(horaInicio)," +
+                "                        horaFim=VALUES(horaFim)," +
+                "                        ePratico=VALUES(ePratico);");
         int i=1;
         for(TurnoInfo ti: value.getTurnoInfos()){
             stm.setInt(1,i);

@@ -18,6 +18,7 @@ public class Turno {
      * Numero do turno
      */
     private int id;
+
     /**
      * Identificador a que o turno pertence
      */
@@ -41,12 +42,11 @@ public class Turno {
     /**
      * Lista dos alunos
      */
-    private List<String> alunos;
+    private List<String> alunos = new ArrayList<>();
     /**
      * Informacoes do turno
      */
-    private List<TurnoInfo> tinfo;
-
+    private List<TurnoInfo> tinfo = new ArrayList<>();
     /**
      * Construtor completamente parametrizado do <tt>Turno<\tt>.
      * @param id Numero do turno
@@ -55,6 +55,7 @@ public class Turno {
      * @param vagas Numero de vagas do turno
      * @param ePratico Se o turno é pratico ou teorico
      * @param alunos Alunos do turno
+     * @param tinfo Informacoes do turno
      */
     public Turno(int id, String ucId, String docente, int vagas, boolean ePratico, List<String> alunos, List<TurnoInfo> tinfo) {
         this.id = id;
@@ -63,6 +64,22 @@ public class Turno {
         this.ucId = ucId;
         this.alunos = alunos;
         this.docente = docente;
+        this.tinfo = tinfo;
+    }
+
+    /**
+     * Construtor parameterizado do <tt>Turno</tt> sem utilizadores
+     * @param id Numero do turno
+     * @param ucId Identificador da UC a que pertence
+     * @param vagas Numero de vagas do turno
+     * @param ePratico Se o turno é pratico ou teorico
+     * @param tinfo Informacoes do turno
+     */
+    public Turno(int id, String ucId, int vagas, boolean ePratico, List<TurnoInfo> tinfo) {
+        this.id = id;
+        this.ucId = ucId;
+        this.vagas = vagas;
+        this.ePratico = ePratico;
         this.tinfo = tinfo;
     }
 
