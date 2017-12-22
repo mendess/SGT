@@ -1104,235 +1104,235 @@
     "eEspecial":false
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D8575",
     "Nome":"Vitor Castro",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D48063",
     "Nome":"Sara Silva",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D28366",
     "Nome":"Miguel Santos",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D61793",
     "Nome":"Henrique Araujo",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D79212",
     "Nome":"Daniel Alves",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D93038",
     "Nome":"Andre Monteiro",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D63941",
     "Nome":"Ines Machado",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D8452",
     "Nome":"Emanuel Peixoto",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D14015",
     "Nome":"Tiago Amorim",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D3909",
     "Nome":"Nome",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D36886",
     "Nome":"Sofia Correia",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D97582",
     "Nome":"David Teixeira",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"D"
+    "Type":"D",
     "Num":"D1563",
     "Nome":"Lucio Abrantes",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password"
   },
   {
-    "Type":"C"
-    "Num":"D55191"
+    "Type":"C",
+    "Num":"D55191",
     "Nome":"Rafael Fernandes",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H501N1"
   },
   {
-    "Type":"C"
-    "Num":"D22902"
+    "Type":"C",
+    "Num":"D22902",
     "Nome":"Dionisio Pestana",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H503N4"
   },
   {
-    "Type":"C"
-    "Num":"D25045"
+    "Type":"C",
+    "Num":"D25045",
     "Nome":"Manuel Henrique",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H501N2"
   },
   {
-    "Type":"C"
-    "Num":"D39674"
+    "Type":"C",
+    "Num":"D39674",
     "Nome":"Fernando Martins",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H505N2"
   },
   {
-    "Type":"C"
-    "Num":"D56522"
+    "Type":"C",
+    "Num":"D56522",
     "Nome":"Maria Mesquita",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H505N4"
   },
   {
-    "Type":"C"
-    "Num":"D7023"
+    "Type":"C",
+    "Num":"D7023",
     "Nome":"Jose Barros",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H503N1"
   },
   {
-    "Type":"C"
-    "Num":"D10988"
+    "Type":"C",
+    "Num":"D10988",
     "Nome":"Orlando Araujo",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H505N6"
   },
   {
-    "Type":"C"
-    "Num":"D99254"
+    "Type":"C",
+    "Num":"D99254",
     "Nome":"Rui Pereira",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H503N2"
   },
   {
-    "Type":"C"
-    "Num":"D49062"
+    "Type":"C",
+    "Num":"D49062",
     "Nome":"Ana Cunha",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H503N3"
   },
   {
-    "Type":"C"
-    "Num":"D46360"
+    "Type":"C",
+    "Num":"D46360",
     "Nome":"Carlos Moura",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H501N4"
   },
   {
-    "Type":"C"
-    "Num":"D88352"
+    "Type":"C",
+    "Num":"D88352",
     "Nome":"Telmo Correia",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H503N5"
   },
   {
-    "Type":"C"
-    "Num":"D86511"
+    "Type":"C",
+    "Num":"D86511",
     "Nome":"Antonio Ribeiro",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H501N3"
   },
   {
-    "Type":"C"
-    "Num":"D18686"
+    "Type":"C",
+    "Num":"D18686",
     "Nome":"Rui Silva",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H501N6"
   },
   {
-    "Type":"C"
-    "Num":"D88601"
+    "Type":"C",
+    "Num":"D88601",
     "Nome":"Adriana Pereira",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H501N5"
   },
   {
-    "Type":"C"
-    "Num":"D95887"
+    "Type":"C",
+    "Num":"D95887",
     "Nome":"Joao Novais",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H505N3"
   },
   {
-    "Type":"C"
-    "Num":"D23901"
+    "Type":"C",
+    "Num":"D23901",
     "Nome":"Pedro Lemos",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H503N6"
   },
   {
-    "Type":"C"
-    "Num":"D90532"
+    "Type":"C",
+    "Num":"D90532",
     "Nome":"Goncalo Pereira",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
     "ucRegida":"H505N1"
   },
   {
-    "Type":"C"
-    "Num":"D42"
+    "Type":"C",
+    "Num":"D42",
     "Nome":"Nuno Vieira",
     "Email":"swap.dss.uminho@gmail.com",
     "password":"password",
