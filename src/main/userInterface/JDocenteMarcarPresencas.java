@@ -45,6 +45,8 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabelUCs = new javax.swing.JLabel();
+        jComboBoxUCs = new javax.swing.JComboBox<>();
         jLabelTurnos = new javax.swing.JLabel();
         jComboBoxTurnos = new javax.swing.JComboBox<>();
         jLabelAulas = new javax.swing.JLabel();
@@ -55,6 +57,14 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
         jButtonFechar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabelUCs.setText("UCs:");
+
+        jComboBoxUCs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxUCsActionPerformed(evt);
+            }
+        });
 
         jLabelTurnos.setText("Turnos");
 
@@ -115,27 +125,35 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonFechar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(25, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButtonFechar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabelUCs)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jComboBoxUCs, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabelTurnos))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelAulas)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jComboBoxAula, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(61, 61, 61)
-                                        .addComponent(jButtonAdicionarAula))))
-                            .addComponent(jScrollPanePresencas, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(30, 30, 30))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonAdicionarAula))
+                                    .addComponent(jLabelAulas))))
+                        .addGap(30, 30, 30))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPanePresencas, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(32, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,12 +161,14 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelAulas)
-                    .addComponent(jLabelTurnos))
+                    .addComponent(jLabelTurnos)
+                    .addComponent(jLabelUCs))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxAula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAdicionarAula)
-                    .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxUCs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPanePresencas, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -174,6 +194,10 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
+
+    private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -216,8 +240,10 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JComboBox<String> jComboBoxAula;
     private javax.swing.JComboBox<String> jComboBoxTurnos;
+    private javax.swing.JComboBox<String> jComboBoxUCs;
     private javax.swing.JLabel jLabelAulas;
     private javax.swing.JLabel jLabelTurnos;
+    private javax.swing.JLabel jLabelUCs;
     private javax.swing.JScrollPane jScrollPanePresencas;
     private javax.swing.JTable jTablePresencas;
     // End of variables declaration//GEN-END:variables
