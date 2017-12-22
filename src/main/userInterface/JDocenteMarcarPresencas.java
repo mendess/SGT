@@ -5,17 +5,35 @@
  */
 package main.userInterface;
 
+import main.sgt.SGT;
+import main.sgt.exceptions.WrongCredentialsException;
+
 /**
  *
  * @author pedro
  */
 public class JDocenteMarcarPresencas extends javax.swing.JFrame {
 
+    private final SGT sgt;
+
     /**
      * Creates new form DocenteMarcarPresencas
      */
-    public JDocenteMarcarPresencas() {
+    public JDocenteMarcarPresencas(SGT sgt) {
+        this.sgt = sgt;
+        try {
+            this.sgt.login("D18686", "password");
+        } catch (WrongCredentialsException e) {
+            e.printStackTrace();
+            return;
+        }
         initComponents();
+        initComboBoxAulas();
+    }
+
+    private void initComboBoxAulas() {
+        this.jComboBoxAula.removeAllItems();
+
     }
 
     /**
@@ -167,7 +185,7 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JDocenteMarcarPresencas().setVisible(true);
+                new JDocenteMarcarPresencas(new SGT()).setVisible(true);
             }
         });
     }
