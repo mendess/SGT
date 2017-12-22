@@ -90,7 +90,7 @@ public class SGT extends Observable{
                                             .filter(u -> u instanceof Aluno)
                                             .noneMatch(a -> ((Aluno) a).getHorario().isEmpty());
         //TODO remove this:
-        try {
+        /*try {
             this.importUCs("jsons/ucs.json");
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
@@ -99,7 +99,7 @@ public class SGT extends Observable{
             this.importTurnos("jsons/turnos.json");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**

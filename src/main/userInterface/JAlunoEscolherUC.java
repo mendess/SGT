@@ -58,8 +58,13 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         }
         int i=0;
         for(UC uc: allUCs){
+            System.out.println("UCsNEscolhidas uc: "+uc);
             tModel.setValueAt(uc.getId(),i++,0);
         }
+        for(i=0;i<tModel.getRowCount();i++){
+            System.out.println(tModel.getValueAt(i,0));
+        }
+        this.jTableUCNEscolhidas.setModel(tModel);
     }
 
     private void updateUCEscolhidas() {
@@ -80,8 +85,10 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         }
         int i=0;
         for(UC uc: uCsOfUser){
+            System.out.println("UCsEscolhidas uc: "+uc);
             tModel.setValueAt(uc.getId(),i++,0);
         }
+        this.jTableUCEscolhidas.setModel(tModel);
     }
 
     /**
