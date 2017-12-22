@@ -5,17 +5,46 @@
  */
 package main.userInterface;
 
+import main.sgt.Coordenador;
+import main.sgt.SGT;
+import main.sgt.Turno;
+import main.sgt.Utilizador;
+import main.sgt.exceptions.WrongCredentialsException;
+
+import java.util.List;
+
 /**
  *
  * @author pedro
  */
 public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
-
+    private SGT sgt;
     /**
      * Creates new form CoordenadorGerirAlunos
      */
-    public JCoordenadorGerirAlunos() {
+    public JCoordenadorGerirAlunos(SGT sgt) {
+        this.sgt = sgt;
+        try {
+            this.sgt.login("D18686","password");
+        } catch (WrongCredentialsException e) {
+            e.printStackTrace();
+        }
         initComponents();
+        initTurnosComboBox();
+    }
+
+    private void initTurnosComboBox() {
+        Utilizador u = this.sgt.getLoggedUser();
+        if(u instanceof Coordenador){
+            this.jComboBoxTurnos.removeAllItems();
+            List<Turno> turnosOfUC = this.sgt.getTurnosOfUC(((Coordenador) this.sgt.getLoggedUser()).getUcRegida());
+            turnosOfUC.stream()
+                    .map(interfaceUtils::makeShiftString)
+                    .forEach(this.jComboBoxTurnos::addItem);
+        }else{
+            //TODO leave frame
+            System.out.println("Invalid user type");
+        }
     }
 
     /**
@@ -209,7 +238,7 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JCoordenadorGerirAlunos().setVisible(true);
+                new JCoordenadorGerirAlunos(new SGT()).setVisible(true);
             }
         });
     }

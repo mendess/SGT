@@ -12,6 +12,10 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static main.userInterface.interfaceUtils.makeShiftString;
+import static main.userInterface.interfaceUtils.shiftFromString;
+import static main.userInterface.interfaceUtils.shiftTypeFromStr;
+
 /**
  *
  * @author pedro
@@ -188,14 +192,6 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
         turnos.forEach(t -> this.jComboBoxTurnos.addItem(makeShiftString(t)));
     }
 
-    private String makeShiftString(Turno t){
-        if(t.ePratico()){
-            return "TP"+t.getId();
-        }else{
-            return "T"+t.getId();
-        }
-    }
-
     private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
         JComboBox turnos = (JComboBox) evt.getSource();
         String turno = (String) turnos.getSelectedItem();
@@ -206,7 +202,7 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
                         .findFirst()
                         .orElse(null);
         if(uc==null) return;
-        Turno t = uc.getTurno(shiftFromString(turno),shiftTypeFromStr(turno));
+        Turno t = uc.getTurno(shiftFromString(turno), shiftTypeFromStr(turno));
         List<Aluno> alunos = t.getAlunos().stream()
                                           .map(this.sgt::getAluno)
                                           .collect(Collectors.toList());
@@ -226,14 +222,6 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
 
         this.jTableAlunos.setModel(tModel);
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
-
-    private boolean shiftTypeFromStr(String turno) {
-        return turno.contains("TP");
-    }
-
-    private int shiftFromString(String turno) {
-        return Integer.parseInt(turno.replaceAll("[^\\d.]", ""));
-    }
 
     /**
      * @param args the command line arguments

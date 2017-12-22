@@ -90,13 +90,13 @@ public class SGT extends Observable{
                                             .filter(u -> u instanceof Aluno)
                                             .noneMatch(a -> ((Aluno) a).getHorario().isEmpty());
         //TODO remove this:
-        /*try {
+        try {
             this.importUCs("jsons/ucs.json");
             this.importUtilizadores("jsons/utilizadores.json");
             this.importTurnos("jsons/turnos.json");
         } catch (FileNotFoundException | BadlyFormatedFileException e1) {
             e1.printStackTrace();
-        }*/
+        }
     }
 
     /**
@@ -503,9 +503,8 @@ public class SGT extends Observable{
      * @param filepath Caminho para o ficheiro
      */
     public void importTurnos(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
-        File file = new File(filepath);
-        JsonReader jsonReader;
-        jsonReader = Json.createReader(new FileReader(file));
+        new TurnoDAO().clear();
+        JsonReader jsonReader = Json.createReader(new FileReader(new File(filepath)));
         JsonObject jsonObject = jsonReader.readObject();
         Set<String> keySet = jsonObject.keySet();
         try{
@@ -541,6 +540,7 @@ public class SGT extends Observable{
      * @param filepath Caminho para o ficheiro
      */
     public void importUtilizadores(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
+        this.utilizadores.clear();
         JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
         JsonArray jarray = jreader.readArray();
         for(JsonValue j: jarray){
@@ -582,6 +582,7 @@ public class SGT extends Observable{
      * @param filepath Caminho para o ficheiro
      */
     public void importUCs(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
+        this.ucs.clear();
         JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
         JsonArray jarray = jreader.readArray();
         try{
