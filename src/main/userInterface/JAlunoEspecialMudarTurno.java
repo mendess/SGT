@@ -142,6 +142,11 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
         jScrollPaneTurnos.setViewportView(jTableTurnos);
 
         jButtonMudar.setText("Mudar");
+        jButtonMudar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMudarActionPerformed(evt);
+            }
+        });
 
         jButtonFechar.setText("Fechar");
 
@@ -191,6 +196,10 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
     private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
         updateTurnosTable();
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
+
+    private void jButtonMudarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMudarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonMudarActionPerformed
 
     /**
      * @param args the command line arguments
