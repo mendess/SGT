@@ -161,6 +161,7 @@ public class SGT extends Observable{
     public Utilizador getLoggedUser(){
         return this.loggedUser;
     }
+
     /**
      * Devolve os Turnos de uma UC
      * @param uc UC
@@ -200,6 +201,7 @@ public class SGT extends Observable{
         }
         throw new InvalidUserTypeException();
     }
+
     public List<UC> getUCsOfUser() throws InvalidUserTypeException {
         if(this.loggedUser instanceof Aluno){
             Aluno aluno = (Aluno) this.loggedUser;
@@ -217,6 +219,7 @@ public class SGT extends Observable{
         }
         throw new InvalidUserTypeException();
     }
+
     /**
      * Remove um aluno de um turno
      * @param uc Identificador da UC a que o turno pertence
@@ -250,7 +253,7 @@ public class SGT extends Observable{
      * @param turno Numero do turno onde adicionar
      * @throws UtilizadorJaExisteException Se o aluno ja esta inscrito no turno
      */
-    public void adicionarAlunoTurno(String uc, String aluno, int turno,boolean ePratico) throws UtilizadorJaExisteException {
+    public void addAlunoTurno(String uc, String aluno, int turno, boolean ePratico) throws UtilizadorJaExisteException {
         this.ucs.get(uc).adicionarAlunoTurno(aluno,turno, ePratico);
     }
 
