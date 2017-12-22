@@ -282,7 +282,9 @@ public class Turno {
         Turno a = (Turno) o;
         return this.id == a.getId() &&
                 this.ucId.equals(a.getUcId()) &&
-                this.docente.equals(a.getDocente()) &&
+                (this.docente==null ?
+                    a.getDocente()==null :
+                    this.docente.equals(a.getDocente())) &&
                 this.vagas == a.getVagas() &&
                 this.ePratico==(a.ePratico()) &&
                 this.alunos.equals(a.getAlunos()) &&

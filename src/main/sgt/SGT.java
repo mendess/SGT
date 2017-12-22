@@ -92,13 +92,10 @@ public class SGT extends Observable{
         //TODO remove this:
         /*try {
             this.importUCs("jsons/ucs.json");
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
-        try {
+            this.importUtilizadores("jsons/utilizadores.json");
             this.importTurnos("jsons/turnos.json");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException | BadlyFormatedFileException e1) {
+            e1.printStackTrace();
         }*/
     }
 
@@ -170,7 +167,9 @@ public class SGT extends Observable{
      * @return Lista de turnos da UC
      */
     public List<Turno> getTurnosOfUC(String uc) {
-        return this.ucs.get(uc).getTurnos();
+        List<Turno> turnos = this.ucs.get(uc).getTurnos();
+        turnos.remove(Turno.emptyShift(uc));
+        return turnos;
     }
 
     /**
@@ -503,33 +502,37 @@ public class SGT extends Observable{
      * Importa os turnos de um ficheiro
      * @param filepath Caminho para o ficheiro
      */
-    public void importTurnos(String filepath) throws FileNotFoundException {
+    public void importTurnos(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
         File file = new File(filepath);
         JsonReader jsonReader;
         jsonReader = Json.createReader(new FileReader(file));
         JsonObject jsonObject = jsonReader.readObject();
         Set<String> keySet = jsonObject.keySet();
-        for(String key: keySet){
-            JsonArray jsonArray = jsonObject.getJsonArray(key);
-            int tCount = 1;
-            int tpCount = 1;
-            for(JsonValue j: jsonArray){
-                JsonObject jTurno = (JsonObject) j;
-                boolean ePratico = jTurno.getBoolean("ePratico");
-                int id = ePratico ? tpCount++ : tCount++;
-                List<TurnoInfo> tInfos = new ArrayList<>();
-                JsonArray jTinfos = jTurno.getJsonArray("tinfo");
-                for (JsonValue jvInfo: jTinfos){
-                    JsonObject jTinfo = (JsonObject) jvInfo;
-                    LocalTime horaInicio = LocalTime.parse(jTinfo.getString("horaInicio"));
-                    LocalTime horaFim = LocalTime.parse(jTinfo.getString("horaFim"));
-                    DiaSemana dia = DiaSemana.fromString(jTinfo.getString("dia"));
-                    TurnoInfo tinfo = new TurnoInfo(horaInicio,horaFim,dia);
-                    tInfos.add(tinfo);
+        try{
+            for(String key: keySet){
+                JsonArray jsonArray = jsonObject.getJsonArray(key);
+                int tCount = 1;
+                int tpCount = 1;
+                for(JsonValue j: jsonArray){
+                    JsonObject jTurno = (JsonObject) j;
+                    boolean ePratico = jTurno.getBoolean("ePratico");
+                    int id = ePratico ? tpCount++ : tCount++;
+                    List<TurnoInfo> tInfos = new ArrayList<>();
+                    JsonArray jTinfos = jTurno.getJsonArray("tinfo");
+                    for (JsonValue jvInfo: jTinfos){
+                        JsonObject jTinfo = (JsonObject) jvInfo;
+                        LocalTime horaInicio = LocalTime.parse(jTinfo.getString("horaInicio"));
+                        LocalTime horaFim = LocalTime.parse(jTinfo.getString("horaFim"));
+                        DiaSemana dia = DiaSemana.fromString(jTinfo.getString("dia"));
+                        TurnoInfo tinfo = new TurnoInfo(horaInicio,horaFim,dia);
+                        tInfos.add(tinfo);
+                    }
+                    Turno t = new Turno(id,key,jTurno.getInt("vagas"),ePratico, tInfos);
+                    new TurnoDAO().put(new TurnoKey(t),t);
                 }
-                Turno t = new Turno(id,key,jTurno.getInt("vagas"),ePratico, tInfos);
-                new TurnoDAO().put(new TurnoKey(t),t);
             }
+        }catch (NullPointerException e){
+            throw new BadlyFormatedFileException();
         }
     }
 
@@ -537,24 +540,60 @@ public class SGT extends Observable{
      * Importa os alunos de um ficheiro
      * @param filepath Caminho para o ficheiro
      */
-    public void importAlunos(String filepath) {
-        // TODO - implement SGT.importAlunos
-        throw new UnsupportedOperationException();
+    public void importUtilizadores(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
+        JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
+        JsonArray jarray = jreader.readArray();
+        for(JsonValue j: jarray){
+            JsonObject jobj = (JsonObject) j;
+            String num = jobj.getString("Num");
+            String nome = jobj.getString("Nome");
+            String email = jobj.getString("Email");
+            String password = jobj.getString("password");
+            Utilizador user = null;
+            switch (jobj.getString("Type")){
+                case "A": {
+                    boolean eEspecial = jobj.getBoolean("eEspecial");
+                    user = new Aluno(num,password,email,nome,eEspecial,new HashMap<>());
+                    break;
+                }
+                case "D": {
+                    user = new Docente(num,password,email,nome,new HashMap<>());
+                    break;
+                }
+                case "C": {
+                    String ucRegida = jobj.getString("ucRegida");
+                    user = new Coordenador(num,password,email,nome,new HashMap<>(),ucRegida);
+                    break;
+                }
+                case "K": {
+                    user = new DiretorDeCurso(num,password,email,nome);
+                    break;
+                }
+            }
+            if(user==null)
+                throw new BadlyFormatedFileException();
+
+            this.utilizadores.put(num,user);
+        }
     }
 
     /**
      * Importa as UCs de um ficheiro
      * @param filepath Caminho para o ficheiro
      */
-    public void importUCs(String filepath) throws FileNotFoundException {
+    public void importUCs(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
         JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
         JsonArray jarray = jreader.readArray();
-        for (JsonValue j : jarray) {
-            JsonObject jobj = (JsonObject) j;
-            String id = jobj.getString("id");
-            String name = jobj.getString("name");
-            String acron = jobj.getString("acron");
-            this.ucs.put(id,new UC(id,name,acron));
+        try{
+            for (JsonValue j : jarray) {
+                JsonObject jobj = (JsonObject) j;
+                String id = jobj.getString("id");
+                String name = jobj.getString("name");
+                String acron = jobj.getString("acron");
+                this.ucs.put(id,new UC(id,name,acron));
+            }
+        }catch (NullPointerException e){
+            throw new BadlyFormatedFileException();
         }
     }
 

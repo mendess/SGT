@@ -5,17 +5,89 @@
  */
 package main.userInterface;
 
+import main.sgt.*;
+import main.sgt.exceptions.InvalidUserTypeException;
+import main.sgt.exceptions.WrongCredentialsException;
+
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 /**
  *
  * @author pedro
  */
 public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
 
+    private SGT sgt;
     /**
      * Creates new form AlunoEspecialMudarTurno
      */
-    public JAlunoEspecialMudarTurno() {
+    public JAlunoEspecialMudarTurno(SGT sgt) {
+        this.sgt = sgt;
+        try {
+            this.sgt.login("A79003","password");
+        } catch (WrongCredentialsException e) {
+            e.printStackTrace();
+        }
         initComponents();
+        initUCsComboBox();
+        updateTurnosTable();
+    }
+
+    private void updateTurnosTable() {
+        String uc = (String) this.jComboBoxUCs.getSelectedItem();
+        if(uc==null) return;
+        List<Turno> turnos = this.sgt.getTurnosOfUC(uc);
+        try {
+            turnos.removeAll(this.sgt.getTurnosUser());
+        } catch (InvalidUserTypeException e) {
+            System.out.println("INVALID USER");
+            //TODO leave frame
+            return;
+        }
+        DefaultTableModel tModel = (DefaultTableModel) this.jTableTurnos.getModel();
+        while(turnos.size()>tModel.getRowCount()){
+            tModel.addRow(new String[4]);
+        }
+        while (turnos.size()<tModel.getRowCount()){
+            tModel.removeRow(tModel.getRowCount()-1);
+        }
+        int i=0;
+        for (Turno t: turnos){
+            StringBuilder dias = new StringBuilder();
+            StringBuilder horasInicio = new StringBuilder();
+            StringBuilder horasFim = new StringBuilder();
+            for (TurnoInfo ti: t.getTurnoInfos()){
+                dias.append(ti.getDia()).append("\n");
+                horasInicio.append(ti.getHoraInicio()).append("\n");
+                horasFim.append(ti.getHoraFim()).append("\n");
+            }
+            dias.setLength(Math.max(dias.length() - 1, 0));
+            horasInicio.setLength(Math.max(horasInicio.length() - 1, 0));
+            horasFim.setLength(Math.max(horasFim.length() - 1, 0));
+
+            tModel.setValueAt(t.getId(),i,0);
+            tModel.setValueAt(dias.toString(),i,1);
+            tModel.setValueAt(horasInicio.toString(),i,2);
+            tModel.setValueAt(horasFim.toString(),i,3);
+        }
+        this.jTableTurnos.setModel(tModel);
+    }
+
+    private void initUCsComboBox() {
+        this.jComboBoxUCs.removeAllItems();
+        List<UC> uCsOfUser;
+        try {
+            uCsOfUser = this.sgt.getUCsOfUser();
+        } catch (InvalidUserTypeException e) {
+            System.out.println("INVALID USER");
+            //TODO Leave frame
+            return;
+        }
+        this.jComboBoxUCs.removeAllItems();
+        uCsOfUser.stream()
+                 .map(UC::getId)
+                 .forEach(this.jComboBoxUCs::addItem);
     }
 
     /**
@@ -117,7 +189,7 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
-        // TODO add your handling code here:
+        updateTurnosTable();
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     /**
@@ -151,7 +223,7 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JAlunoEspecialMudarTurno().setVisible(true);
+                new JAlunoEspecialMudarTurno(new SGT()).setVisible(true);
             }
         });
     }
