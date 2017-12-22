@@ -229,7 +229,7 @@ public class Turno {
      */
     void addAluno(String aluno) throws UtilizadorJaExisteException {
         if (this.alunos.contains(aluno)){
-            throw new UtilizadorJaExisteException();
+            if(this.id!=0) throw new UtilizadorJaExisteException();
         }else{
             this.alunos.add(aluno);
         }

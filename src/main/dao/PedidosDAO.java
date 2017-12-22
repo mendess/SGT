@@ -14,18 +14,20 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
     @Override
     public int size() {
         this.connection = Connect.connect();
-        if(this.connection==null) return -1;
+        if (this.connection == null) return -1;
         int i = -1;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "SELECT count(*) FROM Pedido;");
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 i = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return i;
@@ -39,18 +41,20 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
     @Override
     public boolean containsKey(Object key) {
         this.connection = Connect.connect();
-        if(connection==null) return false;
-        if(!(key instanceof String)) return false;
+        if (connection == null) return false;
+        if (!(key instanceof String)) return false;
         boolean r = false;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "SELECT `UC_id` FROM Pedido" +
                     "   WHERE UC_id=?;");
             stm.setString(1, (String) key);
             r = stm.executeQuery().next();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return r;
@@ -64,19 +68,20 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
     @Override
     public List<Pedido> get(Object key) {
         String pKey;
-        if(key instanceof String){
+        if (key instanceof String) {
             pKey = (String) key;
-        }else{
+        } else {
             return null;
         }
         this.connection = Connect.connect();
-        if (connection==null) return null;
+        if (connection == null) return null;
         List<Pedido> pedidos = null;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "SELECT * FROM Pedido" +
                     "       WHERE UC_id=?");
-            stm.setString(1,pKey);
+            stm.setString(1, pKey);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 pedidos = new ArrayList<>();
@@ -86,16 +91,17 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
                     String uc = rs.getString("UC_id");
                     boolean ePratico = rs.getBoolean("ePratico");
                     pedidos.add(new Pedido(aluno,
-                                           new UserDAO().get(aluno).getName(),
-                                           uc,
-                                           turno,
-                                           ePratico));
+                            new UserDAO().get(aluno).getName(),
+                            uc,
+                            turno,
+                            ePratico));
                 } while (rs.next());
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return pedidos;
@@ -105,21 +111,23 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
     public List<Pedido> put(String key, List<Pedido> value) {
         this.connection = Connect.connect();
         System.out.println("BEEP");
-        if (connection==null) return null;
+        if (connection == null) return null;
         List<Pedido> pedidos = null;
+        PreparedStatement stmRem = null;
+        PreparedStatement stmAdd = null;
         try {
             connection.setAutoCommit(false);
-            PreparedStatement stmRem = connection.prepareStatement("" +
+            stmRem = connection.prepareStatement("" +
                     "DELETE FROM Pedido WHERE UC_id=?");
-            stmRem.setString(1,key);
-            PreparedStatement stmAdd = connection.prepareStatement("" +
+            stmRem.setString(1, key);
+            stmAdd = connection.prepareStatement("" +
                     "INSERT INTO Pedido (Aluno_id, Turno_id, UC_id,ePratico) " +
                     "   VALUES (?,?,?,?)");
-            for(Pedido p: value){
-                stmAdd.setString(1,p.getAlunoNum());
-                stmAdd.setInt(2,p.getTurno());
-                stmAdd.setString(3,p.getUc());
-                stmAdd.setBoolean(4,p.ePratico());
+            for (Pedido p : value) {
+                stmAdd.setString(1, p.getAlunoNum());
+                stmAdd.setInt(2, p.getTurno());
+                stmAdd.setString(3, p.getUc());
+                stmAdd.setBoolean(4, p.ePratico());
                 stmAdd.addBatch();
             }
             stmRem.executeUpdate();
@@ -127,30 +135,34 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stmRem);
+            System.out.println(stmAdd);
+        } finally {
             Connect.close(connection);
         }
         return pedidos;
     }
 
-    public Pedido put (Pedido value){
+    public Pedido put (Pedido value) {
         this.connection = Connect.connect();
-        if (connection==null) return null;
-        Pedido pedido=null;
+        if (connection == null) return null;
+        Pedido pedido = null;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "INSERT INTO `Pedido` (Aluno_id, Turno_id, UC_id,ePratico)" +
                     "   VALUES (?,?,?,?);");
-            stm.setString(1,value.getAlunoNum());
-            stm.setInt(2,value.getTurno());
-            stm.setString(3,value.getUc());
-            stm.setBoolean(4,value.ePratico());
+            stm.setString(1, value.getAlunoNum());
+            stm.setInt(2, value.getTurno());
+            stm.setString(3, value.getUc());
+            stm.setBoolean(4, value.ePratico());
             System.out.println(stm);
             stm.executeUpdate();
-            pedido=value;
+            pedido = value;
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return pedido;
@@ -159,33 +171,37 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
     public List<Pedido> remove(Object key) {
         List<Pedido> pedidos = this.get(key);
         this.connection = Connect.connect();
-        if (pedidos==null || connection==null) return null;
+        if (pedidos == null || connection == null) return null;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "DELETE FROM Pedido WHERE UC_id=?");
-            stm.setString(1,pedidos.get(0).getUc());
+            stm.setString(1, pedidos.get(0).getUc());
             stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return pedidos;
     }
-    public Pedido remove(Pedido pedido){
+    public Pedido remove(Pedido pedido) {
         this.connection = Connect.connect();
-        if(connection==null) return null;
+        if (connection == null) return null;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "DELETE FROM Pedido WHERE UC_id=? AND Turno_id=? AND Aluno_id=? AND ePratico=?");
-            stm.setString(1,pedido.getUc());
-            stm.setInt(2,pedido.getTurno());
-            stm.setString(3,pedido.getAlunoNum());
-            stm.setBoolean(4,pedido.ePratico());
+            stm.setString(1, pedido.getUc());
+            stm.setInt(2, pedido.getTurno());
+            stm.setString(3, pedido.getAlunoNum());
+            stm.setBoolean(4, pedido.ePratico());
             stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return pedido;
@@ -204,17 +220,19 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
     public Set<String> keySet() {
         this.connection = Connect.connect();
         Set<String> keySet = new HashSet<>();
-        if (connection==null) return keySet;
+        if (connection == null) return keySet;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "SELECT UC_id FROM Pedido;");
             ResultSet rs = stm.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 keySet.add(rs.getString(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return keySet;

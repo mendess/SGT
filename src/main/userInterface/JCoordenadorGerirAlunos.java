@@ -8,43 +8,53 @@ package main.userInterface;
 import main.sgt.Coordenador;
 import main.sgt.SGT;
 import main.sgt.Turno;
-import main.sgt.Utilizador;
+import main.sgt.UC;
+import main.sgt.exceptions.AlunoNaoEstaInscritoNaUcException;
+import main.sgt.exceptions.InvalidUserTypeException;
+import main.sgt.exceptions.UtilizadorJaExisteException;
 import main.sgt.exceptions.WrongCredentialsException;
 
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
+
+import static main.userInterface.interfaceUtils.prepareTable;
+import static main.userInterface.interfaceUtils.shiftFromString;
 
 /**
  *
  * @author pedro
  */
+@SuppressWarnings({"Anonymous2MethodRef", "Convert2Lambda", "TryWithIdenticalCatches"})
 public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
     private SGT sgt;
+    private String ucOfUser;
     /**
      * Creates new form CoordenadorGerirAlunos
      */
     public JCoordenadorGerirAlunos(SGT sgt) {
         this.sgt = sgt;
-        try {
+        try {//TODO remove this
             this.sgt.login("D18686","password");
         } catch (WrongCredentialsException e) {
             e.printStackTrace();
+        }
+        if(this.sgt.getLoggedUser() instanceof Coordenador){
+            this.ucOfUser = ((Coordenador) this.sgt.getLoggedUser()).getUcRegida();
+        }else{
+            //TODO leave frame.
+            System.out.println("invalid user");
+            return;
         }
         initComponents();
         initTurnosComboBox();
     }
 
     private void initTurnosComboBox() {
-        Utilizador u = this.sgt.getLoggedUser();
-        if(u instanceof Coordenador){
-            this.jComboBoxTurnos.removeAllItems();
-            List<Turno> turnosOfUC = this.sgt.getTurnosOfUC(((Coordenador) this.sgt.getLoggedUser()).getUcRegida());
-            turnosOfUC.stream()
-                    .map(interfaceUtils::makeShiftString)
-                    .forEach(this.jComboBoxTurnos::addItem);
-        }else{
-            //TODO leave frame
-            System.out.println("Invalid user type");
-        }
+        this.jComboBoxTurnos.removeAllItems();
+        List<Turno> turnosOfUC = this.sgt.getTurnosOfUC(this.ucOfUser);
+        turnosOfUC.stream()
+                .map(interfaceUtils::makeShiftString)
+                .forEach(this.jComboBoxTurnos::addItem);
     }
 
     /**
@@ -202,11 +212,47 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = this.jTableAlunosNEstao.getSelectedRow();
+        String aluno = (String) this.jTableAlunosNEstao.getValueAt(selectedRow, 0);
+        int turno = shiftFromString((String) this.jComboBoxTurnos.getSelectedItem());
+        try {
+            this.sgt.moveAlunoToTurno(aluno,this.ucOfUser,turno);
+            DefaultTableModel tableModel = (DefaultTableModel) this.jTableAlunosNEstao.getModel();
+            tableModel.removeRow(selectedRow);
+            this.jTableAlunosNEstao.setModel(tableModel);
+            tableModel = (DefaultTableModel) this.jTableAlunosEstao.getModel();
+            tableModel.addRow(new Object[]{aluno});
+            this.jTableAlunosEstao.setModel(tableModel);
+        } catch (UtilizadorJaExisteException | AlunoNaoEstaInscritoNaUcException e) {
+            updateAlunosTables(turno);
+        } catch (InvalidUserTypeException e) {
+            e.printStackTrace();
+            System.out.println("Invalid user");
+            //TODO leave frame
+        }
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
 
     private void jButtonRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = this.jTableAlunosEstao.getSelectedRow();
+        String aluno = (String) this.jTableAlunosEstao.getValueAt(selectedRow, 0);
+        int turno = shiftFromString((String) this.jComboBoxTurnos.getSelectedItem());
+
+        try {
+            this.sgt.removeAlunoFromTurno(this.ucOfUser,aluno,turno);
+        } catch (AlunoNaoEstaInscritoNaUcException | UtilizadorJaExisteException e) {
+            updateAlunosTables(turno);
+            return;
+        }
+
+        DefaultTableModel tableModel;
+        tableModel = (DefaultTableModel) this.jTableAlunosEstao.getModel();
+        tableModel.removeRow(selectedRow);
+        this.jTableAlunosEstao.setModel(tableModel);
+
+        tableModel = (DefaultTableModel) this.jTableAlunosNEstao.getModel();
+        tableModel.addRow(new Object[]{aluno});
+        this.jTableAlunosNEstao.setModel(tableModel);
+
     }//GEN-LAST:event_jButtonRemoverActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
@@ -214,8 +260,35 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
-        // TODO add your handling code here:
+        int turno = shiftFromString((String) this.jComboBoxTurnos.getSelectedItem());
+        updateAlunosTables(turno);
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
+
+    private void updateAlunosTables(int turno) {
+        UC uc = this.sgt.getUC(this.ucOfUser);
+        List<String> alunosInShift = uc.getTurno(turno,true)
+                                       .getAlunos();
+        List<String> alunosOffShift = uc.getAlunos();
+        alunosOffShift.removeAll(alunosInShift);
+
+        //Update in shift table
+        DefaultTableModel tModel = (DefaultTableModel) this.jTableAlunosEstao.getModel();
+        tModel = prepareTable(alunosInShift.size(),1,tModel);
+        int i=0;
+        for (String a: alunosInShift){
+            tModel.setValueAt(a,i++,0);
+        }
+        this.jTableAlunosEstao.setModel(tModel);
+        //Update of shift table
+        tModel = (DefaultTableModel) this.jTableAlunosNEstao.getModel();
+        tModel = prepareTable(alunosOffShift.size(),1,tModel);
+        i=0;
+        for (String a: alunosOffShift){
+            tModel.setValueAt(a,i++,0);
+        }
+        this.jTableAlunosNEstao.setModel(tModel);
+    }
+
 
     /**
      * @param args the command line arguments

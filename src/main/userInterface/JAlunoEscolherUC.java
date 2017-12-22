@@ -14,12 +14,12 @@ import main.sgt.exceptions.WrongCredentialsException;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
  * @author pedro
  */
+@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class JAlunoEscolherUC extends javax.swing.JFrame {
 
     private final SGT sgt;
@@ -30,9 +30,11 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
     public JAlunoEscolherUC(SGT sgt) {
         initComponents();
         this.sgt = sgt;
+        //TODO remove this
         try {
-            this.sgt.login("A79003","password");
+            this.sgt.login("A42274","password");
         } catch (WrongCredentialsException e) {
+
             e.printStackTrace();
         }
         updateUCNEscolhidas();
@@ -50,7 +52,6 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         }
         List<UC> allUCs = this.sgt.getUCs();
         allUCs.removeAll(uCsOfUser);
-        System.out.println(allUCs.stream().map(UC::getId).collect(Collectors.toList()));
         DefaultTableModel tModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
         while(allUCs.size()>tModel.getRowCount()){
             tModel.addRow(new String[1]);
@@ -60,7 +61,6 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         }
         int i=0;
         for(UC uc: allUCs){
-            System.out.println("UCsNEscolhidas uc: "+uc);
             tModel.setValueAt(uc.getId(),i++,0);
         }
         this.jTableUCNEscolhidas.setModel(tModel);
@@ -259,11 +259,11 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
             DefaultTableModel tableModel;
             tableModel = (DefaultTableModel) this.jTableUCEscolhidas.getModel();
             tableModel.removeRow(selectedRow);
-            this.jTableUCNEscolhidas.setModel(tableModel);
+            this.jTableUCEscolhidas.setModel(tableModel);
 
             tableModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
             tableModel.addRow(new Object[]{uc});
-            this.jTableUCEscolhidas.setModel(tableModel);
+            this.jTableUCNEscolhidas.setModel(tableModel);
 
         } catch (UtilizadorNaoExisteException e) {
             updateUCEscolhidas();

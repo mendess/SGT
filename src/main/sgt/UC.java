@@ -196,7 +196,7 @@ public class UC {
      * @param aluno Aluno
      * @param turno Turno a que a aula pertence
      * @param aula Aula
-     * @param ePratico
+     * @param ePratico Se o turno e pratico
      */
     void marcarPresenca(String aluno, int turno, int aula, boolean ePratico) {
         this.turnos.get(new TurnoKey(this.id,turno,ePratico)).marcarPresenca(aluno,aula);
@@ -206,20 +206,18 @@ public class UC {
      * Remove um aluno de um turno
      * @param aluno Aluno a remover
      * @param turno Turno de onde remover
-     * @param ePratico
      */
-    void removerAlunoDeTurno(String aluno, int turno, boolean ePratico) {
-        this.turnos.get(new TurnoKey(this.id,turno,ePratico)).removeAluno(aluno);
+    Troca removerAlunoDeTurno(Aluno aluno, int turno) throws AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException {
+        return moveAlunoToTurno(aluno,0);
     }
 
     /**
      * Adiciona um aluno a um turno
      * @param aluno Aluno a adicionar
      * @param turno Turno onde adicionar
-     * @param ePratico
      */
-    void adicionarAlunoTurno(String aluno, int turno, boolean ePratico) throws UtilizadorJaExisteException {
-        this.turnos.get(new TurnoKey(this.id,turno,ePratico)).addAluno(aluno);
+    Troca adicionarAlunoTurno(Utilizador aluno, int turno) throws UtilizadorJaExisteException, AlunoNaoEstaInscritoNaUcException {
+        return this.moveAlunoToTurno((Aluno) aluno,turno);
     }
 
     /**
@@ -229,7 +227,7 @@ public class UC {
      * @return Lista das trocas efetuadas
      * @throws AlunoNaoEstaInscritoNaUcException Um dos alunos nao esta inscrito nesta UC
      */
-    Troca[] trocarAlunos(Aluno aluno1, Aluno aluno2) throws AlunoNaoEstaInscritoNaUcException {
+    Troca[] trocarAlunos(Aluno aluno1, Aluno aluno2) throws AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException {
         Troca t1 = moveAlunoToTurno(aluno1,aluno2.getHorario().get(this.id));
         Troca t2 = moveAlunoToTurno(aluno2,aluno1.getHorario().get(this.id));
         return new Troca[]{t1,t2};
@@ -242,16 +240,11 @@ public class UC {
      * @return Registo da Troca efetuada
      * @throws AlunoNaoEstaInscritoNaUcException O aluno nao esta inscrito nesta UC
      */
-    Troca moveAlunoToTurno(Aluno aluno, int turno) throws AlunoNaoEstaInscritoNaUcException {
+    Troca moveAlunoToTurno(Aluno aluno, int turno) throws AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException {
         if(this.alunos.contains(aluno.getUserNum())){
             Turno turnoOrigem = this.getTurno(aluno.getHorario().get(this.id),true);
             Turno turnoDestino = this.getTurno(turno, true);
-            try {
-                turnoDestino.addAluno(aluno.getUserNum());
-            } catch (UtilizadorJaExisteException e) {
-                e.printStackTrace();
-                return null;
-            }
+            turnoDestino.addAluno(aluno.getUserNum());
             turnoOrigem.removeAluno(aluno.getUserNum());
             this.turnos.put(new TurnoKey(turnoOrigem),turnoOrigem);
             this.turnos.put(new TurnoKey(turnoDestino),turnoDestino);
@@ -278,7 +271,7 @@ public class UC {
     /**
      * Remove um turno da UC
      * @param id Identificador do turno a remover
-     * @param ePratico
+     * @param ePratico Se o turno e pratico
      */
     void removeTurno(int id, boolean ePratico) throws TurnoNaoVazioException {
         TurnoKey tKey = new TurnoKey(this.id,id,ePratico);
@@ -292,7 +285,7 @@ public class UC {
     /**
      * Retorna um <tt>Turno</tt>
      * @param turno Identificador do turno
-     * @param ePratico
+     * @param ePratico Se o turno e pratico
      * @return O turno com o dado id
      */
     public Turno getTurno(int turno, boolean ePratico) {
@@ -328,7 +321,7 @@ public class UC {
     /**
      * Adiciona uma nova aula a um turno
      * @param turno Numero do turno
-     * @param ePratico
+     * @param ePratico Se o turno e pratico
      */
     void addAula(int turno, boolean ePratico) {
         Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno,ePratico));
@@ -340,7 +333,7 @@ public class UC {
      * Remove uma aula a um turno
      * @param turno Numero do turno onde remover
      * @param aula Numero da aula a remover
-     * @param ePratico
+     * @param ePratico Se o turno e pratico
      */
     void removeAula(int turno, int aula, boolean ePratico) {
         Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno,ePratico));

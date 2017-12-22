@@ -13,17 +13,18 @@ public class UserDAO implements Map<String, Utilizador> {
     public int size() {
         connection = Connect.connect();
         int i = -1;
-        if(connection==null) return i;
+        if (connection == null) return i;
+        Statement stm = null;
         try {
-            Statement stm = connection.createStatement();
+            stm = connection.createStatement();
             ResultSet rs = stm.executeQuery("SELECT count(*) FROM Aluno");
-            if(rs.next()) {
+            if (rs.next()) {
                 i = rs.getInt(1);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return i;
@@ -37,20 +38,22 @@ public class UserDAO implements Map<String, Utilizador> {
     @Override
     public boolean containsKey(Object key) {
         this.connection = Connect.connect();
-        if(connection==null) return false;
-        if(!(key instanceof String)){
+        if (connection == null) return false;
+        if (!(key instanceof String)) {
             return false;
         }
         String user = (String) key;
         boolean r = false;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "SELECT `id` FROM `Utilizador` WHERE `id`=?;");
             stm.setString(1, user);
             ResultSet rs = stm.executeQuery();
             r = rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(stm);
         } finally {
             Connect.close(connection);
         }
@@ -65,47 +68,49 @@ public class UserDAO implements Map<String, Utilizador> {
     @Override
     public Utilizador get(Object key) {
         connection = Connect.connect();
-        if(connection==null) return null;
+        if (connection == null) return null;
         String user;
-        if(key instanceof String){
+        if (key instanceof String) {
             user = (String) key;
-        }else if(key instanceof Utilizador){
+        } else if (key instanceof Utilizador) {
             user = ((Utilizador) key).getUserNum();
-        }else{
+        } else {
             return null;
         }
         Utilizador u = null;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement(
+            stm = connection.prepareStatement(
                     "SELECT * FROM Utilizador \n" +
                             "LEFT JOIN Docente ON Utilizador.id = Docente.Utilizador_id \n" +
                             "LEFT JOIN Aluno ON Utilizador.id = Aluno.Utilizador_id \n" +
                             "LEFT JOIN DiretorDeCurso ON Utilizador.id = DiretorDeCurso.Utilizador_id\n" +
                             "WHERE id=?");
-            stm.setString(1 , user);
+            stm.setString(1, user);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 String id = rs.getString("id");
                 String nome = rs.getString("nome");
                 String password = rs.getString("pass");
                 String email = rs.getString("Email");
-                if(rs.getString("Docente.Utilizador_id")!=null){
+                if (rs.getString("Docente.Utilizador_id") != null) {
                     Map<String, List<TurnoKey>> ucsEturnos = this.getUCsETurnosDocente(id);
                     // Descobrir se ele é docente ou coordenador
                     String ucRegida = this.getUcRegida(id);
-                    u = ucRegida==null ?
+                    u = ucRegida == null ?
                             new Docente(id, password, email, nome, ucsEturnos) :
                             new Coordenador(id, password, email, nome, ucsEturnos, ucRegida);
-                }else if(rs.getString("Aluno.Utilizador_id")!=null){
-                    Map<String,Integer> inscricoes = this.getInscricoesAluno(id);
-                    u = new Aluno(id,password,email,nome,rs.getBoolean("eEspecial"),inscricoes);
-                }else if(rs.getString("DiretorDeCurso.Utilizador_id")!=null){
-                    u = new DiretorDeCurso(id,password,email,nome);
+                } else if (rs.getString("Aluno.Utilizador_id") != null) {
+                    Map<String, Integer> inscricoes = this.getInscricoesAluno(id);
+                    u = new Aluno(id, password, email, nome, rs.getBoolean("eEspecial"), inscricoes);
+                } else if (rs.getString("DiretorDeCurso.Utilizador_id") != null) {
+                    u = new DiretorDeCurso(id, password, email, nome);
                 }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(stm);
         } finally {
             Connect.close(connection);
         }
@@ -164,67 +169,71 @@ public class UserDAO implements Map<String, Utilizador> {
     @Override
     public Utilizador put(String key, Utilizador value) {
         connection = Connect.connect();
-        if(connection==null) return null;
+        if (connection == null) return null;
         Utilizador u = null;
+        PreparedStatement stmCoord = null;
+        PreparedStatement stmTurnos = null;
+        PreparedStatement stm1 = null;
+        PreparedStatement stm2 = null;
         try {
             connection.setAutoCommit(false);
             //language=MySQL
             String sql =
                     "INSERT INTO `Utilizador` (id,nome,pass,Email) \n" +
-                    "VALUES (?, ?, ?, ?)\n" +
-                    "ON DUPLICATE KEY UPDATE id=VALUES(id),\n" +
-                    "                        pass=VALUES(pass),\n" +
-                    "                        nome=VALUES(nome),\n" +
-                    "                        Email=VALUES(Email);\n";
+                            "VALUES (?, ?, ?, ?)\n" +
+                            "ON DUPLICATE KEY UPDATE id=VALUES(id),\n" +
+                            "                        pass=VALUES(pass),\n" +
+                            "                        nome=VALUES(nome),\n" +
+                            "                        Email=VALUES(Email);\n";
             String sql2;
-            PreparedStatement stmTurnos = null;
-            if (value instanceof Docente){
+            stmTurnos = null;
+            if (value instanceof Docente) {
                 //language=MySQL
                 sql2 = "INSERT INTO `Docente` (Utilizador_id)\n" +
-                         "VALUES (?)\n" +
-                         "ON DUPLICATE KEY UPDATE Utilizador_id=VALUES(Utilizador_id);" +
+                        "VALUES (?)\n" +
+                        "ON DUPLICATE KEY UPDATE Utilizador_id=VALUES(Utilizador_id);" +
                         "UPDATE Turno SET Docente_id=NULL WHERE Docente_id=?";
                 stmTurnos = updateTurnosDocente((Docente) value);
-            }else if (value instanceof Aluno){
+            } else if (value instanceof Aluno) {
                 sql2 = "INSERT INTO `Aluno` (Utilizador_id, eEspecial)\n" +
-                         "VALUES (?,?)\n" +
-                         "ON DUPLICATE KEY UPDATE Utilizador_id=VALUES(Utilizador_id), eEspecial=VALUES(eEspecial);" +
+                        "VALUES (?,?)\n" +
+                        "ON DUPLICATE KEY UPDATE Utilizador_id=VALUES(Utilizador_id), eEspecial=VALUES(eEspecial);" +
                         "DELETE FROM Turno_has_Aluno WHERE Aluno_id=? AND ePratico=TRUE";
                 stmTurnos = updateTurnosAluno((Aluno) value);
-            }else if (value instanceof DiretorDeCurso){
+            } else if (value instanceof DiretorDeCurso) {
                 sql2 = "INSERT INTO `DiretorDeCurso` (Utilizador_id)\n" +
-                         "VALUES (?)" +
-                         "ON DUPLICATE KEY UPDATE Utilizador_id=VALUES(Utilizador_id);\n";
-            }else{
+                        "VALUES (?)" +
+                        "ON DUPLICATE KEY UPDATE Utilizador_id=VALUES(Utilizador_id);\n";
+            } else {
                 return null;
             }
-            PreparedStatement stm1 = connection.prepareStatement(sql);
+            stm1 = connection.prepareStatement(sql);
             stm1.setString(1, value.getUserNum());
             stm1.setString(2, value.getName());
             stm1.setString(3, value.getPassword());
             stm1.setString(4, value.getEmail());
             stm1.executeUpdate();
 
-            PreparedStatement stm2 = connection.prepareStatement(sql2);
+            stm2 = connection.prepareStatement(sql2);
             stm2.setString(1, value.getUserNum());
-            if(value instanceof Docente){
+            if (value instanceof Docente) {
                 stm2.setString(2, value.getUserNum());
             }
-            if(value instanceof Aluno) {
+            if (value instanceof Aluno) {
                 stm2.setBoolean(2, ((Aluno) value).eEspecial());
-                stm2.setString(3,value.getUserNum());
+                stm2.setString(3, value.getUserNum());
             }
             stm2.executeUpdate();
 
-            if(stmTurnos!=null){
+            if (stmTurnos != null) {
                 stmTurnos.executeBatch();
             }
 
-            if(value instanceof Coordenador){
-                PreparedStatement stmCoord = connection.prepareStatement("" +
+            if (value instanceof Coordenador) {
+                stmCoord = connection.prepareStatement("" +
                         "UPDATE UC SET responsavel_id=? WHERE id=?;");
-                stmCoord.setString(1,value.getUserNum());
-                stmCoord.setString(2,((Coordenador) value).getUcRegida());
+                stmCoord.setString(1, value.getUserNum());
+                stmCoord.setString(2, ((Coordenador) value).getUcRegida());
                 stmCoord.executeUpdate();
             }
 
@@ -232,6 +241,10 @@ public class UserDAO implements Map<String, Utilizador> {
             u = value;
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(stm1);
+            System.out.println(stm2);
+            System.out.println(stmTurnos);
+            System.out.println(stmCoord);
         } finally {
             Connect.close(connection);
         }
@@ -319,16 +332,18 @@ public class UserDAO implements Map<String, Utilizador> {
     public Set<String> keySet() {
         connection = Connect.connect();
         Set<String> keySet = new HashSet<>();
-        if(connection==null) return keySet;
+        if (connection == null) return keySet;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "SELECT id FROM `Utilizador`;");
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 keySet.add(rs.getString(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(stm);
         } finally {
             Connect.close(connection);
         }

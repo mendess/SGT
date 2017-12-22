@@ -12,9 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static main.userInterface.interfaceUtils.makeShiftString;
-import static main.userInterface.interfaceUtils.shiftFromString;
-import static main.userInterface.interfaceUtils.shiftTypeFromStr;
+import static main.userInterface.interfaceUtils.*;
 
 /**
  *
@@ -207,12 +205,7 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
                                           .map(this.sgt::getAluno)
                                           .collect(Collectors.toList());
         DefaultTableModel tModel = (DefaultTableModel) this.jTableAlunos.getModel();
-        while (alunos.size()>tModel.getRowCount()){
-            tModel.addRow(new String[2]);
-        }
-        while (alunos.size()<tModel.getRowCount()){
-            tModel.removeRow(tModel.getRowCount()-1);
-        }
+        tModel = prepareTable(alunos.size(),2,tModel);
         int i=0;
         for (Aluno a: alunos){
             tModel.setValueAt(a.getUserNum(),i,0);

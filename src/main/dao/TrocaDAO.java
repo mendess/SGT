@@ -77,26 +77,28 @@ public class TrocaDAO implements List<Troca> {
     public Object[] toArray() {
         int size = this.size();
         this.connection = Connect.connect();
-        if(connection==null) return null;
+        if (connection == null) return null;
         Object[] array = null;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "SELECT * FROM Trocas;");
             ResultSet rs = stm.executeQuery();
             array = new Object[size];
-            for(int i=0;i<size && rs.next();i++){
+            for (int i = 0; i < size && rs.next(); i++) {
                 array[i] = new Troca(rs.getInt("id"),
-                                     rs.getString("aluno_id"),
-                                     rs.getString("UC_id"),
-                                     rs.getInt("turnoOrigem_id"),
-                                     rs.getBoolean("turnoOrigem_ePratico"),
-                                     rs.getInt("turnoDestino_id"),
-                                     rs.getBoolean("turnoDestino_ePratico"),
-                                     rs.getTimestamp("dataRealizacao").toLocalDateTime());
+                        rs.getString("aluno_id"),
+                        rs.getString("UC_id"),
+                        rs.getInt("turnoOrigem_id"),
+                        rs.getBoolean("turnoOrigem_ePratico"),
+                        rs.getInt("turnoDestino_id"),
+                        rs.getBoolean("turnoDestino_ePratico"),
+                        rs.getTimestamp("dataRealizacao").toLocalDateTime());
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return array;
@@ -181,13 +183,15 @@ public class TrocaDAO implements List<Troca> {
     @Override
     public void clear() {
         this.connection = Connect.connect();
-        if(connection==null) return;
+        if (connection == null) return;
+        Statement stm = null;
         try {
-            Statement stm = connection.createStatement();
+            stm = connection.createStatement();
             stm.execute("DELETE FROM Trocas WHERE TRUE;");
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
     }
@@ -195,26 +199,28 @@ public class TrocaDAO implements List<Troca> {
     @Override
     public Troca get(int index) {
         this.connection = Connect.connect();
-        if(connection==null) return null;
+        if (connection == null) return null;
         Troca t = null;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "SELECT * FROM Trocas WHERE id=?;");
-            stm.setInt(1,index);
+            stm.setInt(1, index);
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 t = new Troca(index,
-                            rs.getString("aluno_id"),
-                            rs.getString("UC_id"),
-                            rs.getInt("turnoOrigem_id"),
-                            rs.getBoolean("turnoOrigem_ePratico"),
-                            rs.getInt("turnoDestino_id"),
-                            rs.getBoolean("turnoDestino_ePratico"),
-                            rs.getTimestamp("dataRealizacao").toLocalDateTime());
+                        rs.getString("aluno_id"),
+                        rs.getString("UC_id"),
+                        rs.getInt("turnoOrigem_id"),
+                        rs.getBoolean("turnoOrigem_ePratico"),
+                        rs.getInt("turnoDestino_id"),
+                        rs.getBoolean("turnoDestino_ePratico"),
+                        rs.getTimestamp("dataRealizacao").toLocalDateTime());
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return t;
@@ -233,17 +239,19 @@ public class TrocaDAO implements List<Troca> {
     @Override
     public Troca remove(int index) {
         Troca t = this.get(index);
-        if(t==null) return t;
+        if (t == null) return t;
         this.connection = Connect.connect();
-        if(connection==null) return null;
+        if (connection == null) return null;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("" +
                     "DELETE FROM Trocas WHERE id=?");
-            stm.setInt(1,index);
+            stm.setInt(1, index);
             stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return t;
@@ -274,20 +282,22 @@ public class TrocaDAO implements List<Troca> {
         throw new UnsupportedOperationException();
     }
 
-    public int maxID(){
+    public int maxID() {
         connection = Connect.connect();
-        if (connection==null) return -1;
+        if (connection == null) return -1;
         int maxID = -1;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement(
+            stm = connection.prepareStatement(
                     "SELECT max(`id`) FROM `Trocas`;");
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 maxID = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
         return maxID;

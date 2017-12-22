@@ -5,11 +5,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DiaDAO {
-    public void initDias(){
+    public void initDias() {
         Connection connection = Connect.connect();
-        if(connection ==null) return;
+        if (connection == null) return;
+        Statement stm = null;
         try {
-            Statement stm = connection.createStatement();
+            stm = connection.createStatement();
             stm.execute("" +
                     "INSERT IGNORE INTO DiaSemana (dia) " +
                     "VALUES ('SEG')," +
@@ -21,7 +22,8 @@ public class DiaDAO {
                     "       ('DOM');");
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(stm);
+        } finally {
             Connect.close(connection);
         }
     }

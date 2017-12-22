@@ -90,13 +90,13 @@ public class SGT extends Observable{
                                             .filter(u -> u instanceof Aluno)
                                             .noneMatch(a -> ((Aluno) a).getHorario().isEmpty());
         //TODO remove this:
-        try {
+        /*try {
             this.importUCs("jsons/ucs.json");
             this.importUtilizadores("jsons/utilizadores.json");
             this.importTurnos("jsons/turnos.json");
         } catch (FileNotFoundException | BadlyFormatedFileException e1) {
             e1.printStackTrace();
-        }
+        }*/
     }
 
     /**
@@ -169,7 +169,7 @@ public class SGT extends Observable{
      */
     public List<Turno> getTurnosOfUC(String uc) {
         List<Turno> turnos = this.ucs.get(uc).getTurnos();
-        turnos.remove(Turno.emptyShift(uc));
+        turnos = turnos.stream().filter(t->t.getId()>0).collect(Collectors.toList());
         return turnos;
     }
 
@@ -225,12 +225,11 @@ public class SGT extends Observable{
      * @param uc Identificador da UC a que o turno pertence
      * @param aluno Numero do aluno a remover
      * @param turno Numero do turno de onde remover
-     * @param ePratico Se o turno e pratico
+     * @throws AlunoNaoEstaInscritoNaUcException Se o aluno nao estiver inscrito
+     * @throws UtilizadorJaExisteException Se o utilizador ja esta inscrito
      */
-    public void removerAlunoDeTurno(String uc, String aluno, int turno, boolean ePratico) {
-        UC newUC = this.ucs.get(uc);
-        newUC.removerAlunoDeTurno(aluno,turno, ePratico);
-        this.ucs.put(newUC.getId(),newUC);
+    public void removeAlunoFromTurno(String uc, String aluno, int turno) throws AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException {
+        this.trocas.add(this.ucs.get(uc).removerAlunoDeTurno((Aluno) this.utilizadores.get(aluno),turno));
     }
 
     /**
@@ -239,7 +238,8 @@ public class SGT extends Observable{
      * @param uc Identificador da UC
      * @param turno Numero do turno
      * @param aula Aula
-     * @param ePratico Se o turno e pratico     */
+     * @param ePratico Se o turno e pratico
+     **/
     public void marcarPresenca(String aluno, String uc, int turno, int aula, boolean ePratico) {
         UC newUC = this.ucs.get(uc);
         newUC.marcarPresenca(aluno,turno,aula, ePratico);
@@ -252,16 +252,21 @@ public class SGT extends Observable{
      * @param aluno Numero do aluno a adicionar
      * @param turno Numero do turno onde adicionar
      * @throws UtilizadorJaExisteException Se o aluno ja esta inscrito no turno
+     * @throws AlunoNaoEstaInscritoNaUcException Se o aluno nao esta inscrito na UC
      */
-    public void addAlunoTurno(String uc, String aluno, int turno, boolean ePratico) throws UtilizadorJaExisteException {
-        this.ucs.get(uc).adicionarAlunoTurno(aluno,turno, ePratico);
+    @Deprecated
+    public void addAlunoTurno(String uc, String aluno, int turno) throws UtilizadorJaExisteException, AlunoNaoEstaInscritoNaUcException {
+        Troca t = this.ucs.get(uc).adicionarAlunoTurno(this.utilizadores.get(aluno),turno);
+        if (t != null) this.trocas.add(t);
     }
 
     /**
      * Verifica se o horario do utilizador autenticado conflite com o turno
      * @param uc Identificador da UC a que pertence o turno
      * @param turno Numero do turno
-     * @param ePratico Se o turno e pratico     * @return Retorna <tt>true</tt> se o horario conflite com o turno
+     * @param ePratico Se o turno e pratico
+     * @return Retorna <tt>true</tt> se o horario conflite com o turno
+     * @throws InvalidUserTypeException Se o utilizador que esta autenticado nao pode realizar esta operacao
      */
     public boolean horarioConfilcts(String uc, int turno, boolean ePratico) throws InvalidUserTypeException {
         if(this.loggedUser instanceof Aluno){
@@ -305,6 +310,7 @@ public class SGT extends Observable{
      * Regista um pedido de troca do Aluno que esta autenticado
      * @param uc Identificador da UC a que pertence o turno
      * @param turno Numero do turno que pretende pedir
+     * @throws InvalidUserTypeException Se o utilizador que esta autenticado nao pode realizar esta operacao
      */
     public void pedirTroca(String uc, int turno) throws InvalidUserTypeException {
         if(this.loggedUser instanceof Aluno){
@@ -351,8 +357,9 @@ public class SGT extends Observable{
      * @param pedido Pedido de troca
      * @throws InvalidUserTypeException Quando o utilizador autenticado nao e um Aluno
      * @throws AlunoNaoEstaInscritoNaUcException Um dos alunos nao esta inscrito na UC
+     * @throws UtilizadorJaExisteException Se algum dos utilizadores esta inscrito nos turnos para onde vao
      */
-    public void realizarTroca(Pedido pedido) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUcException {
+    public void realizarTroca(Pedido pedido) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException {
         UC tmpUC = this.ucs.get(pedido.getUc());
         Utilizador u = this.utilizadores.get(pedido.getAlunoNum());
         if(this.loggedUser instanceof  Aluno && u instanceof Aluno){
@@ -369,10 +376,11 @@ public class SGT extends Observable{
      * @param aluno Numero do aluno
      * @param uc UC onde pertence o turno
      * @param turno Numero do turno para onde pretende ir
-     * @param ePratico Se o turno e pratico     * @throws InvalidUserTypeException O numero de aluno nao e valido
+     * @throws InvalidUserTypeException O numero de aluno nao e valido
      * @throws AlunoNaoEstaInscritoNaUcException O aluno nao esta inscrito na UC
+     * @throws UtilizadorJaExisteException Se o utilizador ja esta no turno
      */
-    public void moveAlunoToTurno(String aluno, String uc, int turno, Object ePratico) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUcException {
+    public void moveAlunoToTurno(String aluno, String uc, int turno) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException {
         Utilizador u = this.utilizadores.get(aluno);
         if(u instanceof Aluno){
             this.trocas.add(this.ucs.get(uc).moveAlunoToTurno((Aluno) u,turno));
@@ -429,7 +437,8 @@ public class SGT extends Observable{
      * @param uc O identificador da UC do turno
      * @param turno O numero do turno
      * @param docente O identificador do docente
-     * @param ePratico Se o turno e pratico     */
+     * @param ePratico Se o turno e pratico
+     **/
     public void setDocenteOfTurno(String uc, int turno, String docente, boolean ePratico){
         UC tmpUC = this.ucs.get(uc);
         tmpUC.addDocenteToTurno(turno,docente, ePratico);
@@ -480,7 +489,8 @@ public class SGT extends Observable{
      * Remove um turno de uma UC
      * @param id Numero do turno a remover
      * @param uc Numero da UC onde remover
-     * @param ePratico Se o turno e pratico     * @throws TurnoNaoVazioException Quando o turno tem alunos associados
+     * @param ePratico Se o turno e pratico
+     * @throws TurnoNaoVazioException Quando o turno tem alunos associados
      */
     public void removeTurno(int id, String uc, boolean ePratico) throws TurnoNaoVazioException {
         UC newUC = this.ucs.get(uc);
@@ -504,6 +514,8 @@ public class SGT extends Observable{
     /**
      * Importa os turnos de um ficheiro
      * @param filepath Caminho para o ficheiro
+     * @throws FileNotFoundException Se o ficheiro nao existe
+     * @throws BadlyFormatedFileException Se o ficheiro tem a sintaxe errada
      */
     public void importTurnos(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
         new TurnoDAO().clear();
@@ -539,8 +551,10 @@ public class SGT extends Observable{
     }
 
     /**
-     * Importa os alunos de um ficheiro
+     * Importa os utilizadores de um ficheiro
      * @param filepath Caminho para o ficheiro
+     * @throws FileNotFoundException Se o ficheiro nao existe
+     * @throws BadlyFormatedFileException Se o ficheiro tem a sintaxe errada
      */
     public void importUtilizadores(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
         this.utilizadores.clear();
@@ -583,6 +597,8 @@ public class SGT extends Observable{
     /**
      * Importa as UCs de um ficheiro
      * @param filepath Caminho para o ficheiro
+     * @throws FileNotFoundException Se o ficheiro nao existe
+     * @throws BadlyFormatedFileException Se o ficheiro tem a sintaxe errada
      */
     public void importUCs(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
         this.ucs.clear();
