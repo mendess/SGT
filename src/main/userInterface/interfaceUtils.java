@@ -1,6 +1,7 @@
 package main.userInterface;
 
 import main.sgt.Turno;
+import main.sgt.TurnoKey;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -16,6 +17,10 @@ class interfaceUtils {
     static String makeShiftString(Turno t){
         return t.ePratico() ? "TP" + t.getId() : "T" + t.getId();
     }
+    static String makeShiftString(TurnoKey t) {
+        return t.ePratico() ? "TP" + t.getTurno_id() : "T" + t.getTurno_id();
+    }
+
     static DefaultTableModel prepareTable(int size,int numCol, DefaultTableModel tModel){
         while (size>tModel.getRowCount()){
             tModel.addRow(new String[numCol]);

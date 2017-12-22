@@ -161,6 +161,15 @@ public class Turno {
     }
 
     /**
+     * Retorna a aula para a dada chave
+     * @param aulaNum O numero da aula
+     * @return A aula com o dado numero
+     */
+    public Aula getAula(int aulaNum){
+        return this.aulas.get(new AulaKey(this.ucId,this.id,aulaNum,this.ePratico));
+    }
+
+    /**
      * Retorna as informacoes do turno
      * @return As informacoes do turno
      */
