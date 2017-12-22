@@ -1,20 +1,16 @@
 package main.sgt;
 
-import main.dao.PedidosDAO;
-import main.dao.TrocaDAO;
-import main.dao.UCDAO;
-import main.dao.UserDAO;
+import main.dao.*;
 import main.sgt.exceptions.*;
 
 import javax.json.*;
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess", "unused", "FieldCanBeLocal"})
 public class SGT extends Observable{
 
     /**
@@ -41,6 +37,26 @@ public class SGT extends Observable{
      * Map de utilizadores registados
      */
     private final UserDAO utilizadores;
+    /**
+     * Estado das UCs
+     */
+    private boolean ucsRegistadas;
+    /**
+     * Estado dos utilizadores
+     */
+    private boolean usersRegistados;
+    /**
+     * Estado dos turnos
+     */
+    private boolean turnosRegistados;
+    /**
+     * Estado dos logins
+     */
+    private boolean loginsAtivos;
+    /**
+     * Estado da atribuicao do turnos
+     */
+    private boolean turnosAtribuidos;
 
     /**
      * Construtor do SGT
@@ -50,6 +66,7 @@ public class SGT extends Observable{
         this.trocas = new TrocaDAO();
         this.ucs = new UCDAO();
         this.utilizadores = new UserDAO();
+        new DiaDAO().initDias();
         Collection<List<Pedido>> e = this.pedidosDAO.values();
         Map<String,List<Pedido>> pedidos = new HashMap<>();
         e.forEach(ps -> {
@@ -59,6 +76,67 @@ public class SGT extends Observable{
             }
         });
         this.pedidos = pedidos;
+/*        Collection<Utilizador> utilizadores = this.utilizadores.values();
+        Collection<UC> ucs = this.ucs.values();
+        this.ucsRegistadas = !ucs.isEmpty();
+        this.usersRegistados = !utilizadores.isEmpty();
+        this.turnosRegistados = ucs.stream().noneMatch(uc-> uc.getTurnos().isEmpty());
+        this.loginsAtivos = utilizadores.stream()
+                                        .allMatch(Utilizador::isLoginAtivo);
+        this.turnosAtribuidos = utilizadores.stream()
+                                            .filter(u -> u instanceof Aluno)
+                                            .noneMatch(a -> ((Aluno) a).getHorario().isEmpty());
+        //TODO remove this:
+        try {
+            importUCs("jsons/ucs.json");
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+        try {
+            test.main(new String[]{});
+        } catch (FileNotFoundException | SQLException e1) {
+            e1.printStackTrace();
+        }*/
+    }
+
+    /**
+     * Retorna o estado das ucs
+     * @return O estado das ucs
+     */
+    public boolean isUcsRegistadas() {
+        return ucsRegistadas;
+    }
+
+    /**
+     * Retorna o estado dos utilizadores
+     * @return O estado dos utilizadores
+     */
+    public boolean isUsersRegistados() {
+        return usersRegistados;
+    }
+
+    /**
+     * Retorna o estado dos turnos
+     * @return O estado dos turnos
+     */
+    public boolean isTurnosRegistados() {
+        return turnosRegistados;
+    }
+
+    /**
+     * Retorna o estado dos logins
+     * @return O estado dos logins
+     */
+    public boolean isLoginsAtivos() {
+        return loginsAtivos;
+    }
+
+    /**
+     * Retorna se os turnos foram atribuidos
+     * @return <tt>True</tt> se os turnos estao atribuidos
+     */
+    public boolean isTurnosAtribuidos() {
+        return turnosAtribuidos;
     }
 
     /**
@@ -120,7 +198,23 @@ public class SGT extends Observable{
         }
         throw new InvalidUserTypeException();
     }
-
+    public List<UC> getUCsOfUser() throws InvalidUserTypeException {
+        if(this.loggedUser instanceof Aluno){
+            Aluno aluno = (Aluno) this.loggedUser;
+            return aluno.getHorario().keySet()
+                    .stream()
+                    .map(this.ucs::get)
+                    .collect(Collectors.toList());
+        }
+        if(this.loggedUser instanceof Docente){
+            Docente docente = (Docente) this.loggedUser;
+            return docente.getUcsEturnos().keySet()
+                    .stream()
+                    .map(this.ucs::get)
+                    .collect(Collectors.toList());
+        }
+        throw new InvalidUserTypeException();
+    }
     /**
      * Remove um aluno de um turno
      * @param uc Identificador da UC a que o turno pertence
@@ -406,7 +500,7 @@ public class SGT extends Observable{
      * @param filepath Caminho para o ficheiro
      */
     public void importTurnos(String filepath) {
-        /*File file = new File(filePath);
+        File file = new File(filepath);
         JsonReader jsonReader;
         try {
             jsonReader = Json.createReader(new FileReader(file));
@@ -414,10 +508,23 @@ public class SGT extends Observable{
             e.printStackTrace();
             return;
         }
-        Set<String> keySet = jsonReader.readObject().keySet();
-        */
-        //TODO implement SGT.importTurnos
-        throw new UnsupportedOperationException();
+        JsonObject jsonObject = jsonReader.readObject();
+        Set<String> keySet = jsonObject.keySet();
+        for(String key: keySet){
+            JsonArray jsonArray = jsonObject.getJsonArray(key);
+            int tCount = 1;
+            int tpCount = 1;
+            for(JsonValue j: jsonArray){
+                JsonObject jTurno = (JsonObject) j;
+                boolean ePratico = jTurno.getBoolean("ePratico");
+                int id = ePratico ? tpCount++ : tCount++;
+                Turno t = new Turno(id,key,jTurno.getInt("vagas"), ePratico);
+                this.addTurno();
+                //TODO fix this shit
+            }
+        }
+        System.out.println(keySet);
+        System.out.println(keySet.size());
     }
 
     /**
@@ -463,6 +570,7 @@ public class SGT extends Observable{
 
 
         // TODO - implement SGT.assignShifts
+        this.turnosAtribuidos=true;
         throw new UnsupportedOperationException();
     }
 
@@ -470,11 +578,7 @@ public class SGT extends Observable{
      * Ativa os logins para os alunos
      */
     public void activateLogins() {
-        this.utilizadores.values().forEach(utilizador -> {
-            if(utilizador instanceof Aluno){
-                ((Aluno) utilizador).ativarLogin();
-            }
-        });
+        this.utilizadores.values().forEach(Utilizador::ativarLogin);
     }
 
     /**

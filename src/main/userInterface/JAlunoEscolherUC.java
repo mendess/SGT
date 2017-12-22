@@ -5,17 +5,83 @@
  */
 package main.userInterface;
 
+import main.sgt.SGT;
+import main.sgt.UC;
+import main.sgt.exceptions.InvalidUserTypeException;
+import main.sgt.exceptions.UtilizadorJaExisteException;
+import main.sgt.exceptions.UtilizadorNaoExisteException;
+import main.sgt.exceptions.WrongCredentialsException;
+
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 /**
  *
  * @author pedro
  */
 public class JAlunoEscolherUC extends javax.swing.JFrame {
 
+    private final SGT sgt;
+
     /**
      * Creates new form AlunoEscolherUC
      */
-    public JAlunoEscolherUC() {
+    public JAlunoEscolherUC(SGT sgt) {
         initComponents();
+        this.sgt = sgt;
+        try {
+            this.sgt.login("A79003","password");
+        } catch (WrongCredentialsException e) {
+            e.printStackTrace();
+        }
+        updateUCNEscolhidas();
+        updateUCEscolhidas();
+    }
+
+    private void updateUCNEscolhidas() {
+        List<UC> uCsOfUser;
+        try {
+            uCsOfUser = this.sgt.getUCsOfUser();
+        } catch (InvalidUserTypeException e) {
+            e.printStackTrace();
+            //TODO leave frame
+            return;
+        }
+        List<UC> allUCs = this.sgt.getUCs();
+        allUCs.removeAll(uCsOfUser);
+        DefaultTableModel tModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
+        while(allUCs.size()>tModel.getRowCount()){
+            tModel.addRow(new String[1]);
+        }
+        while (allUCs.size()<tModel.getRowCount()){
+            tModel.removeRow(tModel.getRowCount()-1);
+        }
+        int i=0;
+        for(UC uc: allUCs){
+            tModel.setValueAt(uc.getId(),i++,0);
+        }
+    }
+
+    private void updateUCEscolhidas() {
+        List<UC> uCsOfUser;
+        try {
+            uCsOfUser = this.sgt.getUCsOfUser();
+        } catch (InvalidUserTypeException e) {
+            e.printStackTrace();
+            //TODO leave frame
+            return;
+        }
+        DefaultTableModel tModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
+        while(uCsOfUser.size()>tModel.getRowCount()){
+            tModel.addRow(new String[1]);
+        }
+        while (uCsOfUser.size()<tModel.getRowCount()){
+            tModel.removeRow(tModel.getRowCount()-1);
+        }
+        int i=0;
+        for(UC uc: uCsOfUser){
+            tModel.setValueAt(uc.getId(),i++,0);
+        }
     }
 
     /**
@@ -164,11 +230,40 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = this.jTableUCNEscolhidas.getSelectedRow();
+        String uc = (String) this.jTableUCNEscolhidas.getValueAt(selectedRow, 0);
+        try {
+            this.sgt.addAlunoToUC(this.sgt.getLoggedUser().getUserNum(),uc);
+            DefaultTableModel tableModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
+            tableModel.removeRow(selectedRow);
+            this.jTableUCNEscolhidas.setModel(tableModel);
+            tableModel = (DefaultTableModel) this.jTableUCEscolhidas.getModel();
+            tableModel.addRow(new Object[]{uc});
+            this.jTableUCEscolhidas.setModel(tableModel);
+        } catch (UtilizadorJaExisteException e) {
+            updateUCEscolhidas();
+            updateUCNEscolhidas();
+        }
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
 
     private void jButtonRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = this.jTableUCEscolhidas.getSelectedRow();
+        String uc = (String) this.jTableUCEscolhidas.getValueAt(selectedRow, 0);
+        try {
+            this.sgt.removeAlunoFromUC(this.sgt.getLoggedUser().getUserNum(),uc);
+            DefaultTableModel tableModel;
+            tableModel = (DefaultTableModel) this.jTableUCEscolhidas.getModel();
+            tableModel.removeRow(selectedRow);
+            this.jTableUCNEscolhidas.setModel(tableModel);
+
+            tableModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
+            tableModel.addRow(new Object[]{uc});
+            this.jTableUCEscolhidas.setModel(tableModel);
+
+        } catch (UtilizadorNaoExisteException e) {
+            updateUCEscolhidas();
+            updateUCNEscolhidas();
+        }
     }//GEN-LAST:event_jButtonRemoverActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
@@ -206,7 +301,7 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JAlunoEscolherUC().setVisible(true);
+                new JAlunoEscolherUC(new SGT()).setVisible(true);
             }
         });
     }
