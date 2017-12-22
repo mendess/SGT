@@ -56,7 +56,9 @@ public class TrocaDAO implements List<Troca> {
                                 rs.getString("aluno_id"),
                                 rs.getString("UC_id"),
                                 rs.getInt("turnoOrigem_id"),
+                                rs.getBoolean("turnoOrigem_ePratico"),
                                 rs.getInt("turnoDestino_id"),
+                                rs.getBoolean("turnoDestino_id"),
                                 rs.getTimestamp("data").toLocalDateTime()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,7 +89,9 @@ public class TrocaDAO implements List<Troca> {
                                      rs.getString("aluno_id"),
                                      rs.getString("UC_id"),
                                      rs.getInt("turnoOrigem_id"),
+                                     rs.getBoolean("turnoOrigem_ePratico"),
                                      rs.getInt("turnoDestino_id"),
+                                     rs.getBoolean("turnoDestino_ePratico"),
                                      rs.getTimestamp("dataRealizacao").toLocalDateTime());
             }
         } catch (SQLException e) {
@@ -110,21 +114,26 @@ public class TrocaDAO implements List<Troca> {
         boolean r = false;
         try {
             PreparedStatement stm = connection.prepareStatement(
-        "INSERT INTO `Trocas` (dataRealizacao, aluno_id, turnoOrigem_id, UC_id, turnoDestino_id, UC_id1) \n" +
-                "VALUES (NOW(),?,?,?,?,?)" +
-                "ON DUPLICATE KEY UPDATE dataRealizacao=VALUES(dataRealizacao)," +
-                "                        aluno_id=VALUES(aluno_id)," +
-                "                        turnoOrigem_id=VALUES(turnoOrigem_id)," +
-                "                        UC_id=VALUES(UC_id)," +
-                "                        turnoDestino_id=VALUES(turnoDestino_id)," +
-                "                        UC_id1=VALUES(UC_id1);",
+        "INSERT INTO `Trocas` (dataRealizacao, aluno_id, turnoOrigem_id,turnoOrigem_ePratico, UC_id, turnoDestino_id,turnoDestino_ePratico, UC_id1) \n" +
+                "VALUES (NOW(),?,?,?,?,?,?,?)\n" +
+                "ON DUPLICATE KEY UPDATE dataRealizacao=VALUES(dataRealizacao),\n" +
+                "                        aluno_id=VALUES(aluno_id),\n" +
+                "                        turnoOrigem_id=VALUES(turnoOrigem_id),\n" +
+                "                        turnoOrigem_ePratico=VALUES(turnoOrigem_ePratico),\n" +
+                "                        UC_id=VALUES(UC_id),\n" +
+                "                        turnoDestino_id=VALUES(turnoDestino_id),\n" +
+                "                        turnoDestino_ePratico=VALUES(turnoDestino_ePratico),\n" +
+                "                        UC_id1=VALUES(UC_id1)\n;",
                     Statement.RETURN_GENERATED_KEYS);
 //            stm.setInt(1,troca.getId());
             stm.setString(1,troca.getAluno());
             stm.setInt(2,troca.getTurnoOrigem());
-            stm.setString(3,troca.getUc());
-            stm.setInt(4,troca.getTurnoDestino());
-            stm.setString(5,troca.getUc());
+            stm.setBoolean(3,troca.isTurnoOrigem_Pratico());
+            stm.setString(4,troca.getUc());
+            stm.setInt(5,troca.getTurnoDestino());
+            stm.setBoolean(6,troca.isTurnoDestino_Pratico());
+            stm.setString(7,troca.getUc());
+            System.out.println(stm);
             stm.executeUpdate();
             /*ResultSet rs = stm.getGeneratedKeys();
             if(rs.next()){
@@ -198,7 +207,9 @@ public class TrocaDAO implements List<Troca> {
                             rs.getString("aluno_id"),
                             rs.getString("UC_id"),
                             rs.getInt("turnoOrigem_id"),
+                            rs.getBoolean("turnoOrigem_ePratico"),
                             rs.getInt("turnoDestino_id"),
+                            rs.getBoolean("turnoDestino_ePratico"),
                             rs.getTimestamp("dataRealizacao").toLocalDateTime());
             }
         } catch (SQLException e) {

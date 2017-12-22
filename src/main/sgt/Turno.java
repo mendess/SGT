@@ -37,7 +37,7 @@ public class Turno {
     /**
      * Aulas do turno
      */
-    private AulaDAO aulas = new AulaDAO();
+    private final AulaDAO aulas = new AulaDAO();
     /**
      * Lista dos alunos
      */
@@ -232,7 +232,7 @@ public class Turno {
      * @param aula Numero da aula
      */
     void marcarPresenca(String aluno, int aula) {
-        AulaKey aKey = new AulaKey(this.ucId,this.id,aula);
+        AulaKey aKey = new AulaKey(this.ucId,this.id,aula, ePratico);
         Aula a = this.aulas.get(aKey);
         a.marcarPresenca(aluno);
         this.aulas.put(aKey,a);
@@ -242,8 +242,8 @@ public class Turno {
      * Adiciona uma aula ao turno
      */
     void addAula() {
-        int num = this.aulas.maxID(this.ucId,this.id);
-        Aula a = new Aula(num, this.ucId, this.id);
+        int num = this.aulas.maxID(this.ucId,this.id, ePratico);
+        Aula a = new Aula(num, this.ucId, this.id, ePratico);
         this.aulas.put(new AulaKey(a),a);
     }
 
@@ -252,7 +252,7 @@ public class Turno {
      * @param aula Numero da aula a remover
      */
     void removeAula(int aula) {
-        this.aulas.remove(new AulaKey(this.ucId,this.id,aula));
+        this.aulas.remove(new AulaKey(this.ucId,this.id,aula, ePratico));
     }
 
     public boolean equals(Object o) {

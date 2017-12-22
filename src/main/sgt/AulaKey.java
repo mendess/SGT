@@ -4,11 +4,13 @@ public class AulaKey {
     private String uc_id;
     private int turno_id;
     private int aula_id;
+    private boolean ePratico;
 
-    public AulaKey(String uc_id, int turno_id, int aula_id){
+    public AulaKey(String uc_id, int turno_id, int aula_id, boolean ePratico){
         this.uc_id = uc_id;
         this.turno_id = turno_id;
         this.aula_id = aula_id;
+        this.ePratico = ePratico;
     }
 
     public AulaKey(Aula a) {
@@ -27,6 +29,10 @@ public class AulaKey {
 
     public int getAula_id() {
         return this.aula_id;
+    }
+
+    public boolean ePratico() {
+        return this.ePratico;
     }
 
     @Override

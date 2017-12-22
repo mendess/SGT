@@ -21,23 +21,27 @@ public class Aula {
      * O identificador da UC a que a aula pertence
      */
     private String uc;
+    private boolean ePratico;
 
     /**
      * Construtor de aula
      * @param uc A UC do turno
      * @param turno O numero do turno da aula
+     * @param ePratico
      */
-    public Aula(int numero, String uc, int turno) {
+    public Aula(int numero, String uc, int turno, boolean ePratico) {
         this.uc = uc;
         this.turno = turno;
         this.numero = numero;
+        this.ePratico = ePratico;
         this.presencas = new ArrayList<>();
     }
 
-    public Aula(int numero, String uc, int turno, List<String> presencas) {
+    public Aula(int numero, String uc, int turno, boolean ePratico, List<String> presencas) {
         this.numero = numero;
         this.uc = uc;
         this.turno = turno;
+        this.ePratico = ePratico;
         this.presencas = presencas;
     }
 
@@ -73,6 +77,10 @@ public class Aula {
      */
     public String getUc() {
         return this.uc;
+    }
+
+    public boolean ePratico() {
+        return this.ePratico;
     }
 
     public List<String> getPresencas() {

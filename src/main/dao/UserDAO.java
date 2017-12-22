@@ -146,7 +146,7 @@ public class UserDAO implements Map<String, Utilizador> {
     private Map<String, Integer> getInscricoesAluno(String id) throws SQLException {
         PreparedStatement stm = connection.prepareStatement(
                 "SELECT * FROM Turno_has_Aluno\n" +
-                        "WHERE Aluno_id=?;");
+                        "WHERE Aluno_id=? AND ePratico=TRUE;");
         Map<String,Integer> inscricoes = new HashMap<>();
         stm.setString(1,id);
         ResultSet rs = stm.executeQuery();
@@ -184,7 +184,7 @@ public class UserDAO implements Map<String, Utilizador> {
                 sql2 = "INSERT INTO `Aluno` (Utilizador_id, eEspecial)\n" +
                          "VALUES (?,?)\n" +
                          "ON DUPLICATE KEY UPDATE Utilizador_id=VALUES(Utilizador_id), eEspecial=VALUES(eEspecial);" +
-                        "DELETE FROM Turno_has_Aluno WHERE Aluno_id=?";
+                        "DELETE FROM Turno_has_Aluno WHERE Aluno_id=? AND ePratico=TRUE";
                 stmTurnos = updateTurnosAluno((Aluno) value);
             }else if (value instanceof DiretorDeCurso){
                 sql2 = "INSERT INTO `DiretorDeCurso` (Utilizador_id)\n" +
@@ -235,8 +235,8 @@ public class UserDAO implements Map<String, Utilizador> {
 
     private PreparedStatement updateTurnosAluno(Aluno value) throws SQLException {
         PreparedStatement stm = connection.prepareStatement("" +
-                "INSERT INTO Turno_has_Aluno (Turno_id, UC_id, Aluno_id) " +
-                "VALUES (?,?,?);");
+                "INSERT INTO Turno_has_Aluno (Turno_id, UC_id, Aluno_id,ePratico) " +
+                "VALUES (?,?,?,TRUE);");
         for(String uc : value.getHorario().keySet()){
             Integer turno = value.getHorario().get(uc);
             stm.setInt(1,turno);
@@ -280,7 +280,7 @@ public class UserDAO implements Map<String, Utilizador> {
                     "DELETE FROM Presencas WHERE Aluno_id=?;\n" +
                     "DELETE FROM Trocas WHERE aluno_id=?;\n" +
                     "UPDATE Turno SET Docente_id=NULL WHERE Docente_id=?;\n" +
-                    "DELETE FROM Turno_has_Aluno WHERE Aluno_id=?;\n" +
+                    "DELETE FROM Turno_has_Aluno WHERE Aluno_id=? AND TRUE;\n" +
                     "DELETE FROM Pedido WHERE Aluno_id=?;\n" +
                     "DELETE FROM Docente WHERE Utilizador_id=?;\n" +
                     "DELETE FROM DiretorDeCurso WHERE Utilizador_id=?;\n" +

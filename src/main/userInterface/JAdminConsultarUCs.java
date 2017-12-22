@@ -209,7 +209,7 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
                         .findFirst()
                         .orElse(null);
         if(uc==null) return;
-        Turno t = uc.getTurno(shiftFromString(turno));
+        Turno t = uc.getTurno(shiftFromString(turno), shiftTypeFromStr(turno));
         List<Aluno> alunos = t.getAlunos().stream()
                                           .map(this.sgt::getAluno)
                                           .collect(Collectors.toList());
@@ -229,6 +229,10 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
 
         this.jTableAlunos.setModel(model);
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
+
+    private boolean shiftTypeFromStr(String turno) {
+        return turno.contains("TP");
+    }
 
     private int shiftFromString(String turno) {
         return Integer.parseInt(turno.replaceAll("[^\\d.]", ""));

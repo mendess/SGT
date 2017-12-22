@@ -19,6 +19,7 @@ public class Pedido {
      * Turno pedido
      */
     private int turno;
+    private boolean ePratico;
 
     /**
      * Construtor do <tt>Pedido</tt>
@@ -26,12 +27,14 @@ public class Pedido {
      * @param alunoNome Nome do aluno que fez o pedido
      * @param uc Identificador da UC a que pertence o turno pedido
      * @param turno Numero do turno pedido
+     * @param ePratico
      */
-    public Pedido(String alunoNum, String alunoNome, String uc, int turno) {
+    public Pedido(String alunoNum, String alunoNome, String uc, int turno, boolean ePratico) {
         this.alunoNum = alunoNum;
         this.alunoNome = alunoNome;
         this.uc = uc;
         this.turno = turno;
+        this.ePratico = ePratico;
     }
 
     /**
@@ -64,6 +67,10 @@ public class Pedido {
      */
     public int getTurno() {
         return this.turno;
+    }
+
+    public boolean ePratico() {
+        return this.ePratico;
     }
 
     @Override

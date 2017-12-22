@@ -21,10 +21,12 @@ public class Troca {
      * O Turno de onde o Aluno veio
      */
     private int turnoOrigem;
+    private boolean turnoOrigem_ePratico;
     /**
      * O Turno para onde o Aluno foi
      */
     private int turnoDestino;
+    private boolean turnoDestino_ePratico;
     /**
      * A data em que a Troca foi efetuada
      */
@@ -36,15 +38,19 @@ public class Troca {
      * @param aluno O identificador do aluno que mudou de turno
      * @param uc A UC dentro da qual a troca foi efetuada
      * @param turnoOrigem O turno de onde o aluno veio
+     * @param turnoOrigem_ePratico
      * @param turnoDestino O turno para onde o aluno foi
+     * @param turnoDestino_ePratico
      * @param data Data da troca
      */
-    public Troca(int id, String aluno, String uc, int turnoOrigem, int turnoDestino, LocalDateTime data){
+    public Troca(int id, String aluno, String uc, int turnoOrigem, boolean turnoOrigem_ePratico, int turnoDestino, boolean turnoDestino_ePratico, LocalDateTime data){
         this.id = id;
         this.aluno = aluno;
         this.uc = uc;
         this.turnoOrigem = turnoOrigem;
+        this.turnoOrigem_ePratico = turnoOrigem_ePratico;
         this.turnoDestino = turnoDestino;
+        this.turnoDestino_ePratico = turnoDestino_ePratico;
         this.data = data;
     }
     /**
@@ -53,18 +59,24 @@ public class Troca {
      * @param aluno O identificador do aluno que mudou de turno
      * @param uc A UC dentro da qual a troca foi efetuada
      * @param turnoOrigem O turno de onde o aluno veio
+     * @param turnoOrigem_ePratico
      * @param turnoDestino O turno para onde o aluno foi
+     * @param turnoDestino_ePratico
      */
-    public Troca(int id, String aluno, String uc, int turnoOrigem, int turnoDestino) {
+    public Troca(int id, String aluno, String uc, int turnoOrigem, boolean turnoOrigem_ePratico, int turnoDestino, boolean turnoDestino_ePratico) {
         this.id = id;
         this.aluno = aluno;
         this.uc = uc;
         this.turnoOrigem = turnoOrigem;
+        this.turnoOrigem_ePratico = turnoOrigem_ePratico;
         this.turnoDestino = turnoDestino;
+        this.turnoDestino_ePratico = turnoDestino_ePratico;
         this.data = LocalDateTime.now();
     }
 
-    public Troca(String aluno, String uc, int turnoOrigem, int turnoDestino){
+    public Troca(String aluno, String uc, int turnoOrigem, boolean turnoOrigem_ePratico, int turnoDestino, boolean turnoDestino_ePratico){
+        this.turnoOrigem_ePratico = turnoOrigem_ePratico;
+        this.turnoDestino_ePratico = turnoDestino_ePratico;
         this.id=1;
         this.aluno = aluno;
         this.uc = uc;
@@ -118,6 +130,14 @@ public class Troca {
      */
     public int getId() {
         return id;
+    }
+
+    public boolean isTurnoOrigem_Pratico() {
+        return this.turnoOrigem_ePratico;
+    }
+
+    public boolean isTurnoDestino_Pratico() {
+        return this.turnoDestino_ePratico;
     }
 
     @Override

@@ -174,8 +174,9 @@ public class SGT extends Observable{
      * Devolve os turnos do utilizador que esta autenticado
      * @return Lista de turnos do utilizador autenticado
      * @throws InvalidUserTypeException Quando o utilizador autenticado não pode ter turnos
+     * @param ePratico
      */
-    public List<Turno> getTurnosUser() throws InvalidUserTypeException {
+    public List<Turno> getTurnosUser(boolean ePratico) throws InvalidUserTypeException {
         if(this.loggedUser instanceof Aluno){
             Aluno aluno = (Aluno) this.loggedUser;
             return aluno.getHorario().entrySet()
@@ -191,7 +192,7 @@ public class SGT extends Observable{
                 UC tmpUC = this.ucs.get(uc.getKey());
                 List<Integer> tmpTurnos = uc.getValue();
                 for(Integer turno : tmpTurnos){
-                    turnos.add(tmpUC.getTurno(turno));
+                    turnos.add(tmpUC.getTurno(turno, ePratico));
                 }
             }
             return turnos;
@@ -220,10 +221,11 @@ public class SGT extends Observable{
      * @param uc Identificador da UC a que o turno pertence
      * @param aluno Numero do aluno a remover
      * @param turno Numero do turno de onde remover
+     * @param ePratico
      */
-    public void removerAlunoDeTurno(String uc, String aluno, int turno) {
+    public void removerAlunoDeTurno(String uc, String aluno, int turno, boolean ePratico) {
         UC newUC = this.ucs.get(uc);
-        newUC.removerAlunoDeTurno(aluno,turno);
+        newUC.removerAlunoDeTurno(aluno,turno, ePratico);
         this.ucs.put(newUC.getId(),newUC);
     }
 
@@ -233,10 +235,11 @@ public class SGT extends Observable{
      * @param uc Identificador da UC
      * @param turno Numero do turno
      * @param aula Aula
+     * @param ePratico
      */
-    public void marcarPresenca(String aluno, String uc, int turno, int aula) {
+    public void marcarPresenca(String aluno, String uc, int turno, int aula, boolean ePratico) {
         UC newUC = this.ucs.get(uc);
-        newUC.marcarPresenca(aluno,turno,aula);
+        newUC.marcarPresenca(aluno,turno,aula, ePratico);
         this.ucs.put(newUC.getId(),newUC);
     }
 
@@ -247,23 +250,24 @@ public class SGT extends Observable{
      * @param turno Numero do turno onde adicionar
      * @throws UtilizadorJaExisteException Se o aluno ja esta inscrito no turno
      */
-    public void adicionarAlunoTurno(String uc, String aluno, int turno) throws UtilizadorJaExisteException {
-        this.ucs.get(uc).adicionarAlunoTurno(aluno,turno);
-        this.trocas.add(new Troca(this.trocas.maxID(),aluno,uc,-1,turno));
+    public void adicionarAlunoTurno(String uc, String aluno, int turno,boolean ePratico) throws UtilizadorJaExisteException {
+        this.ucs.get(uc).adicionarAlunoTurno(aluno,turno, ePratico);
+//        this.trocas.add(new Troca(this.trocas.maxID(),aluno,uc,-1, ePratico, turno, ePratico));
     }
 
     /**
      * Verifica se o horario do utilizador autenticado conflite com o turno
      * @param uc Identificador da UC a que pertence o turno
      * @param turno Numero do turno
+     * @param ePratico
      * @return Retorna <tt>true</tt> se o horario conflite com o turno
      */
-    public boolean horarioConfilcts(String uc, int turno) throws InvalidUserTypeException {
+    public boolean horarioConfilcts(String uc, int turno, boolean ePratico) throws InvalidUserTypeException {
         if(this.loggedUser instanceof Aluno){
-            Turno novoT = this.ucs.get(uc).getTurno(turno);
+            Turno novoT = this.ucs.get(uc).getTurno(turno, ePratico);
             List<Turno> turnos = ((Aluno) this.loggedUser).getHorario().entrySet()
                     .stream()
-                    .map(e -> this.ucs.get(e.getKey()).getTurno(e.getValue()))
+                    .map(e -> this.ucs.get(e.getKey()).getTurno(e.getValue(), ePratico))
                     .collect(Collectors.toList());
             return turnos.stream()
                     .anyMatch(t ->turnoConflicts(t,novoT));
@@ -303,7 +307,7 @@ public class SGT extends Observable{
      */
     public void pedirTroca(String uc, int turno) throws InvalidUserTypeException {
         if(this.loggedUser instanceof Aluno){
-            Pedido newPedido = new Pedido(this.loggedUser.getUserNum(),this.loggedUser.getName(),uc,turno);
+            Pedido newPedido = new Pedido(this.loggedUser.getUserNum(),this.loggedUser.getName(),uc,turno,true);
             if(this.pedidos.containsKey(this.loggedUser.getUserNum())){
                 this.pedidos.get(this.loggedUser.getUserNum()).add(newPedido);
                 this.pedidosDAO.put(newPedido);
@@ -334,7 +338,8 @@ public class SGT extends Observable{
                     .map(pedido -> new Pedido(pedido.getAlunoNum(),
                                                 this.utilizadores.get(pedido.getAlunoNum()).getName(),
                                                 pedido.getUc(),
-                                                pedido.getTurno()))
+                                                pedido.getTurno(),
+                                                pedido.ePratico()))
                     .collect(Collectors.toList());
         }
         return null;
@@ -363,10 +368,11 @@ public class SGT extends Observable{
      * @param aluno Numero do aluno
      * @param uc UC onde pertence o turno
      * @param turno Numero do turno para onde pretende ir
+     * @param ePratico
      * @throws InvalidUserTypeException O numero de aluno nao e valido
      * @throws AlunoNaoEstaInscritoNaUcException O aluno nao esta inscrito na UC
      */
-    public void moveAlunoToTurno(String aluno, String uc, int turno) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUcException {
+    public void moveAlunoToTurno(String aluno, String uc, int turno, Object ePratico) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUcException {
         Utilizador u = this.utilizadores.get(aluno);
         if(u instanceof Aluno){
             this.trocas.add(this.ucs.get(uc).moveAlunoToTurno((Aluno) u,turno));
@@ -423,16 +429,17 @@ public class SGT extends Observable{
      * @param uc O identificador da UC do turno
      * @param turno O numero do turno
      * @param docente O identificador do docente
+     * @param ePratico
      */
-    public void setDocenteOfTurno(String uc, int turno, String docente){
+    public void setDocenteOfTurno(String uc, int turno, String docente, boolean ePratico){
         UC tmpUC = this.ucs.get(uc);
-        tmpUC.addDocenteToTurno(turno,docente);
+        tmpUC.addDocenteToTurno(turno,docente, ePratico);
         this.ucs.put(tmpUC.getId(),tmpUC);
     }
 
-    public void removeDocenteFromTurno(String uc, int turno, String docente){
+    public void removeDocenteFromTurno(String uc, int turno, String docente, boolean ePratico){
         UC tmpUC = this.ucs.get(uc);
-        tmpUC.removeDocenteFromTurno(turno,docente);
+        tmpUC.removeDocenteFromTurno(turno,docente, ePratico);
         this.ucs.put(tmpUC.getId(),tmpUC);
     }
 
@@ -474,11 +481,12 @@ public class SGT extends Observable{
      * Remove um turno de uma UC
      * @param id Numero do turno a remover
      * @param uc Numero da UC onde remover
+     * @param ePratico
      * @throws TurnoNaoVazioException Quando o turno tem alunos associados
      */
-    public void removeTurno(int id, String uc) throws TurnoNaoVazioException {
+    public void removeTurno(int id, String uc, boolean ePratico) throws TurnoNaoVazioException {
         UC newUC = this.ucs.get(uc);
-        newUC.removeTurno(id);
+        newUC.removeTurno(id, ePratico);
         this.ucs.put(newUC.getId(),newUC);
     }
 
@@ -519,12 +527,10 @@ public class SGT extends Observable{
                 boolean ePratico = jTurno.getBoolean("ePratico");
                 int id = ePratico ? tpCount++ : tCount++;
                 Turno t = new Turno(id,key,jTurno.getInt("vagas"), ePratico);
-                this.addTurno();
-                //TODO fix this shit
+//                new TurnoDAO().put(new TurnoKey(t),t);
+                System.out.println(t);
             }
         }
-        System.out.println(keySet);
-        System.out.println(keySet.size());
     }
 
     /**
@@ -593,9 +599,10 @@ public class SGT extends Observable{
      * Adiciona uma aula a um turno
      * @param uc Identificador da UC to turno
      * @param turno Numero do turno
+     * @param ePratico
      */
-    public void addAula(String uc, int turno) {
-        this.ucs.get(uc).addAula(turno);
+    public void addAula(String uc, int turno, boolean ePratico) {
+        this.ucs.get(uc).addAula(turno, ePratico);
     }
 
     /**
@@ -603,9 +610,10 @@ public class SGT extends Observable{
      * @param uc Identificador da UC do turno
      * @param turno Numero do turno
      * @param aula Numero da aula a remover
+     * @param ePratico
      */
-    public void removeAula(String uc, int turno, int aula) {
-        this.ucs.get(uc).removeAula(turno,aula);
+    public void removeAula(String uc, int turno, int aula, boolean ePratico) {
+        this.ucs.get(uc).removeAula(turno,aula, ePratico);
     }
 
     public Aluno getAluno(String a) {

@@ -48,10 +48,11 @@ public class AulaDAO implements Map<AulaKey,Aula> {
         boolean r = false;
         try {
             PreparedStatement stm = connection.prepareStatement("" +
-                    "SELECT `id` FROM `Aula` WHERE `id`=? AND `Turno_id`=? AND `UC_id`=?;");
+                    "SELECT `id` FROM `Aula` WHERE `id`=? AND `Turno_id`=? AND `UC_id`=? AND ePratico=?;");
             stm.setInt(1, a.getAula_id());
             stm.setInt(2,a.getTurno_id());
             stm.setString(3, a.getUc_id());
+            stm.setBoolean(4,a.ePratico());
             ResultSet rs = stm.executeQuery();
             r = rs.next();
         } catch (SQLException e) {
@@ -85,29 +86,34 @@ public class AulaDAO implements Map<AulaKey,Aula> {
                     "SELECT `id` AS `Aula`," +
                             "  Aula.`Turno_id` AS `Turno`," +
                             "  Aula.`UC_id` AS `UC`," +
-                            " `Aluno_id` AS `Aluno`" +
+                            " `Aluno_id` AS `Aluno`," +
+                            "  Aula.ePratico AS ePratico\n" +
                             "FROM Aula " +
                             "LEFT JOIN Presencas ON Aula.id = Presencas.Aula_id " +
-                            "                     AND Aula.Turno_id = Presencas.Turno_id " +
-                            "                     AND Aula.UC_id = Presencas.UC_id " +
-                            "WHERE Aula.`id`=?" +
-                            "  AND Aula.`Turno_id`=?" +
-                            "  AND Aula.`UC_id`=?");
+                            "                   AND Aula.Turno_id = Presencas.Turno_id " +
+                            "                   AND Aula.UC_id = Presencas.UC_id " +
+                            "                   AND Aula.ePratico = Presencas.ePratico\n" +
+                            "WHERE Aula.id=?" +
+                            "  AND Aula.Turno_id=?" +
+                            "  AND Aula.UC_id=?" +
+                            "  AND Aula.ePratico=?");
             stm.setInt(1, aKey.getAula_id());
             stm.setInt(2,aKey.getTurno_id());
             stm.setString(3 , aKey.getUc_id());
+            stm.setBoolean(4,aKey.ePratico());
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("Aula");
                 int turno = rs.getInt("Turno");
                 String uc = rs.getString("UC");
+                boolean ePratico = rs.getBoolean("ePratico");
                 List<String> presencas = new ArrayList<>();
                 do {
                     String aluno = rs.getString("Aluno");
                     if(aluno!=null) presencas.add(aluno);
                 }while(rs.next());
 
-                al = new Aula(id,uc,turno,presencas);
+                al = new Aula(id,uc,turno,ePratico,presencas);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,20 +131,23 @@ public class AulaDAO implements Map<AulaKey,Aula> {
         try {
             this.connection.setAutoCommit(false);
             PreparedStatement stm = connection.prepareStatement("" +
-                    "INSERT INTO Aula (id, Turno_id, UC_id) " +
-                    "   VALUES (?,?,?)" +
+                    "INSERT INTO Aula (id, Turno_id, UC_id,ePratico) " +
+                    "   VALUES (?,?,?,?)" +
                     "ON DUPLICATE KEY UPDATE id=VALUES(id)," +
                     "                        Turno_id=VALUES(Turno_id)," +
-                    "                        UC_id=VALUES(UC_id);" +
-                    "DELETE FROM Presencas WHERE UC_id=? AND Turno_id=? AND Aula_id=?;");
+                    "                        UC_id=VALUES(UC_id)," +
+                    "                        ePratico=VALUES(ePratico);" +
+                    "DELETE FROM Presencas WHERE UC_id=? AND Turno_id=? AND Aula_id=? AND ePratico=?;");
 
             PreparedStatement stmAulas = updateAulas(value);
             stm.setInt(1,value.getNumero());
             stm.setInt(2,value.getTurno());
             stm.setString(3,value.getUc());
-            stm.setString(4,value.getUc());
-            stm.setInt(5,value.getTurno());
-            stm.setInt(6,value.getNumero());
+            stm.setBoolean(4,value.ePratico());
+            stm.setString(5,value.getUc());
+            stm.setInt(6,value.getTurno());
+            stm.setInt(7,value.getNumero());
+            stm.setBoolean(8,value.ePratico());
             stm.executeUpdate();
             stmAulas.executeBatch();
 
@@ -154,13 +163,14 @@ public class AulaDAO implements Map<AulaKey,Aula> {
 
     private PreparedStatement updateAulas(Aula value) throws SQLException {
         PreparedStatement stm = connection.prepareStatement("" +
-                "INSERT INTO Presencas (Aula_id, Turno_id, UC_id, Aluno_id) " +
-                "   VALUES (?,?,?,?);");
+                "INSERT INTO Presencas (Aula_id, Turno_id, UC_id, Aluno_id,ePratico) " +
+                "   VALUES (?,?,?,?,?);");
         for(String a: value.getPresencas()){
             stm.setInt(1,value.getNumero());
             stm.setInt(2,value.getTurno());
             stm.setString(3,value.getUc());
             stm.setString(4,a);
+            stm.setBoolean(5,value.ePratico());
             stm.addBatch();
         }
         return stm;
@@ -173,12 +183,13 @@ public class AulaDAO implements Map<AulaKey,Aula> {
         if(al==null && connection==null) return null;
         try {
             PreparedStatement stm = connection.prepareStatement("" +
-                    "DELETE FROM Presencas WHERE Aula_id=? AND Turno_id=? AND UC_id=?;" +
-                    "DELETE FROM Aula WHERE id=? AND Turno_id=? AND UC_id=?;");
+                    "DELETE FROM Presencas WHERE Aula_id=? AND Turno_id=? AND UC_id=? AND ePratico=?;" +
+                    "DELETE FROM Aula      WHERE id=?      AND Turno_id=? AND UC_id=? AND ePratico=?;");
             for(int i=0;i<2;i++){
-                stm.setInt(   (3*i)+1,al.getNumero());
-                stm.setInt(   (3*i)+2,al.getTurno());
-                stm.setString((3*i)+3,al.getUc());
+                stm.setInt(    (4*i)+1,al.getNumero());
+                stm.setInt(    (4*i)+2,al.getTurno());
+                stm.setString( (4*i)+3,al.getUc());
+                stm.setBoolean((4*i)+4,al.ePratico());
             }
             stm.executeUpdate();
         } catch (SQLException e) {
@@ -206,12 +217,13 @@ public class AulaDAO implements Map<AulaKey,Aula> {
         if(connection==null) return keySet;
         try {
             PreparedStatement stm = connection.prepareStatement("" +
-                    "SELECT id,Turno_id,UC_id FROM `Aula`;");
+                    "SELECT id,Turno_id,UC_id,ePratico FROM `Aula`;");
             ResultSet rs = stm.executeQuery();
             while(rs.next()){
                 keySet.add(new AulaKey(rs.getString("UC_id"),
                                        rs.getInt("Turno_id"),
-                                       rs.getInt("id")));
+                                       rs.getInt("id"),
+                                       rs.getBoolean("ePratico")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -239,15 +251,16 @@ public class AulaDAO implements Map<AulaKey,Aula> {
         return entrySet;
     }
 
-    public int maxID(String uc, int turno) {
+    public int maxID(String uc, int turno, boolean ePratico) {
         connection = Connect.connect();
         int maxID = -1;
         if(connection==null) return maxID;
         try {
             PreparedStatement stm = connection.prepareStatement(
-                    "SELECT max(`id`) FROM `Aula` WHERE UC_id=? AND `Turno_id`=?;");
+                    "SELECT max(`id`) FROM `Aula` WHERE UC_id=? AND `Turno_id`=? AND ePratico=?;");
             stm.setString(1,uc);
             stm.setInt(2,turno);
+            stm.setBoolean(3,ePratico);
             ResultSet rs = stm.executeQuery();
             if(rs.next()) maxID = rs.getInt(1);
         } catch (SQLException e) {
