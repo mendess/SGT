@@ -163,7 +163,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
             stm.setString(9,value.getUcId());
             stm.setInt(10,value.getId());
             stm.setBoolean(11,value.ePratico());
-
+            System.out.println(stm);
             stm.executeUpdate();
             stmTinfo.executeBatch();
             stmAlunos.executeBatch();
@@ -220,7 +220,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
     public Turno remove(Object key) {
         Turno t = this.get(key);
         connection = Connect.connect();
-        if(t==null && connection==null) return null;
+        if(t==null || connection==null) return null;
         try {
             for (Aula a : t.getAulas()) {
                 new AulaDAO().remove(new AulaKey(a));
@@ -233,11 +233,11 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
             "                                            OR (turnoOrigem_id=?  AND turnoOrigem_ePratico=?));\n" +
             "DELETE FROM Turno           WHERE UC_id=? AND id=?       AND ePratico=?;\n");
 
-            for(int i=1;i<21;i+=3){
+            for(int i=1;i<18;i+=3){
                 stm.setString(i,t.getUcId());
                 stm.setInt(i+1,t.getId());
                 stm.setBoolean(i+2,t.ePratico());
-                if(i==7) {
+                if(i==10) {
                     stm.setInt(i+3, t.getId());
                     stm.setBoolean(i+4,t.ePratico());
                     i+=2;

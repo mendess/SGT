@@ -159,7 +159,7 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
     public List<Pedido> remove(Object key) {
         List<Pedido> pedidos = this.get(key);
         this.connection = Connect.connect();
-        if (pedidos==null && connection==null) return null;
+        if (pedidos==null || connection==null) return null;
         try {
             PreparedStatement stm = connection.prepareStatement("" +
                     "DELETE FROM Pedido WHERE UC_id=?");

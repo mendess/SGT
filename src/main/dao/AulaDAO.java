@@ -180,7 +180,7 @@ public class AulaDAO implements Map<AulaKey,Aula> {
     public Aula remove(Object key) {
         Aula al = this.get(key);
         connection = Connect.connect();
-        if(al==null && connection==null) return null;
+        if(al==null || connection==null) return null;
         try {
             PreparedStatement stm = connection.prepareStatement("" +
                     "DELETE FROM Presencas WHERE Aula_id=? AND Turno_id=? AND UC_id=? AND ePratico=?;" +

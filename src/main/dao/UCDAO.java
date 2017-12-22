@@ -170,8 +170,9 @@ public class UCDAO implements Map<String, UC> {
     public UC remove(Object key) {
         UC uc = this.get(key);
         this.connection = Connect.connect();
-        if(uc==null && connection==null) return null;
+        if(uc==null || connection==null) return null;
         try {
+            System.out.println(uc);
             for (Turno t : uc.getTurnos()) {
                 new TurnoDAO().remove(new TurnoKey(t));
             }
