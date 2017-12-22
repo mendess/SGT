@@ -68,6 +68,12 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jComboBoxTurnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTurnosActionPerformed(evt);
+            }
+        });
+
         jTableAlunosEstao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -206,6 +212,10 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonFecharActionPerformed
+
+    private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxTurnosActionPerformed
 
     /**
      * @param args the command line arguments
