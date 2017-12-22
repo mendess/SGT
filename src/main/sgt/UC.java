@@ -385,7 +385,9 @@ public class UC {
         return this.id.equals(a.getId()) &&
                 this.nome.equals(a.getNome()) &&
                 this.acron.equals(a.getAcron()) &&
-                this.responsavel.equals(a.getResponsavel()) &&
+                (this.responsavel==null ?
+                        a.getResponsavel()==null :
+                        this.responsavel.equals(a.getResponsavel())) &&
                 this.docentes.equals(a.getDocentes()) &&
                 this.alunos.equals(a.getAlunos());
     }

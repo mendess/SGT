@@ -11,7 +11,7 @@ public class Turno {
 
 
     public static Turno emptyShift(String uc){
-        return new Turno(0, uc, Integer.MAX_VALUE, false);
+        return new Turno(0, uc, Integer.MAX_VALUE, true);
     }
 
     /**

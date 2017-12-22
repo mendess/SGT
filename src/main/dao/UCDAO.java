@@ -134,6 +134,8 @@ public class UCDAO implements Map<String, UC> {
             stm.setString(2,value.getNome());
             stm.setString(3,value.getAcron());
             stm.setString(4,value.getResponsavel());
+            new TurnoDAO().put(new TurnoKey(Turno.emptyShift(key)),Turno.emptyShift(key));
+            updateAlunosUC(value);
             stm.executeUpdate();
             uc = value;
         } catch (SQLException e) {
@@ -142,6 +144,26 @@ public class UCDAO implements Map<String, UC> {
             Connect.close(connection);
         }
         return uc;
+    }
+
+    private void updateAlunosUC(UC value) throws SQLException {
+        List<String> alunos = value.getAlunos();
+        for(String aluno: alunos){
+            PreparedStatement stm = this.connection.prepareStatement("" +
+                    "SELECT aluno_id FROM Turno_has_Aluno WHERE UC_id=?;");
+            stm.setString(1,value.getId());
+            ResultSet rs = stm.executeQuery();
+            if(!rs.next()){
+                PreparedStatement stmInsert = this.connection.prepareStatement("" +
+                        "INSERT INTO Turno_has_Aluno (Turno_id, UC_id, ePratico, Aluno_id) " +
+                        "   VALUES (?,?,?,?);");
+                stmInsert.setInt(1,0);
+                stmInsert.setString(2,value.getId());
+                stmInsert.setBoolean(3,true);
+                stmInsert.setString(4,aluno);
+                stmInsert.executeUpdate();
+            }
+        }
     }
 
     @Override

@@ -210,21 +210,21 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
         List<Aluno> alunos = t.getAlunos().stream()
                                           .map(this.sgt::getAluno)
                                           .collect(Collectors.toList());
-        DefaultTableModel model = (DefaultTableModel) this.jTableAlunos.getModel();
-        while (alunos.size()>model.getRowCount()){
-            model.addRow(new String[2]);
+        DefaultTableModel tModel = (DefaultTableModel) this.jTableAlunos.getModel();
+        while (alunos.size()>tModel.getRowCount()){
+            tModel.addRow(new String[2]);
         }
-        while (alunos.size()<model.getRowCount()){
-            model.removeRow(model.getRowCount()-1);
+        while (alunos.size()<tModel.getRowCount()){
+            tModel.removeRow(tModel.getRowCount()-1);
         }
         int i=0;
         for (Aluno a: alunos){
-            model.setValueAt(a.getUserNum(),i,0);
-            model.setValueAt(a.getName(),i,1);
+            tModel.setValueAt(a.getUserNum(),i,0);
+            tModel.setValueAt(a.getName(),i,1);
             i++;
         }
 
-        this.jTableAlunos.setModel(model);
+        this.jTableAlunos.setModel(tModel);
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
 
     private boolean shiftTypeFromStr(String turno) {

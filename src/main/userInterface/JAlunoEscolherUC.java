@@ -14,6 +14,7 @@ import main.sgt.exceptions.WrongCredentialsException;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -49,6 +50,7 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         }
         List<UC> allUCs = this.sgt.getUCs();
         allUCs.removeAll(uCsOfUser);
+        System.out.println(allUCs.stream().map(UC::getId).collect(Collectors.toList()));
         DefaultTableModel tModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
         while(allUCs.size()>tModel.getRowCount()){
             tModel.addRow(new String[1]);
@@ -60,9 +62,6 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         for(UC uc: allUCs){
             System.out.println("UCsNEscolhidas uc: "+uc);
             tModel.setValueAt(uc.getId(),i++,0);
-        }
-        for(i=0;i<tModel.getRowCount();i++){
-            System.out.println(tModel.getValueAt(i,0));
         }
         this.jTableUCNEscolhidas.setModel(tModel);
     }
@@ -76,7 +75,7 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
             //TODO leave frame
             return;
         }
-        DefaultTableModel tModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
+        DefaultTableModel tModel = (DefaultTableModel) this.jTableUCEscolhidas.getModel();
         while(uCsOfUser.size()>tModel.getRowCount()){
             tModel.addRow(new String[1]);
         }
@@ -85,7 +84,6 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         }
         int i=0;
         for(UC uc: uCsOfUser){
-            System.out.println("UCsEscolhidas uc: "+uc);
             tModel.setValueAt(uc.getId(),i++,0);
         }
         this.jTableUCEscolhidas.setModel(tModel);
