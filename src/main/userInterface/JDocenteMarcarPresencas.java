@@ -45,8 +45,10 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBoxAula = new javax.swing.JComboBox<>();
+        jLabelTurnos = new javax.swing.JLabel();
+        jComboBoxTurnos = new javax.swing.JComboBox<>();
         jLabelAulas = new javax.swing.JLabel();
+        jComboBoxAula = new javax.swing.JComboBox<>();
         jScrollPanePresencas = new javax.swing.JScrollPane();
         jTablePresencas = new javax.swing.JTable();
         jButtonAdicionarAula = new javax.swing.JButton();
@@ -54,13 +56,21 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabelTurnos.setText("Turnos");
+
+        jComboBoxTurnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTurnosActionPerformed(evt);
+            }
+        });
+
+        jLabelAulas.setText("Aulas");
+
         jComboBoxAula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxAulaActionPerformed(evt);
             }
         });
-
-        jLabelAulas.setText("Aulas");
 
         jTablePresencas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -111,27 +121,34 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonFechar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelAulas)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBoxAula, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonAdicionarAula))))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap(25, Short.MAX_VALUE)
-                        .addComponent(jScrollPanePresencas, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabelTurnos))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelAulas)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jComboBoxAula, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(61, 61, 61)
+                                        .addComponent(jButtonAdicionarAula))))
+                            .addComponent(jScrollPanePresencas, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jLabelAulas)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelAulas)
+                    .addComponent(jLabelTurnos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxAula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAdicionarAula))
+                    .addComponent(jButtonAdicionarAula)
+                    .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPanePresencas, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -153,6 +170,10 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     private void jComboBoxAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAulaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxAulaActionPerformed
+
+    private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxTurnosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,7 +215,9 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAdicionarAula;
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JComboBox<String> jComboBoxAula;
+    private javax.swing.JComboBox<String> jComboBoxTurnos;
     private javax.swing.JLabel jLabelAulas;
+    private javax.swing.JLabel jLabelTurnos;
     private javax.swing.JScrollPane jScrollPanePresencas;
     private javax.swing.JTable jTablePresencas;
     // End of variables declaration//GEN-END:variables
