@@ -280,6 +280,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
         return this.keySet()
                 .stream()
                 .map(this::get)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
     }
 

@@ -200,6 +200,7 @@ public class UCDAO implements Map<String, UC> {
         return this.keySet()
                 .stream()
                 .map(this::get)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 

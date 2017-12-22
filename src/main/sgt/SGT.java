@@ -67,20 +67,22 @@ public class SGT extends Observable{
         this.ucs = new UCDAO();
         this.utilizadores = new UserDAO();
         new DiaDAO().initDias();
-        Collection<List<Pedido>> e = this.pedidosDAO.values();
-        Map<String,List<Pedido>> pedidos = new HashMap<>();
-        e.forEach(ps -> {
-            if(!ps.isEmpty()){
-                pedidos.put(ps.get(0).getAlunoNum(),new ArrayList<>());
-                ps.forEach(p -> pedidos.get(p.getAlunoNum()).add(p));
-            }
-        });
-        this.pedidos = pedidos;
-/*        Collection<Utilizador> utilizadores = this.utilizadores.values();
-        Collection<UC> ucs = this.ucs.values();
-        this.ucsRegistadas = !ucs.isEmpty();
+        Collection<List<Pedido>> pedidosDB = this.pedidosDAO.values();
+        Map<String,List<Pedido>> pedidosMEM = new HashMap<>();
+        pedidosDB.stream()
+                .filter(pedidoListDB -> !pedidoListDB.isEmpty())
+                .forEach(pedidoListDB -> pedidoListDB.forEach(p -> {
+                            if (!pedidosMEM.containsKey(p.getAlunoNum()))
+                                pedidosMEM.put(p.getAlunoNum(), new ArrayList<>());
+                            pedidosMEM.get(p.getAlunoNum()).add(p);
+                        })
+                );
+        this.pedidos = pedidosMEM;
+        Collection<Utilizador> utilizadores = this.utilizadores.values();
+        Collection<UC> ucsValues = this.ucs.values();
+        this.ucsRegistadas = !ucsValues.isEmpty();
         this.usersRegistados = !utilizadores.isEmpty();
-        this.turnosRegistados = ucs.stream().noneMatch(uc-> uc.getTurnos().isEmpty());
+        this.turnosRegistados = ucsValues.stream().noneMatch(uc-> uc.getTurnos().isEmpty());
         this.loginsAtivos = utilizadores.stream()
                                         .allMatch(Utilizador::isLoginAtivo);
         this.turnosAtribuidos = utilizadores.stream()
@@ -88,15 +90,15 @@ public class SGT extends Observable{
                                             .noneMatch(a -> ((Aluno) a).getHorario().isEmpty());
         //TODO remove this:
         try {
-            importUCs("jsons/ucs.json");
+            this.importUCs("jsons/ucs.json");
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
         try {
-            test.main(new String[]{});
-        } catch (FileNotFoundException | SQLException e1) {
-            e1.printStackTrace();
-        }*/
+            this.importTurnos("jsons/turnos.json");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -174,9 +176,8 @@ public class SGT extends Observable{
      * Devolve os turnos do utilizador que esta autenticado
      * @return Lista de turnos do utilizador autenticado
      * @throws InvalidUserTypeException Quando o utilizador autenticado não pode ter turnos
-     * @param ePratico
      */
-    public List<Turno> getTurnosUser(boolean ePratico) throws InvalidUserTypeException {
+    public List<Turno> getTurnosUser() throws InvalidUserTypeException {
         if(this.loggedUser instanceof Aluno){
             Aluno aluno = (Aluno) this.loggedUser;
             return aluno.getHorario().entrySet()
@@ -187,12 +188,12 @@ public class SGT extends Observable{
         if(this.loggedUser instanceof Docente){
             Docente docente = (Docente) this.loggedUser;
             List<Turno> turnos = new ArrayList<>();
-            Set<Map.Entry<String,List<Integer>>> ucs = docente.getUcsEturnos().entrySet();
-            for (Map.Entry<String,List<Integer>> uc : ucs){
+            Set<Map.Entry<String, List<TurnoKey>>> ucs = docente.getUcsEturnos().entrySet();
+            for (Map.Entry<String, List<TurnoKey>> uc : ucs){
                 UC tmpUC = this.ucs.get(uc.getKey());
-                List<Integer> tmpTurnos = uc.getValue();
-                for(Integer turno : tmpTurnos){
-                    turnos.add(tmpUC.getTurno(turno, ePratico));
+                List<TurnoKey> tmpTurnos = uc.getValue();
+                for(TurnoKey turno : tmpTurnos){
+                    turnos.add(tmpUC.getTurno(turno.getTurno_id(), turno.ePratico()));
                 }
             }
             return turnos;
@@ -221,7 +222,7 @@ public class SGT extends Observable{
      * @param uc Identificador da UC a que o turno pertence
      * @param aluno Numero do aluno a remover
      * @param turno Numero do turno de onde remover
-     * @param ePratico
+     * @param ePratico Se o turno e pratico
      */
     public void removerAlunoDeTurno(String uc, String aluno, int turno, boolean ePratico) {
         UC newUC = this.ucs.get(uc);
@@ -235,8 +236,7 @@ public class SGT extends Observable{
      * @param uc Identificador da UC
      * @param turno Numero do turno
      * @param aula Aula
-     * @param ePratico
-     */
+     * @param ePratico Se o turno e pratico     */
     public void marcarPresenca(String aluno, String uc, int turno, int aula, boolean ePratico) {
         UC newUC = this.ucs.get(uc);
         newUC.marcarPresenca(aluno,turno,aula, ePratico);
@@ -252,15 +252,13 @@ public class SGT extends Observable{
      */
     public void adicionarAlunoTurno(String uc, String aluno, int turno,boolean ePratico) throws UtilizadorJaExisteException {
         this.ucs.get(uc).adicionarAlunoTurno(aluno,turno, ePratico);
-//        this.trocas.add(new Troca(this.trocas.maxID(),aluno,uc,-1, ePratico, turno, ePratico));
     }
 
     /**
      * Verifica se o horario do utilizador autenticado conflite com o turno
      * @param uc Identificador da UC a que pertence o turno
      * @param turno Numero do turno
-     * @param ePratico
-     * @return Retorna <tt>true</tt> se o horario conflite com o turno
+     * @param ePratico Se o turno e pratico     * @return Retorna <tt>true</tt> se o horario conflite com o turno
      */
     public boolean horarioConfilcts(String uc, int turno, boolean ePratico) throws InvalidUserTypeException {
         if(this.loggedUser instanceof Aluno){
@@ -368,8 +366,7 @@ public class SGT extends Observable{
      * @param aluno Numero do aluno
      * @param uc UC onde pertence o turno
      * @param turno Numero do turno para onde pretende ir
-     * @param ePratico
-     * @throws InvalidUserTypeException O numero de aluno nao e valido
+     * @param ePratico Se o turno e pratico     * @throws InvalidUserTypeException O numero de aluno nao e valido
      * @throws AlunoNaoEstaInscritoNaUcException O aluno nao esta inscrito na UC
      */
     public void moveAlunoToTurno(String aluno, String uc, int turno, Object ePratico) throws InvalidUserTypeException, AlunoNaoEstaInscritoNaUcException {
@@ -429,8 +426,7 @@ public class SGT extends Observable{
      * @param uc O identificador da UC do turno
      * @param turno O numero do turno
      * @param docente O identificador do docente
-     * @param ePratico
-     */
+     * @param ePratico Se o turno e pratico     */
     public void setDocenteOfTurno(String uc, int turno, String docente, boolean ePratico){
         UC tmpUC = this.ucs.get(uc);
         tmpUC.addDocenteToTurno(turno,docente, ePratico);
@@ -481,8 +477,7 @@ public class SGT extends Observable{
      * Remove um turno de uma UC
      * @param id Numero do turno a remover
      * @param uc Numero da UC onde remover
-     * @param ePratico
-     * @throws TurnoNaoVazioException Quando o turno tem alunos associados
+     * @param ePratico Se o turno e pratico     * @throws TurnoNaoVazioException Quando o turno tem alunos associados
      */
     public void removeTurno(int id, String uc, boolean ePratico) throws TurnoNaoVazioException {
         UC newUC = this.ucs.get(uc);
@@ -507,15 +502,10 @@ public class SGT extends Observable{
      * Importa os turnos de um ficheiro
      * @param filepath Caminho para o ficheiro
      */
-    public void importTurnos(String filepath) {
+    public void importTurnos(String filepath) throws FileNotFoundException {
         File file = new File(filepath);
         JsonReader jsonReader;
-        try {
-            jsonReader = Json.createReader(new FileReader(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
+        jsonReader = Json.createReader(new FileReader(file));
         JsonObject jsonObject = jsonReader.readObject();
         Set<String> keySet = jsonObject.keySet();
         for(String key: keySet){
@@ -527,8 +517,7 @@ public class SGT extends Observable{
                 boolean ePratico = jTurno.getBoolean("ePratico");
                 int id = ePratico ? tpCount++ : tCount++;
                 Turno t = new Turno(id,key,jTurno.getInt("vagas"), ePratico);
-//                new TurnoDAO().put(new TurnoKey(t),t);
-                System.out.println(t);
+                new TurnoDAO().put(new TurnoKey(t),t);
             }
         }
     }
@@ -599,8 +588,7 @@ public class SGT extends Observable{
      * Adiciona uma aula a um turno
      * @param uc Identificador da UC to turno
      * @param turno Numero do turno
-     * @param ePratico
-     */
+     * @param ePratico Se o turno e pratico     */
     public void addAula(String uc, int turno, boolean ePratico) {
         this.ucs.get(uc).addAula(turno, ePratico);
     }
@@ -610,8 +598,7 @@ public class SGT extends Observable{
      * @param uc Identificador da UC do turno
      * @param turno Numero do turno
      * @param aula Numero da aula a remover
-     * @param ePratico
-     */
+     * @param ePratico Se o turno e pratico     */
     public void removeAula(String uc, int turno, int aula, boolean ePratico) {
         this.ucs.get(uc).removeAula(turno,aula, ePratico);
     }

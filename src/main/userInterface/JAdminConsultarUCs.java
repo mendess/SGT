@@ -5,10 +5,7 @@
  */
 package main.userInterface;
 
-import main.sgt.Aluno;
-import main.sgt.SGT;
-import main.sgt.Turno;
-import main.sgt.UC;
+import main.sgt.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -209,7 +206,7 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
                         .findFirst()
                         .orElse(null);
         if(uc==null) return;
-        Turno t = uc.getTurno(shiftFromString(turno), shiftTypeFromStr(turno));
+        Turno t = uc.getTurno(shiftFromString(turno),shiftTypeFromStr(turno));
         List<Aluno> alunos = t.getAlunos().stream()
                                           .map(this.sgt::getAluno)
                                           .collect(Collectors.toList());

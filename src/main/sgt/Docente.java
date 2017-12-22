@@ -13,7 +13,7 @@ public class Docente extends Utilizador {
     /**
      * UCs e turnos do docente
      */
-    private Map<String, List<Integer>> ucsEturnos;
+    private Map<String, List<TurnoKey>> ucsEturnos;
 
     /**
      * Construtor do Docente
@@ -23,7 +23,7 @@ public class Docente extends Utilizador {
      * @param name O nome do docente
      * @param ucsEturnos As ucsEturnos do docente
      */
-    public Docente(String userNum, String password, String email, String name, Map<String, List<Integer>> ucsEturnos) {
+    public Docente(String userNum, String password, String email, String name, Map<String, List<TurnoKey>> ucsEturnos) {
         super(userNum,password,email,name);
         this.ucsEturnos = ucsEturnos;
     }
@@ -32,7 +32,7 @@ public class Docente extends Utilizador {
      * Retorna as UCs e turnos do Docente
      * @return UCs e turnos do docente
      */
-    public Map<String, List<Integer>> getUcsEturnos() {
+    public Map<String, List<TurnoKey>> getUcsEturnos() {
         return new HashMap<>(this.ucsEturnos);
     }
 
@@ -40,7 +40,7 @@ public class Docente extends Utilizador {
      * Altera as ucs e turnos do docente
      * @param ucsEturnos Novas ucs e turnos
      */
-    void setUcsEturnos(Map<String, List<Integer>> ucsEturnos) {
+    void setUcsEturnos(Map<String, List<TurnoKey>> ucsEturnos) {
         this.ucsEturnos = ucsEturnos;
     }
 
@@ -62,7 +62,7 @@ public class Docente extends Utilizador {
      * @param uc Identificador da UC do turno a remover
      * @param turno Numero do turno
      */
-    void addTurno(String uc, int turno) throws TurnoJaExisteException {
+    void addTurno(String uc, TurnoKey turno) throws TurnoJaExisteException {
         if(!this.ucsEturnos.get(uc).contains(turno)){
             this.ucsEturnos.get(uc).add(turno);
         }else{

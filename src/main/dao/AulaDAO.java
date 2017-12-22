@@ -238,6 +238,7 @@ public class AulaDAO implements Map<AulaKey,Aula> {
         return this.keySet()
             .stream()
             .map(this::get)
+            .filter(Objects::nonNull)
             .collect(Collectors.toSet());
     }
 

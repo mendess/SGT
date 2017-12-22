@@ -90,7 +90,7 @@ public class UserDAO implements Map<String, Utilizador> {
                 String password = rs.getString("pass");
                 String email = rs.getString("Email");
                 if(rs.getString("Docente.Utilizador_id")!=null){
-                    Map<String,List<Integer>> ucsEturnos = this.getUCsETurnosDocente(id);
+                    Map<String, List<TurnoKey>> ucsEturnos = this.getUCsETurnosDocente(id);
                     // Descobrir se ele é docente ou coordenador
                     String ucRegida = this.getUcRegida(id);
                     u = ucRegida==null ?
@@ -124,20 +124,25 @@ public class UserDAO implements Map<String, Utilizador> {
         }
     }
 
-    private Map<String, List<Integer>> getUCsETurnosDocente(String id) throws SQLException {
+    private Map<String, List<TurnoKey>> getUCsETurnosDocente(String id) throws SQLException {
         PreparedStatement stm = connection.prepareStatement(
-                "SELECT * FROM Turno\n" +
+                "SELECT id,UC_id,ePratico FROM Turno\n" +
                         "WHERE Turno.Docente_id=?;");
-        Map<String,List<Integer>> ucsEturnos = new HashMap<>();
+        Map<String, List<TurnoKey>> ucsEturnos = new HashMap<>();
         stm.setString(1,id);
         ResultSet rs = stm.executeQuery();
         while (rs.next()){
-            if(ucsEturnos.containsKey(rs.getString("UC_id"))){
-                ucsEturnos.get(rs.getString("UC_id")).add(rs.getInt("Turno_id"));
+            String uc_id = rs.getString("UC_id");
+            if(ucsEturnos.containsKey(uc_id)){
+                ucsEturnos.get(uc_id).add(new TurnoKey(uc_id,
+                                                       rs.getInt("id"),
+                                                       rs.getBoolean("ePratico")));
             }else{
-                List<Integer> turnos = new ArrayList<>();
-                turnos.add(rs.getInt("id"));
-                ucsEturnos.put(rs.getString("UC_id"),turnos);
+                List<TurnoKey> turnos = new ArrayList<>();
+                turnos.add(new TurnoKey(uc_id,
+                                        rs.getInt("id"),
+                                        rs.getBoolean("ePratico")));
+                ucsEturnos.put(uc_id,turnos);
             }
         }
         return ucsEturnos;
@@ -249,13 +254,14 @@ public class UserDAO implements Map<String, Utilizador> {
 
     private PreparedStatement updateTurnosDocente(Docente value) throws SQLException {
         PreparedStatement stm = connection.prepareStatement("" +
-                "UPDATE Turno SET Docente_id=? WHERE id=? AND UC_id=?;\n");
+                "UPDATE Turno SET Docente_id=? WHERE id=? AND UC_id=? AND ePratico=?;\n");
         for(String uc : value.getUcsEturnos().keySet()){
-            List<Integer> turnos = value.getUcsEturnos().get(uc);
-            for (Integer turno : turnos){
+            List<TurnoKey> turnos = value.getUcsEturnos().get(uc);
+            for (TurnoKey turno : turnos){
                 stm.setString(1,value.getUserNum());
-                stm.setInt(2,turno);
+                stm.setInt(2,turno.getTurno_id());
                 stm.setString(3,uc);
+                stm.setBoolean(4,turno.ePratico());
                 stm.addBatch();
             }
         }
@@ -334,6 +340,7 @@ public class UserDAO implements Map<String, Utilizador> {
         return this.keySet()
                 .stream()
                 .map(this::get)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
     }
 

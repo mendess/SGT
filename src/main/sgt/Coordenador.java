@@ -19,7 +19,7 @@ public class Coordenador extends Docente {
      * @param ucsEturnos As ucsEturnos do docente
      * @param ucRegida A UC que o coordenador rege.
      */
-    public Coordenador(String userNum, String password, String email, String name, Map<String, List<Integer>> ucsEturnos, String ucRegida) {
+    public Coordenador(String userNum, String password, String email, String name, Map<String, List<TurnoKey>> ucsEturnos, String ucRegida) {
         super(userNum,password,email,name,ucsEturnos);
         this.ucRegida = ucRegida;
     }
@@ -32,7 +32,7 @@ public class Coordenador extends Docente {
      * @param name O nome do docente
      * @param ucsEturnos As ucsEturnos do docente
      */
-    public Coordenador(String userNum, String password, String email, String name, Map<String, List<Integer>> ucsEturnos) {
+    public Coordenador(String userNum, String password, String email, String name, Map<String, List<TurnoKey>> ucsEturnos) {
         super(userNum,password,email,name,ucsEturnos);
         this.ucRegida = null;
     }
