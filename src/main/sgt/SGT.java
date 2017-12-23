@@ -653,6 +653,9 @@ public class SGT extends Observable{
      */
     public void activateLogins() {
         this.utilizadores.values().forEach(Utilizador::ativarLogin);
+        this.loginsAtivos = true;
+        this.setChanged();
+        this.notifyObservers(LOGINS_ATIVADOS);
     }
 
     /**
