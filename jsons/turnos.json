@@ -529,20 +529,6 @@
         "horaFim": "11:00:00"
       }
     ]},
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "14:00:00",
-        "horaFim": "15:00:00"
-      },
-      {
-        "dia": "SEX",
-        "horaInicio": "10:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
     {"ePratico":true,
      "vagas":20,
      "tinfo":[
