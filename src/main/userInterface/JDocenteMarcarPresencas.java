@@ -202,12 +202,14 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTablePresencas.setColumnSelectionAllowed(true);
         jTablePresencas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTablePresencasMouseClicked(evt);
             }
         });
         jScrollPanePresencas.setViewportView(jTablePresencas);
+        jTablePresencas.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         jButtonAdicionarAula.setText("Adicionar Aula");
         jButtonAdicionarAula.addActionListener(new java.awt.event.ActionListener() {
@@ -311,7 +313,7 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     private void jTablePresencasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePresencasMouseClicked
-        // TODO add your handling code here:
+        System.out.println(this.jTablePresencas.getSelectedRow()+","+this.jTablePresencas.getSelectedColumn());
     }//GEN-LAST:event_jTablePresencasMouseClicked
 
     /**
