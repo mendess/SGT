@@ -5,16 +5,22 @@
  */
 package main.userInterface;
 
+import main.sgt.SGT;
+
 /**
  *
  * @author pedro
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class JAdmin extends javax.swing.JFrame {
 
+    private SGT sgt;
     /**
      * Creates new form Admin
+     * @param sgt Business logic instance
      */
-    public JAdmin() {
+    JAdmin(SGT sgt) {
+        this.sgt = sgt;
         initComponents();
     }
 
@@ -244,7 +250,7 @@ public class JAdmin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JAdmin().setVisible(true);
+                new JAdmin(new SGT()).setVisible(true);
             }
         });
     }

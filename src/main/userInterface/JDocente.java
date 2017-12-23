@@ -5,17 +5,76 @@
  */
 package main.userInterface;
 
+import main.sgt.Aluno;
+import main.sgt.SGT;
+import main.sgt.Turno;
+import main.sgt.UC;
+import main.sgt.exceptions.InvalidUserTypeException;
+import main.sgt.exceptions.WrongCredentialsException;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static main.userInterface.interfaceUtils.*;
+
 /**
  *
  * @author pedro
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches", "Duplicates"})
 public class JDocente extends javax.swing.JFrame {
+
+    private final SGT sgt;
+    private String uc;
+    private String turno;
 
     /**
      * Creates new form Docente
+     * @param sgt Business logic instance 
      */
-    public JDocente() {
+    JDocente(SGT sgt) {
+        this.sgt = sgt;
+        try{//TODO remove this
+            this.sgt.login("D46360","password");
+        } catch (WrongCredentialsException e) {
+            e.printStackTrace();
+        }
         initComponents();
+        initComboBoxUCs();
+    }
+
+    private void initComboBoxUCs() {
+        List<UC> uCsOfUser;
+        try {
+            uCsOfUser = this.sgt.getUCsOfUser();
+        } catch (InvalidUserTypeException e) {
+            this.setVisible(false);
+            return;
+        }
+        this.uc = makeComboBoxUCs(this.jComboBoxUC,uCsOfUser);
+        updateComboBoxTurnos();
+    }
+
+    private void updateComboBoxTurnos() {
+        if(this.uc==null) return;
+        List<Turno> turnosUser;
+        try {
+            turnosUser = this.sgt.getTurnosUser();
+        } catch (InvalidUserTypeException e) {
+            this.setVisible(false);
+            return;
+        }
+        this.turno = makeComboBoxTurnos(this.jComboBoxTurno,turnosUser,this.uc);
+        updateTableAlunos();
+    }
+
+    private void updateTableAlunos() {
+        if(this.turno==null) return;
+        List<String> alunosStr = this.sgt.getUC(this.uc)
+                                         .getTurno(shiftFromString(this.turno), shiftTypeFromStr(this.turno))
+                                         .getAlunos();
+        List<Aluno> alunos = alunosStr.stream().map(this.sgt::getAluno).collect(Collectors.toList());
+        this.jTableAlunos.setModel(makeStudentLookupTable(this.jTableAlunos,alunos));
     }
 
     /**
@@ -132,15 +191,18 @@ public class JDocente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonMarcarPresencasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMarcarPresencasActionPerformed
-        // TODO add your handling code here:
+        JDocenteMarcarPresencas marcarPresencas = new JDocenteMarcarPresencas(this.sgt);
+        marcarPresencas.setVisible(true);
     }//GEN-LAST:event_jButtonMarcarPresencasActionPerformed
 
     private void jComboBoxUCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCActionPerformed
-        // TODO add your handling code here:
+        this.uc = (String) this.jComboBoxUC.getSelectedItem();
+        updateComboBoxTurnos();
     }//GEN-LAST:event_jComboBoxUCActionPerformed
 
     private void jComboBoxTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnoActionPerformed
-        // TODO add your handling code here:
+        this.turno = (String) this.jComboBoxTurno.getSelectedItem();
+        updateTableAlunos();
     }//GEN-LAST:event_jComboBoxTurnoActionPerformed
 
     /**
@@ -174,7 +236,7 @@ public class JDocente extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JDocente().setVisible(true);
+                new JDocente(new SGT()).setVisible(true);
             }
         });
     }

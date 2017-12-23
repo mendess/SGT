@@ -5,16 +5,23 @@
  */
 package main.userInterface;
 
+import main.sgt.SGT;
+
 /**
  *
  * @author pedro
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class JAlunoEspecial extends javax.swing.JFrame {
+
+    private SGT sgt;
 
     /**
      * Creates new form AlunoEspecial
+     * @param sgt Business logic instance
      */
-    public JAlunoEspecial() {
+    JAlunoEspecial(SGT sgt) {
+        this.sgt = sgt;
         initComponents();
     }
 
@@ -147,15 +154,18 @@ public class JAlunoEspecial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEscolherUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEscolherUCsActionPerformed
-        // TODO add your handling code here:
+        JAlunoEscolherUC escolherUC = new JAlunoEscolherUC(this.sgt);
+        escolherUC.setVisible(true);
     }//GEN-LAST:event_jButtonEscolherUCsActionPerformed
 
     private void jButtonPedirTrocaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPedirTrocaActionPerformed
-        // TODO add your handling code here:
+        JAlunoPedirTroca pedirTroca = new JAlunoPedirTroca(this.sgt);
+        pedirTroca.setVisible(true);
     }//GEN-LAST:event_jButtonPedirTrocaActionPerformed
 
     private void jButtonMudarDeTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMudarDeTurnoActionPerformed
-        // TODO add your handling code here:
+        JAlunoEspecialMudarTurno mudarTurno = new JAlunoEspecialMudarTurno(this.sgt);
+        mudarTurno.setVisible(true);
     }//GEN-LAST:event_jButtonMudarDeTurnoActionPerformed
 
     /**
@@ -189,7 +199,7 @@ public class JAlunoEspecial extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JAlunoEspecial().setVisible(true);
+                new JAlunoEspecial(new SGT()).setVisible(true);
             }
         });
     }

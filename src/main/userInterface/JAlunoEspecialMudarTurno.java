@@ -5,68 +5,61 @@
  */
 package main.userInterface;
 
-import main.sgt.*;
+import main.sgt.SGT;
+import main.sgt.Turno;
 import main.sgt.exceptions.InvalidUserTypeException;
 import main.sgt.exceptions.WrongCredentialsException;
 
-import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-import static main.userInterface.interfaceUtils.*;
+import static main.userInterface.interfaceUtils.makeComboBoxUCs;
+import static main.userInterface.interfaceUtils.makeShiftLookUpTable;
 
 /**
  *
  * @author pedro
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
 
     private SGT sgt;
+    private String uc;
+
     /**
      * Creates new form AlunoEspecialMudarTurno
+     * @param sgt Business logic instance 
      */
-    public JAlunoEspecialMudarTurno(SGT sgt) {
+    JAlunoEspecialMudarTurno(SGT sgt) {
         this.sgt = sgt;
-        try {
+        try {//TODO remove this
             this.sgt.login("A79003","password");
         } catch (WrongCredentialsException e) {
             e.printStackTrace();
         }
         initComponents();
         initUCsComboBox();
+    }
+
+    private void initUCsComboBox() {
+        try {
+            this.uc = makeComboBoxUCs(this.jComboBoxUCs,this.sgt.getUCsOfUser());
+        } catch (InvalidUserTypeException e) {
+            this.setVisible(false);
+            return;
+        }
         updateTurnosTable();
     }
 
     private void updateTurnosTable() {
-        String uc = (String) this.jComboBoxUCs.getSelectedItem();
-        if(uc==null) return;
-        List<Turno> turnos = this.sgt.getTurnosOfUC(uc);
+        if(this.uc==null) return;
+        List<Turno> turnos = this.sgt.getTurnosOfUC(this.uc);
         try {
             turnos.removeAll(this.sgt.getTurnosUser());
         } catch (InvalidUserTypeException e) {
-            System.out.println("INVALID USER");
-            //TODO leave frame
+            this.setVisible(false);
             return;
         }
-        DefaultTableModel tModel = (DefaultTableModel) this.jTableTurnos.getModel();
-        tModel = prepareTable(turnos.size(),4,tModel);
-        tModel = makeShiftLookUpTable(tModel,turnos);
-        this.jTableTurnos.setModel(tModel);
-    }
-
-    private void initUCsComboBox() {
-        this.jComboBoxUCs.removeAllItems();
-        List<UC> uCsOfUser;
-        try {
-            uCsOfUser = this.sgt.getUCsOfUser();
-        } catch (InvalidUserTypeException e) {
-            System.out.println("INVALID USER");
-            //TODO Leave frame
-            return;
-        }
-        this.jComboBoxUCs.removeAllItems();
-        uCsOfUser.stream()
-                 .map(UC::getId)
-                 .forEach(this.jComboBoxUCs::addItem);
+        this.jTableTurnos.setModel(makeShiftLookUpTable(this.jTableTurnos,turnos));
     }
 
     /**
@@ -177,7 +170,7 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     private void jButtonMudarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMudarActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_jButtonMudarActionPerformed
 
     /**

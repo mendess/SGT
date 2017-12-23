@@ -5,6 +5,7 @@
  */
 package main.userInterface;
 
+import main.sgt.*;
 import main.sgt.exceptions.WrongCredentialsException;
 
 import javax.swing.*;
@@ -13,13 +14,13 @@ import javax.swing.*;
  *
  * @author pedro
  */
-@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
+@SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class JLogin extends javax.swing.JFrame {
     private final main.sgt.SGT sgt = new main.sgt.SGT();
     /**
      * Creates new form Login
      */
-    public JLogin() {
+    private JLogin() {
         initComponents();
     }
 
@@ -91,9 +92,29 @@ public class JLogin extends javax.swing.JFrame {
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
         try {
             this.sgt.login(this.jTextFieldNumero.getText(),this.jPasswordField.getText());
-            JOptionPane.showMessageDialog(null,"Logged in!");
+            Utilizador u = this.sgt.getLoggedUser();
+            if(u instanceof DiretorDeCurso){
+                JAdmin admin = new JAdmin(this.sgt);
+                admin.setVisible(true);
+            }else if(u instanceof Coordenador){
+                JCoordenador coordenador = new JCoordenador(this.sgt);
+                coordenador.setVisible(true);
+            }else if(u instanceof Docente){
+                JDocente docente = new JDocente(this.sgt);
+                docente.setVisible(true);
+            }else if(u instanceof Aluno){
+                if(((Aluno) u).eEspecial()){
+                    JAlunoEspecial alunoEspecial = new JAlunoEspecial(this.sgt);
+                    alunoEspecial.setVisible(true);
+                }else {
+                    JAluno aluno = new JAluno(this.sgt);
+                    aluno.setVisible(true);
+                }
+            }else {
+                throw new WrongCredentialsException("Wrong Credentials!");
+            }
         } catch (WrongCredentialsException ex) {
-            JOptionPane.showMessageDialog(null, "Wrong Credentials");
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }//GEN-LAST:event_jButtonLoginActionPerformed
 

@@ -5,10 +5,10 @@
  */
 package main.userInterface;
 
-import main.sgt.*;
+import main.sgt.Aluno;
+import main.sgt.SGT;
+import main.sgt.UC;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,17 +22,46 @@ import static main.userInterface.interfaceUtils.*;
 public class JAdminConsultarUCs extends javax.swing.JFrame {
 
     private final SGT sgt;
+    private String uc;
+    private String turno;
+
     /**
      * Creates new form AdminConsultarUCs
-     * @param sgt
+     * @param sgt Business logic instance
      */
-    public JAdminConsultarUCs(SGT sgt) {
+    JAdminConsultarUCs(SGT sgt) {
         initComponents();
         this.sgt = sgt;
+        initComboBoxUCs();
+    }
+
+    private void initComboBoxUCs() {
         List<UC> ucs = this.sgt.getUCs();
-        this.jComboBoxUCs.removeAllItems();
-        this.jComboBoxTurnos.removeAllItems();
-        ucs.forEach(uc -> this.jComboBoxUCs.addItem(uc.getId()));
+        this.uc = makeComboBoxUCs(this.jComboBoxUCs,ucs);
+        updateComboBoxTurnos();
+    }
+
+    private void updateComboBoxTurnos() {
+        if(this.uc==null)return;
+        UC uc = this.sgt.getUC(this.uc);
+        if(uc==null) return;
+        this.jLabelCoordenadorNome.setText(uc.getResponsavel());
+        this.jLabelDocentesNomes.setText(uc.getDocentes()
+                .stream()
+                .reduce("",(d1,d2)->d1+"\n"+d2));
+        this.turno = makeComboBoxTurnos(this.jComboBoxTurnos,this.sgt.getTurnosOfUC(this.uc),this.uc);
+        updateTableAlunos();
+    }
+
+    private void updateTableAlunos() {
+        if(this.turno==null) return;
+        List<Aluno> alunos = this.sgt.getUC(this.uc)
+                                     .getTurno(shiftFromString(this.turno),shiftTypeFromStr(this.turno))
+                                     .getAlunos()
+                                     .stream()
+                                     .map(this.sgt::getAluno)
+                                     .collect(Collectors.toList());
+        this.jTableAlunos.setModel(makeStudentLookupTable(this.jTableAlunos,alunos));
     }
 
     /**
@@ -171,49 +200,11 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
-        JComboBox ucs = (JComboBox) evt.getSource();
-        String ucID = (String) ucs.getSelectedItem();
-        if(ucID == null) return;
-        updateComboBoxTurnos(ucID);
-        UC uc = this.sgt.getUC(ucID);
-        if(uc==null) return;
-        this.jLabelCoordenadorNome.setText(uc.getResponsavel());
-        this.jLabelDocentesNomes.setText(uc.getDocentes()
-                                                    .stream()
-                                                    .reduce("",(d1,d2)->d1+"\n"+d2));
+        updateComboBoxTurnos();
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
-    private void updateComboBoxTurnos(String uc) {
-        if(uc==null) return;
-        List<Turno> turnos = this.sgt.getTurnosOfUC(uc);
-        this.jComboBoxTurnos.removeAllItems();
-        turnos.forEach(t -> this.jComboBoxTurnos.addItem(makeShiftString(t)));
-    }
-
     private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
-        JComboBox turnos = (JComboBox) evt.getSource();
-        String turno = (String) turnos.getSelectedItem();
-        if(turno==null) return;
-        UC uc = this.sgt.getUCs()
-                        .stream()
-                        .filter(u->u.getId().equals(this.jComboBoxUCs.getSelectedItem()))
-                        .findFirst()
-                        .orElse(null);
-        if(uc==null) return;
-        Turno t = uc.getTurno(shiftFromString(turno), shiftTypeFromStr(turno));
-        List<Aluno> alunos = t.getAlunos().stream()
-                                          .map(this.sgt::getAluno)
-                                          .collect(Collectors.toList());
-        DefaultTableModel tModel = (DefaultTableModel) this.jTableAlunos.getModel();
-        tModel = prepareTable(alunos.size(),2,tModel);
-        int i=0;
-        for (Aluno a: alunos){
-            tModel.setValueAt(a.getUserNum(),i,0);
-            tModel.setValueAt(a.getName(),i,1);
-            i++;
-        }
-
-        this.jTableAlunos.setModel(tModel);
+        updateTableAlunos();
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
 
     /**

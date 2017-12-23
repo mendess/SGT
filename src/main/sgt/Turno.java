@@ -156,7 +156,9 @@ public class Turno {
     public List<Aula> getAulas(){
         return new ArrayList<>(this.aulas.values()
                             .stream()
-                            .filter(a->a.getUc().equals(this.ucId) && a.getTurno()==this.id)
+                            .filter(a->a.getUc().equals(this.ucId)
+                                    && a.getTurno()==this.id
+                                    && a.ePratico()==this.ePratico)
                             .collect(Collectors.toList()));
     }
 

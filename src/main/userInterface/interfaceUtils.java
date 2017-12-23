@@ -1,11 +1,11 @@
 package main.userInterface;
 
-import main.sgt.Turno;
-import main.sgt.TurnoInfo;
-import main.sgt.TurnoKey;
+import main.sgt.*;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.Set;
 
 class interfaceUtils {
     static boolean shiftTypeFromStr(String turno) {
@@ -19,11 +19,12 @@ class interfaceUtils {
     static String makeShiftString(Turno t){
         return t.ePratico() ? "TP" + t.getId() : "T" + t.getId();
     }
-    static String makeShiftString(TurnoKey t) {
+    private static String makeShiftString(TurnoKey t) {
         return t.ePratico() ? "TP" + t.getTurno_id() : "T" + t.getTurno_id();
     }
 
-    static DefaultTableModel prepareTable(int size,int numCol, DefaultTableModel tModel){
+    static DefaultTableModel prepareTable(int size, int numCol, JTable jTable){
+        DefaultTableModel tModel = (DefaultTableModel) jTable.getModel();
         while (size>tModel.getRowCount()){
             tModel.addRow(new String[numCol]);
         }
@@ -32,7 +33,8 @@ class interfaceUtils {
         }
         return tModel;
     }
-    static DefaultTableModel makeShiftLookUpTable(DefaultTableModel tModel, List<Turno> turnos){
+    static DefaultTableModel makeShiftLookUpTable(JTable jTable, List<Turno> turnos) {
+        DefaultTableModel tModel = prepareTable(turnos.size(),4,jTable);
         for (int i = 0; i < turnos.size(); i++) {
             Turno t = turnos.get(i);
             StringBuilder dias = new StringBuilder();
@@ -53,5 +55,41 @@ class interfaceUtils {
             tModel.setValueAt(horasFim.toString(), i, 3);
         }
         return tModel;
+    }
+    static DefaultTableModel makeStudentLookupTable(JTable jTable, List<Aluno> alunos){
+        DefaultTableModel tModel = prepareTable(alunos.size(),2, jTable);
+        for (int i = 0; i < alunos.size(); i++) {
+            Aluno a = alunos.get(i);
+            tModel.setValueAt(a.getUserNum(), i, 0);
+            tModel.setValueAt(a.getName(), i, 1);
+        }
+        return tModel;
+    }
+    static String makeComboBoxUCs(JComboBox<String> jComboBoxUC, List<UC> uCsOfUser){
+        jComboBoxUC.removeAllItems();
+        uCsOfUser.stream().map(UC::getId).forEach(jComboBoxUC::addItem);
+        return (String) jComboBoxUC.getSelectedItem();
+    }
+    static String makeComboBoxUCs(JComboBox<String> jComboBoxUC, Set<String> uCsOfUser){
+        jComboBoxUC.removeAllItems();
+        uCsOfUser.forEach(jComboBoxUC::addItem);
+        return (String) jComboBoxUC.getSelectedItem();
+    }
+
+    static String makeComboBoxTurnos(JComboBox<String> jComboBoxTurno, List<Turno> turnos, String uc){
+        jComboBoxTurno.removeAllItems();
+        turnos.stream()
+                .filter(t->t.getUcId().equals(uc))
+                .map(interfaceUtils::makeShiftString)
+                .forEach(jComboBoxTurno::addItem);
+        return (String) jComboBoxTurno.getSelectedItem();
+    }
+
+    static String makeComboBoxTurnos(JComboBox<String> jComboBoxTurno, List<TurnoKey> turnoKeys) {
+        jComboBoxTurno.removeAllItems();
+        turnoKeys.stream()
+                .map(interfaceUtils::makeShiftString)
+                .forEach(jComboBoxTurno::addItem);
+        return (String) jComboBoxTurno.getSelectedItem();
     }
 }

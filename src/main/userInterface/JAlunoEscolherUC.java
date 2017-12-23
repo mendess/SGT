@@ -15,23 +15,25 @@ import main.sgt.exceptions.WrongCredentialsException;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
+import static main.userInterface.interfaceUtils.*;
+
 /**
  *
  * @author pedro
  */
-@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
+@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches", "unused", "FieldCanBeLocal"})
 public class JAlunoEscolherUC extends javax.swing.JFrame {
 
     private final SGT sgt;
 
     /**
      * Creates new form AlunoEscolherUC
+     * @param sgt Business logic instance 
      */
-    public JAlunoEscolherUC(SGT sgt) {
+    JAlunoEscolherUC(SGT sgt) {
         initComponents();
         this.sgt = sgt;
-        //TODO remove this
-        try {
+        try {//TODO remove this
             this.sgt.login("A42274","password");
         } catch (WrongCredentialsException e) {
 
@@ -40,41 +42,23 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         updateUCNEscolhidas();
         updateUCEscolhidas();
     }
-
+    //TODO make these tables more user friendly
     private void updateUCNEscolhidas() {
-        List<UC> uCsOfUser;
-        try {
-            uCsOfUser = this.sgt.getUCsOfUser();
-        } catch (InvalidUserTypeException e) {
-            e.printStackTrace();
-            //TODO leave frame
-            return;
-        }
+        List<UC> uCsOfUser = this.getUCsOfUser();
+        if(uCsOfUser==null) return;
         List<UC> allUCs = this.sgt.getUCs();
         allUCs.removeAll(uCsOfUser);
-        DefaultTableModel tModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
-        while(allUCs.size()>tModel.getRowCount()){
-            tModel.addRow(new String[1]);
-        }
-        while (allUCs.size()<tModel.getRowCount()){
-            tModel.removeRow(tModel.getRowCount()-1);
-        }
-        int i=0;
-        for(UC uc: allUCs){
-            tModel.setValueAt(uc.getId(),i++,0);
+        DefaultTableModel tModel = prepareTable(allUCs.size(),1,this.jTableUCNEscolhidas);
+        for (int i = 0; i < allUCs.size(); i++) {
+            UC uc = allUCs.get(i);
+            tModel.setValueAt(uc.getId(), i, 0);
         }
         this.jTableUCNEscolhidas.setModel(tModel);
     }
 
     private void updateUCEscolhidas() {
-        List<UC> uCsOfUser;
-        try {
-            uCsOfUser = this.sgt.getUCsOfUser();
-        } catch (InvalidUserTypeException e) {
-            e.printStackTrace();
-            //TODO leave frame
-            return;
-        }
+        List<UC> uCsOfUser = this.getUCsOfUser();
+        if(uCsOfUser==null) return;
         DefaultTableModel tModel = (DefaultTableModel) this.jTableUCEscolhidas.getModel();
         while(uCsOfUser.size()>tModel.getRowCount()){
             tModel.addRow(new String[1]);
@@ -89,6 +73,15 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         this.jTableUCEscolhidas.setModel(tModel);
     }
 
+    private List<UC> getUCsOfUser(){
+        try {
+            return this.sgt.getUCsOfUser();
+        } catch (InvalidUserTypeException e) {
+            e.printStackTrace();
+            this.setVisible(false);
+            return null;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -272,7 +265,7 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRemoverActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     /**

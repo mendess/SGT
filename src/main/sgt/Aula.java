@@ -21,13 +21,14 @@ public class Aula {
      * O identificador da UC a que a aula pertence
      */
     private String uc;
+
     private boolean ePratico;
 
     /**
      * Construtor de aula
      * @param uc A UC do turno
      * @param turno O numero do turno da aula
-     * @param ePratico
+     * @param ePratico Se a aula e pratica
      */
     public Aula(int numero, String uc, int turno, boolean ePratico) {
         this.uc = uc;
@@ -100,6 +101,7 @@ public class Aula {
                 && this.numero == a.getNumero()
                 && this.turno == a.getTurno()
                 && this.uc.equals(a.getUc())
+                && this.ePratico == a.ePratico()
                 && this.presencas.equals(a.getPresencas());
     }
 
@@ -109,6 +111,7 @@ public class Aula {
                 +"Numero: "+this.numero+"\t"
                 +"Turno: "+this.turno+"\t"
                 +"UC: "+this.uc+"\t"
+                +"E Pratica"+ this.ePratico +"\t"
                 +"Presencas: "+this.presencas.toString();
     }
 }

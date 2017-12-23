@@ -6,7 +6,6 @@
 package main.userInterface;
 
 import main.sgt.*;
-import main.sgt.exceptions.WrongCredentialsException;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -18,78 +17,59 @@ import static main.userInterface.interfaceUtils.*;
  *
  * @author pedro
  */
-@SuppressWarnings({"TryWithIdenticalCatches", "Convert2Lambda", "Anonymous2MethodRef"})
+@SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class JDocenteMarcarPresencas extends javax.swing.JFrame {
 
     private final SGT sgt;
     private Docente loggedUser;
     private String uc;
     private String turno;
-    private int aula;
+    private String aula;
 
 
-    //TODO add action listener to table
     /**
      * Creates new form DocenteMarcarPresencas
+     * @param sgt Business logic instance 
      */
-    public JDocenteMarcarPresencas(SGT sgt) {
+    JDocenteMarcarPresencas(SGT sgt) {
         this.sgt = sgt;
-        try {
-            this.sgt.login("D18686", "password");
-        } catch (WrongCredentialsException e) {
-            e.printStackTrace();
-            return;
-        }
         this.loggedUser = (Docente) this.sgt.getLoggedUser();
         initComponents();
         initComboBoxUCs();
     }
 
     private void initComboBoxUCs() {
-        this.jComboBoxUCs.removeAllItems();
         Set<String> ucs = this.loggedUser.getUcsEturnos().keySet();
-        for(String uc: ucs){
-            this.jComboBoxUCs.addItem(uc);
-        }
-        this.uc = (String) this.jComboBoxUCs.getSelectedItem();
-        initComboBoxTurnos();
+        this.uc = makeComboBoxUCs(this.jComboBoxUCs,ucs);
+        updateComboBoxTurnos();
     }
 
-    private void initComboBoxTurnos() {
-        this.jComboBoxTurnos.removeAllItems();
-        String uc = (String) this.jComboBoxUCs.getSelectedItem();
-        if(uc==null) return;
-        for(TurnoKey turno: this.loggedUser.getUcsEturnos().get(uc)){
-            this.jComboBoxTurnos.addItem(makeShiftString(turno));
-        }
-        this.turno = (String) this.jComboBoxTurnos.getSelectedItem();
-        initComboBoxAulas();
+    private void updateComboBoxTurnos() {
+        if(this.uc==null) return;
+        this.turno = makeComboBoxTurnos(this.jComboBoxTurnos,this.loggedUser.getUcsEturnos().get(this.uc));
+        updateComboBoxAulas();
     }
 
-    private void initComboBoxAulas() {
+    private void updateComboBoxAulas() {
         this.jComboBoxAula.removeAllItems();
-        String uc = (String) this.jComboBoxUCs.getSelectedItem();
-        String turno = (String) this.jComboBoxTurnos.getSelectedItem();
-        if(uc==null || turno==null) return;
+        if(this.uc==null || this.turno==null) return;
         for(Aula a: this.sgt.getUC(uc).getTurno(shiftFromString(turno),shiftTypeFromStr(turno)).getAulas()){
             this.jComboBoxAula.addItem(String.valueOf(a.getNumero()));
         }
-        String aula = (String) this.jComboBoxAula.getSelectedItem();
-        if(aula !=null){
-            this.aula = Integer.parseInt(aula);
-            initPresencas();
-        }else {
-            ((DefaultTableModel) this.jTablePresencas.getModel()).setRowCount(0);
-        }
+        this.aula = (String) this.jComboBoxAula.getSelectedItem();
+        updatePresencas();
     }
 
-    private void initPresencas() {
+    private void updatePresencas() {
+        if(this.aula==null){
+            ((DefaultTableModel) this.jTablePresencas.getModel()).setRowCount(0);
+            return;
+        }
         Turno t = this.sgt.getUC(this.uc).getTurno(shiftFromString(this.turno),shiftTypeFromStr(this.turno));
         List<String> naoPresentes = t.getAlunos();
-        List<String> presentes = t.getAula(this.aula).getPresencas();
+        List<String> presentes = t.getAula(Integer.parseInt(this.aula)).getPresencas();
         naoPresentes.removeAll(presentes);
-        DefaultTableModel tModel = (DefaultTableModel) this.jTablePresencas.getModel();
-        tModel = prepareTable(naoPresentes.size()+presentes.size(),3,tModel);
+        DefaultTableModel tModel = prepareTable(naoPresentes.size()+presentes.size(),3,this.jTablePresencas);
         int i = 0;
         for(String aluno: naoPresentes){
             Aluno a = this.sgt.getAluno(aluno);
@@ -264,41 +244,38 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAdicionarAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarAulaActionPerformed
-        this.aula = this.sgt.addAula(this.uc,shiftFromString(this.turno),shiftTypeFromStr(this.turno));
-        initComboBoxAulas();
+        this.aula = String.valueOf(this.sgt.addAula(this.uc,shiftFromString(this.turno),shiftTypeFromStr(this.turno)));
+        updateComboBoxAulas();
     }//GEN-LAST:event_jButtonAdicionarAulaActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jComboBoxAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAulaActionPerformed
-        String aula = (String) this.jComboBoxAula.getSelectedItem();
-        if(aula!=null){
-            this.aula = Integer.parseInt(aula);
-            initPresencas();
-        }else {
-            ((DefaultTableModel) this.jTablePresencas.getModel()).setRowCount(0);
-        }
+        this.aula =  (String) this.jComboBoxAula.getSelectedItem();
+        updatePresencas();
     }//GEN-LAST:event_jComboBoxAulaActionPerformed
 
     private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
         this.turno = (String) this.jComboBoxTurnos.getSelectedItem();
-        initComboBoxAulas();
+        updateComboBoxAulas();
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
 
     private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
         this.uc = (String) this.jComboBoxUCs.getSelectedItem();
-        initComboBoxTurnos();
+        updateComboBoxTurnos();
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     private void jTablePresencasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePresencasMouseClicked
-        int selRow = this.jTablePresencas.getSelectedRow();
-        String aluno = (String) this.jTablePresencas.getValueAt(selRow,0);
-        boolean presente = (boolean) this.jTablePresencas.getValueAt(selRow,2);
-        if(!presente){
-            this.sgt.marcarPresenca(aluno,this.uc,shiftFromString(this.turno),this.aula,shiftTypeFromStr(this.turno));
-            this.jTablePresencas.getModel().setValueAt(!(boolean) jTablePresencas.getValueAt(selRow,2),selRow,2);
+        if(this.jTablePresencas.getSelectedColumn()==2){
+            int selRow = this.jTablePresencas.getSelectedRow();
+            String aluno = (String) this.jTablePresencas.getValueAt(selRow,0);
+            boolean presente = (boolean) this.jTablePresencas.getValueAt(selRow,2);
+            if(!presente){
+                this.sgt.marcarPresenca(aluno,this.uc,shiftFromString(this.turno),Integer.parseInt(this.aula),shiftTypeFromStr(this.turno));
+                this.jTablePresencas.getModel().setValueAt(!(boolean) jTablePresencas.getValueAt(selRow,2),selRow,2);
+            }
         }
     }//GEN-LAST:event_jTablePresencasMouseClicked
 
