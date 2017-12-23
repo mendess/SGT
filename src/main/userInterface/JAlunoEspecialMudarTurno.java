@@ -12,6 +12,8 @@ import main.sgt.exceptions.WrongCredentialsException;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
+import static main.userInterface.interfaceUtils.*;
+
 /**
  *
  * @author pedro
@@ -46,31 +48,8 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
             return;
         }
         DefaultTableModel tModel = (DefaultTableModel) this.jTableTurnos.getModel();
-        while(turnos.size()>tModel.getRowCount()){
-            tModel.addRow(new String[4]);
-        }
-        while (turnos.size()<tModel.getRowCount()){
-            tModel.removeRow(tModel.getRowCount()-1);
-        }
-        int i=0;
-        for (Turno t: turnos){
-            StringBuilder dias = new StringBuilder();
-            StringBuilder horasInicio = new StringBuilder();
-            StringBuilder horasFim = new StringBuilder();
-            for (TurnoInfo ti: t.getTurnoInfos()){
-                dias.append(ti.getDia()).append("\n");
-                horasInicio.append(ti.getHoraInicio()).append("\n");
-                horasFim.append(ti.getHoraFim()).append("\n");
-            }
-            dias.setLength(Math.max(dias.length() - 1, 0));
-            horasInicio.setLength(Math.max(horasInicio.length() - 1, 0));
-            horasFim.setLength(Math.max(horasFim.length() - 1, 0));
-
-            tModel.setValueAt(t.getId(),i,0);
-            tModel.setValueAt(dias.toString(),i,1);
-            tModel.setValueAt(horasInicio.toString(),i,2);
-            tModel.setValueAt(horasFim.toString(),i,3);
-        }
+        tModel = prepareTable(turnos.size(),4,tModel);
+        tModel = makeShiftLookUpTable(tModel,turnos);
         this.jTableTurnos.setModel(tModel);
     }
 
