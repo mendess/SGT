@@ -94,8 +94,14 @@ public class SGT extends Observable{
         System.out.println("A verificar se os turnos estão registados");
         this.turnosRegistados = ucsValues.stream().noneMatch(uc-> uc.getTurnos().isEmpty());
         System.out.println("A verificar se os logins estão ativos");
-        this.loginsAtivos = utilizadores.stream()
-                                        .allMatch(Utilizador::isLoginAtivo);
+        boolean b = true;
+        for (Utilizador utilizadore : utilizadores) {
+            if (!utilizadore.isLoginAtivo()) {
+                b = false;
+                break;
+            }
+        }
+        this.loginsAtivos = b;
         System.out.println("A verifcar se os turnos estão atribuidos");
         this.turnosAtribuidos = utilizadores.stream()
                                             .filter(u -> u instanceof Aluno)
