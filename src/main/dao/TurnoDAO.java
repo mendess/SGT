@@ -79,20 +79,38 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
         Turno t = null;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
-                    "SELECT Turno.id AS T_id," +
-                    "       Turno.UC_id AS uc," +
-                    "       Turno.Docente_id AS docente," +
-                    "       Turno.vagas AS vagas," +
-                    "       Turno.ePratico AS ePratico," +
-                    "       Turno_has_Aluno.Aluno_id AS aluno," +
-                    "       TurnoInfo.horaInicio AS horaInicio," +
-                    "       TurnoInfo.horaFim AS horaFim," +
-                    "       TurnoInfo.dia_id AS dia\n" +
-                    "FROM Turno\n" +
-                    "   LEFT JOIN Turno_has_Aluno ON Turno.id = Turno_has_Aluno.Turno_id AND Turno.UC_id = Turno_has_Aluno.UC_id\n" +
-                    "   LEFT JOIN TurnoInfo ON Turno.id = TurnoInfo.Turno_id AND Turno.UC_id = TurnoInfo.UC_id AND Turno.ePratico = TurnoInfo.ePratico" +
-                    "   WHERE Turno.UC_id=? AND Turno.id=? AND Turno.ePratico=?;");
+            if(tKey.ePratico()){
+                stm = connection.prepareStatement("" +
+                        "SELECT Turno.id AS T_id," +
+                        "       Turno.UC_id AS uc," +
+                        "       Turno.Docente_id AS docente," +
+                        "       Turno.vagas AS vagas," +
+                        "       Turno.ePratico AS ePratico," +
+                        "       Turno_has_Aluno.Aluno_id AS aluno," +
+                        "       TurnoInfo.horaInicio AS horaInicio," +
+                        "       TurnoInfo.horaFim AS horaFim," +
+                        "       TurnoInfo.dia_id AS dia\n" +
+                        "FROM Turno\n" +
+                        "   LEFT JOIN Turno_has_Aluno ON Turno.id = Turno_has_Aluno.Turno_id AND Turno.UC_id = Turno_has_Aluno.UC_id AND Turno.ePratico = Turno_has_Aluno.ePratico\n" +
+                        "   LEFT JOIN TurnoInfo ON Turno.id = TurnoInfo.Turno_id AND Turno.UC_id = TurnoInfo.UC_id AND Turno.ePratico = TurnoInfo.ePratico" +
+                        "   WHERE Turno.UC_id=? AND Turno.id=? AND Turno.ePratico=?;");
+            }else {
+                stm = connection.prepareStatement("" +
+                        "SELECT Turno.id AS T_id," +
+                        "       Turno.UC_id AS uc," +
+                        "       Turno.Docente_id AS docente," +
+                        "       Turno.vagas AS vagas," +
+                        "       Turno.ePratico AS ePratico," +
+                        "       Turno_has_Aluno.Aluno_id AS aluno," +
+                        "       TurnoInfo.horaInicio AS horaInicio," +
+                        "       TurnoInfo.horaFim AS horaFim," +
+                        "       TurnoInfo.dia_id AS dia\n" +
+                        "FROM Turno\n" +
+                        "   LEFT JOIN Turno_has_Aluno ON Turno.UC_id = Turno_has_Aluno.UC_id\n" +
+                        "   LEFT JOIN TurnoInfo ON Turno.id = TurnoInfo.Turno_id AND Turno.UC_id = TurnoInfo.UC_id AND Turno.ePratico = TurnoInfo.ePratico\n" +
+                        "   WHERE Turno.UC_id=? AND Turno.id=? AND Turno.ePratico=?;");
+            }
+
             stm.setString(1, tKey.getUc_id());
             stm.setInt(2, tKey.getTurno_id());
             stm.setBoolean(3, tKey.ePratico());

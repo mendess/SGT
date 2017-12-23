@@ -110,7 +110,6 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
     @Override
     public List<Pedido> put(String key, List<Pedido> value) {
         this.connection = Connect.connect();
-        System.out.println("BEEP");
         if (connection == null) return null;
         List<Pedido> pedidos = null;
         PreparedStatement stmRem = null;
@@ -156,7 +155,6 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
             stm.setInt(2, value.getTurno());
             stm.setString(3, value.getUc());
             stm.setBoolean(4, value.ePratico());
-            System.out.println(stm);
             stm.executeUpdate();
             pedido = value;
         } catch (SQLException e) {

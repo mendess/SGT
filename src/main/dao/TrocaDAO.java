@@ -112,30 +112,30 @@ public class TrocaDAO implements List<Troca> {
     @Override
     public boolean add(Troca troca) {
         this.connection = Connect.connect();
-        if(connection==null) return false;
+        if (connection == null) return false;
         boolean r = false;
+        PreparedStatement stm = null;
         try {
-            PreparedStatement stm = connection.prepareStatement(
-        "INSERT INTO `Trocas` (dataRealizacao, aluno_id, turnoOrigem_id,turnoOrigem_ePratico, UC_id, turnoDestino_id,turnoDestino_ePratico, UC_id1) \n" +
-                "VALUES (NOW(),?,?,?,?,?,?,?)\n" +
-                "ON DUPLICATE KEY UPDATE dataRealizacao=VALUES(dataRealizacao),\n" +
-                "                        aluno_id=VALUES(aluno_id),\n" +
-                "                        turnoOrigem_id=VALUES(turnoOrigem_id),\n" +
-                "                        turnoOrigem_ePratico=VALUES(turnoOrigem_ePratico),\n" +
-                "                        UC_id=VALUES(UC_id),\n" +
-                "                        turnoDestino_id=VALUES(turnoDestino_id),\n" +
-                "                        turnoDestino_ePratico=VALUES(turnoDestino_ePratico),\n" +
-                "                        UC_id1=VALUES(UC_id1)\n;",
+            stm = connection.prepareStatement(
+                    "INSERT INTO `Trocas` (dataRealizacao, aluno_id, turnoOrigem_id,turnoOrigem_ePratico, UC_id, turnoDestino_id,turnoDestino_ePratico, UC_id1) \n" +
+                            "VALUES (NOW(),?,?,?,?,?,?,?)\n" +
+                            "ON DUPLICATE KEY UPDATE dataRealizacao=VALUES(dataRealizacao),\n" +
+                            "                        aluno_id=VALUES(aluno_id),\n" +
+                            "                        turnoOrigem_id=VALUES(turnoOrigem_id),\n" +
+                            "                        turnoOrigem_ePratico=VALUES(turnoOrigem_ePratico),\n" +
+                            "                        UC_id=VALUES(UC_id),\n" +
+                            "                        turnoDestino_id=VALUES(turnoDestino_id),\n" +
+                            "                        turnoDestino_ePratico=VALUES(turnoDestino_ePratico),\n" +
+                            "                        UC_id1=VALUES(UC_id1)\n;",
                     Statement.RETURN_GENERATED_KEYS);
 //            stm.setInt(1,troca.getId());
-            stm.setString(1,troca.getAluno());
-            stm.setInt(2,troca.getTurnoOrigem());
-            stm.setBoolean(3,troca.isTurnoOrigem_Pratico());
-            stm.setString(4,troca.getUc());
-            stm.setInt(5,troca.getTurnoDestino());
-            stm.setBoolean(6,troca.isTurnoDestino_Pratico());
-            stm.setString(7,troca.getUc());
-            System.out.println(stm);
+            stm.setString(1, troca.getAluno());
+            stm.setInt(2, troca.getTurnoOrigem());
+            stm.setBoolean(3, troca.isTurnoOrigem_Pratico());
+            stm.setString(4, troca.getUc());
+            stm.setInt(5, troca.getTurnoDestino());
+            stm.setBoolean(6, troca.isTurnoDestino_Pratico());
+            stm.setString(7, troca.getUc());
             stm.executeUpdate();
             /*ResultSet rs = stm.getGeneratedKeys();
             if(rs.next()){
@@ -143,8 +143,9 @@ public class TrocaDAO implements List<Troca> {
                 r = true;
             }*/
         } catch (Exception e) {
+            System.out.println(stm);
             e.printStackTrace();
-        }finally {
+        } finally {
             Connect.close(connection);
         }
         return r;
