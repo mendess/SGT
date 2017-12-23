@@ -111,6 +111,11 @@ public class JAluno extends javax.swing.JFrame {
             }
         });
         jScrollPaneUCsETurnos.setViewportView(jTableUCsETurnos);
+        if (jTableUCsETurnos.getColumnModel().getColumnCount() > 0) {
+            jTableUCsETurnos.getColumnModel().getColumn(1).setMinWidth(50);
+            jTableUCsETurnos.getColumnModel().getColumn(1).setPreferredWidth(50);
+            jTableUCsETurnos.getColumnModel().getColumn(1).setMaxWidth(50);
+        }
 
         jButtonPedirTroca.setText("Pedir Troca");
         jButtonPedirTroca.addActionListener(new java.awt.event.ActionListener() {
@@ -151,13 +156,15 @@ public class JAluno extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonEscolherUCs)
-                    .addComponent(jScrollPaneUCsETurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(98, 98, 98)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonEscolherUCs)
+                        .addGap(0, 214, Short.MAX_VALUE))
+                    .addComponent(jScrollPaneUCsETurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPanePropsTroca, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonPedirTroca))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
