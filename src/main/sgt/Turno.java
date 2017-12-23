@@ -266,11 +266,13 @@ public class Turno {
 
     /**
      * Adiciona uma aula ao turno
+     * @return O numero da aula adicionada
      */
-    void addAula() {
+    int addAula() {
         int num = this.aulas.maxID(this.ucId,this.id, ePratico);
         Aula a = new Aula(num, this.ucId, this.id, ePratico);
         this.aulas.put(new AulaKey(a),a);
+        return num;
     }
 
     /**

@@ -322,11 +322,13 @@ public class UC {
      * Adiciona uma nova aula a um turno
      * @param turno Numero do turno
      * @param ePratico Se o turno e pratico
+     * @return O numero da aula adicionada
      */
-    void addAula(int turno, boolean ePratico) {
+    int addAula(int turno, boolean ePratico) {
         Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno,ePratico));
-        tmpTurno.addAula();
+        int aulaNum = tmpTurno.addAula();
         this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
+        return aulaNum;
     }
 
     /**

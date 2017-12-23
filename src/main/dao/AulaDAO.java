@@ -281,6 +281,6 @@ public class AulaDAO implements Map<AulaKey,Aula> {
         } finally {
             Connect.close(connection);
         }
-        return maxID;
+        return maxID>0 ? maxID : 1;
     }
 }

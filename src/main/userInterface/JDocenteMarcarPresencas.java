@@ -5,17 +5,37 @@
  */
 package main.userInterface;
 
-import main.sgt.SGT;
+import main.sgt.*;
 import main.sgt.exceptions.WrongCredentialsException;
+
+import javax.swing.*;
+import javax.swing.event.CellEditorListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.List;
+
+import static main.userInterface.interfaceUtils.*;
 
 /**
  *
  * @author pedro
  */
+@SuppressWarnings({"TryWithIdenticalCatches", "Convert2Lambda", "Anonymous2MethodRef"})
 public class JDocenteMarcarPresencas extends javax.swing.JFrame {
 
     private final SGT sgt;
+    private Docente loggedUser;
+    private String uc;
+    private String turno;
+    private int aula;
 
+
+    //TODO add action listener to table
     /**
      * Creates new form DocenteMarcarPresencas
      */
@@ -27,13 +47,90 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
             e.printStackTrace();
             return;
         }
+        this.loggedUser = (Docente) this.sgt.getLoggedUser();
         initComponents();
+        initComboBoxUCs();
+        ButtonRenderer buttonPresenca = new ButtonRenderer();
+        buttonPresenca.addTableButtonListener(new TableButtonListener() {
+            @Override
+            public void tableButtonClicked(int row, int col) {
+                marcarPrescenca(row);
+            }
+        });
+        this.jTablePresencas.getColumn("Presenca").setCellRenderer(buttonPresenca);
+        this.jTablePresencas.getColumn("Presenca").setCellEditor(buttonPresenca);
+    }
+
+    private void initComboBoxUCs() {
+        this.jComboBoxUCs.removeAllItems();
+        Set<String> ucs = this.loggedUser.getUcsEturnos().keySet();
+        for(String uc: ucs){
+            this.jComboBoxUCs.addItem(uc);
+        }
+        this.uc = (String) this.jComboBoxUCs.getSelectedItem();
+        initComboBoxTurnos();
+    }
+
+    private void initComboBoxTurnos() {
+        this.jComboBoxTurnos.removeAllItems();
+        String uc = (String) this.jComboBoxUCs.getSelectedItem();
+        if(uc==null) return;
+        for(TurnoKey turno: this.loggedUser.getUcsEturnos().get(uc)){
+            this.jComboBoxTurnos.addItem(makeShiftString(turno));
+        }
+        this.turno = (String) this.jComboBoxTurnos.getSelectedItem();
         initComboBoxAulas();
     }
 
     private void initComboBoxAulas() {
         this.jComboBoxAula.removeAllItems();
+        String uc = (String) this.jComboBoxUCs.getSelectedItem();
+        String turno = (String) this.jComboBoxTurnos.getSelectedItem();
+        if(uc==null || turno==null) return;
+        for(Aula a: this.sgt.getUC(uc).getTurno(shiftFromString(turno),shiftTypeFromStr(turno)).getAulas()){
+            this.jComboBoxAula.addItem(String.valueOf(a.getNumero()));
+        }
+        String aula = (String) this.jComboBoxAula.getSelectedItem();
+        if(aula !=null){
+            this.aula = Integer.parseInt(aula);
+            initPresencas();
+        }else {
+            ((DefaultTableModel) this.jTablePresencas.getModel()).setRowCount(0);
+        }
+    }
 
+    private void initPresencas() {
+        Turno t = this.sgt.getUC(this.uc).getTurno(shiftFromString(this.turno),shiftTypeFromStr(this.turno));
+        List<String> naoPresentes = t.getAlunos();
+        List<String> presentes = t.getAula(this.aula).getPresencas();
+        naoPresentes.removeAll(presentes);
+        DefaultTableModel tModel = (DefaultTableModel) this.jTablePresencas.getModel();
+        tModel = prepareTable(naoPresentes.size()+presentes.size(),3,tModel);
+        int i = 0;
+        for(String aluno: naoPresentes){
+            Aluno a = this.sgt.getAluno(aluno);
+            tModel.setValueAt(a.getUserNum(),i,0);
+            tModel.setValueAt(a.getName(),i,1);
+            tModel.setValueAt("Marcar Presente",i,2);
+            i++;
+        }
+        for (String aluno: presentes){
+            Aluno a = this.sgt.getAluno(aluno);
+            tModel.setValueAt(a.getUserNum(),i,0);
+            tModel.setValueAt(a.getName(),i,1);
+            tModel.setValueAt("Presente",i,2);
+            i++;
+        }
+        this.jTablePresencas.setModel(tModel);
+    }
+
+    private void marcarPrescenca(int row) {
+        this.sgt.marcarPresenca((String) jTablePresencas.getValueAt(row,0),
+                                this.uc,
+                                shiftFromString(this.turno),
+                                this.aula,
+                                shiftTypeFromStr(this.turno));
+        System.out.println("Marcar Presenca on row: "+row);
     }
 
     /**
@@ -180,7 +277,8 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAdicionarAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarAulaActionPerformed
-        // TODO add your handling code here:
+        this.aula = this.sgt.addAula(this.uc,shiftFromString(this.turno),shiftTypeFromStr(this.turno));
+        initComboBoxAulas();
     }//GEN-LAST:event_jButtonAdicionarAulaActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
@@ -188,15 +286,23 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jComboBoxAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAulaActionPerformed
-        // TODO add your handling code here:
+        String aula = (String) this.jComboBoxAula.getSelectedItem();
+        if(aula!=null){
+            this.aula = Integer.parseInt(aula);
+            initPresencas();
+        }else {
+            ((DefaultTableModel) this.jTablePresencas.getModel()).setRowCount(0);
+        }
     }//GEN-LAST:event_jComboBoxAulaActionPerformed
 
     private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
-        // TODO add your handling code here:
+        this.turno = (String) this.jComboBoxTurnos.getSelectedItem();
+        initComboBoxAulas();
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
 
     private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
-        // TODO add your handling code here:
+        this.uc = (String) this.jComboBoxUCs.getSelectedItem();
+        initComboBoxTurnos();
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     /**
@@ -247,4 +353,147 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPanePresencas;
     private javax.swing.JTable jTablePresencas;
     // End of variables declaration//GEN-END:variables
+
+    class ButtonRenderer extends JButton implements TableCellRenderer, TableCellEditor {
+
+        private int selectedRow;
+        private int selectedColumn;
+        private List<TableButtonListener> listener;
+
+        ButtonRenderer() {
+            super();
+            this.listener = new ArrayList<>();
+            addActionListener(new ActionListener() {
+                public void actionPerformed( ActionEvent e ) {
+                    for(TableButtonListener l : listener) {
+                        l.tableButtonClicked(selectedRow, selectedColumn);
+                    }
+                }
+            });
+            setOpaque(true);
+        }
+
+        void addTableButtonListener(TableButtonListener l) {
+            this.listener.add(l);
+        }
+
+        void removeTableButtonListener( TableButtonListener l ) {
+            this.listener.remove(l);
+        }
+        
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                                                       boolean isSelected, boolean hasFocus, int row, int column) {
+            if (isSelected) {
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(UIManager.getColor("Button.background"));
+            }
+            setText((value == null) ? "" : value.toString());
+            return this;
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable jTable, Object o, boolean b, int row, int col) {
+            this.selectedRow = row;
+            this.selectedColumn = col;
+            return this;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return "";
+        }
+
+        @Override
+        public boolean isCellEditable(EventObject eventObject) {
+            return true;
+        }
+
+        @Override
+        public boolean shouldSelectCell(EventObject eventObject) {
+            return true;
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            return true;
+        }
+
+        @Override
+        public void cancelCellEditing() {
+
+        }
+
+        @Override
+        public void addCellEditorListener(CellEditorListener cellEditorListener) {
+
+        }
+
+        @Override
+        public void removeCellEditorListener(CellEditorListener cellEditorListener) {
+
+        }
+    }
+
+    public interface TableButtonListener extends EventListener {
+        void tableButtonClicked(int row, int col);
+    }
+
+/*
+    class ButtonEditor extends DefaultCellEditor {
+        protected JButton button;
+
+        private String label;
+
+        private boolean isPushed;
+
+        public ButtonEditor(JCheckBox checkBox) {
+            super(checkBox);
+            button = new JButton();
+            button.setOpaque(true);
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
+                }
+            });
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                                                     boolean isSelected, int row, int column) {
+            if (isSelected) {
+                button.setForeground(table.getSelectionForeground());
+                button.setBackground(table.getSelectionBackground());
+            } else {
+                button.setForeground(table.getForeground());
+                button.setBackground(table.getBackground());
+            }
+            label = (value == null) ? "" : value.toString();
+            button.setText(label);
+            isPushed = true;
+            return button;
+        }
+
+        public Object getCellEditorValue() {
+            if (isPushed) {
+                //
+                //
+                JOptionPane.showMessageDialog(button, label + ": Ouch!");
+                // System.out.println(label + ": Ouch!");
+            }
+            isPushed = false;
+            return new String(label);
+        }
+
+        public boolean stopCellEditing() {
+            isPushed = false;
+            return super.stopCellEditing();
+        }
+
+        protected void fireEditingStopped() {
+            super.fireEditingStopped();
+        }
+    }
+*/
 }

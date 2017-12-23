@@ -213,6 +213,7 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
 
     private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
         int selectedRow = this.jTableAlunosNEstao.getSelectedRow();
+        if(selectedRow==-1) return;
         String aluno = (String) this.jTableAlunosNEstao.getValueAt(selectedRow, 0);
         int turno = shiftFromString((String) this.jComboBoxTurnos.getSelectedItem());
         try {

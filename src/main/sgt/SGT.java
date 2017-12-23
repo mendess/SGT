@@ -658,9 +658,11 @@ public class SGT extends Observable{
      * Adiciona uma aula a um turno
      * @param uc Identificador da UC to turno
      * @param turno Numero do turno
-     * @param ePratico Se o turno e pratico     */
-    public void addAula(String uc, int turno, boolean ePratico) {
-        this.ucs.get(uc).addAula(turno, ePratico);
+     * @param ePratico Se o turno e pratico
+     * @return O numero da nova aula
+     **/
+    public int addAula(String uc, int turno, boolean ePratico) {
+        return this.ucs.get(uc).addAula(turno, ePratico);
     }
 
     /**
