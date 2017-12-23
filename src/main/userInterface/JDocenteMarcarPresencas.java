@@ -202,6 +202,11 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTablePresencas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTablePresencasMouseClicked(evt);
+            }
+        });
         jScrollPanePresencas.setViewportView(jTablePresencas);
 
         jButtonAdicionarAula.setText("Adicionar Aula");
@@ -304,6 +309,10 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
         this.uc = (String) this.jComboBoxUCs.getSelectedItem();
         initComboBoxTurnos();
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
+
+    private void jTablePresencasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePresencasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTablePresencasMouseClicked
 
     /**
      * @param args the command line arguments
