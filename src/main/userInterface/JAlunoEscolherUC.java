@@ -121,14 +121,14 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
 
             },
             new String [] {
-                "UCs não escolhidas:"
+                "ID:", "Nome:"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -140,20 +140,25 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
             }
         });
         jScrollPaneUCNEscolhidas.setViewportView(jTableUCNEscolhidas);
+        if (jTableUCNEscolhidas.getColumnModel().getColumnCount() > 0) {
+            jTableUCNEscolhidas.getColumnModel().getColumn(0).setMinWidth(60);
+            jTableUCNEscolhidas.getColumnModel().getColumn(0).setPreferredWidth(60);
+            jTableUCNEscolhidas.getColumnModel().getColumn(0).setMaxWidth(60);
+        }
 
         jTableUCEscolhidas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "UCs escolhidas:"
+                "IDs:", "Nome"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -165,6 +170,11 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
             }
         });
         jScrollPaneUCEscolhidas.setViewportView(jTableUCEscolhidas);
+        if (jTableUCEscolhidas.getColumnModel().getColumnCount() > 0) {
+            jTableUCEscolhidas.getColumnModel().getColumn(0).setMinWidth(60);
+            jTableUCEscolhidas.getColumnModel().getColumn(0).setPreferredWidth(60);
+            jTableUCEscolhidas.getColumnModel().getColumn(0).setMaxWidth(60);
+        }
 
         jButtonAdicionar.setText("Adicionar");
         jButtonAdicionar.addActionListener(new java.awt.event.ActionListener() {
@@ -194,25 +204,27 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonFechar)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPaneUCNEscolhidas, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonFechar)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPaneUCNEscolhidas, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButtonAdicionar)
-                            .addComponent(jButtonRemover))
-                        .addGap(34, 34, 34)
-                        .addComponent(jScrollPaneUCEscolhidas, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                            .addComponent(jButtonRemover)
+                            .addComponent(jButtonAdicionar))
+                        .addGap(32, 32, 32)
+                        .addComponent(jScrollPaneUCEscolhidas, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(105, 105, 105)
+                        .addGap(107, 107, 107)
                         .addComponent(jButtonAdicionar)
-                        .addGap(36, 36, 36)
+                        .addGap(60, 60, 60)
                         .addComponent(jButtonRemover))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -229,6 +241,7 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
 
     private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
         int selectedRow = this.jTableUCNEscolhidas.getSelectedRow();
+        if(selectedRow<0) return;
         String uc = (String) this.jTableUCNEscolhidas.getValueAt(selectedRow, 0);
         try {
             this.sgt.addAlunoToUC(this.sgt.getLoggedUser().getUserNum(),uc);
@@ -246,6 +259,7 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
 
     private void jButtonRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverActionPerformed
         int selectedRow = this.jTableUCEscolhidas.getSelectedRow();
+        if(selectedRow<0) return;
         String uc = (String) this.jTableUCEscolhidas.getValueAt(selectedRow, 0);
         try {
             this.sgt.removeAlunoFromUC(this.sgt.getLoggedUser().getUserNum(),uc);

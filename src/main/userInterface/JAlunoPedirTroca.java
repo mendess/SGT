@@ -83,6 +83,12 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jComboBoxUCs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxUCsActionPerformed(evt);
+            }
+        });
+
         jLabelUCs.setText("UCs");
 
         jTableTurnos.setModel(new javax.swing.table.DefaultTableModel(
@@ -180,6 +186,10 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt){//GEN-FIRST:event_jButtonFecharActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_jButtonFecharActionPerformed
+
+    private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     /**
      * @param args the command line arguments
