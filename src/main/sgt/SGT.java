@@ -11,6 +11,8 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static main.sgt.NotifyFlags.*;
+
 @SuppressWarnings({"WeakerAccess", "unused", "FieldCanBeLocal"})
 public class SGT extends Observable{
 
@@ -342,6 +344,7 @@ public class SGT extends Observable{
                                     && inscricoes.get(p.getUc()).equals(p.getTurno()))
                             .findFirst()
                             .orElse(null))
+                    .filter(Objects::nonNull)
                     .map(pedido -> new Pedido(pedido.getAlunoNum(),
                                                 this.utilizadores.get(pedido.getAlunoNum()).getName(),
                                                 pedido.getUc(),
@@ -369,6 +372,8 @@ public class SGT extends Observable{
         }else{
             throw new InvalidUserTypeException();
         }
+        this.setChanged();
+        this.notifyObservers(TROCA_REALIZADA);
     }
 
     /**
@@ -399,6 +404,8 @@ public class SGT extends Observable{
         UC newUC = this.ucs.get(uc);
         newUC.addAluno(aluno);
         this.ucs.put(newUC.getId(),newUC);
+        this.setChanged();
+        this.notifyObservers(ALUNO_ADDED_TO_UC);
     }
 
     /**
@@ -411,6 +418,8 @@ public class SGT extends Observable{
         UC newUC = this.ucs.get(uc);
         newUC.removeAluno(aluno);
         this.ucs.put(newUC.getId(),newUC);
+        this.setChanged();
+        this.notifyObservers(ALUNO_REMOVED_FROM_UC);
     }
 
     /**

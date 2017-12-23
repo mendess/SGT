@@ -31,3 +31,4 @@ manifest.mf
 SGT.iml
 out/
 *test.java
+test/

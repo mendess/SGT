@@ -8,45 +8,53 @@ package main.userInterface;
 import main.sgt.Aluno;
 import main.sgt.Pedido;
 import main.sgt.SGT;
+import main.sgt.exceptions.AlunoNaoEstaInscritoNaUcException;
+import main.sgt.exceptions.InvalidUserTypeException;
+import main.sgt.exceptions.UtilizadorJaExisteException;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static main.userInterface.interfaceUtils.*;
+import static main.sgt.NotifyFlags.ALUNO_ADDED_TO_UC;
+import static main.sgt.NotifyFlags.ALUNO_REMOVED_FROM_UC;
+import static main.sgt.NotifyFlags.TROCA_REALIZADA;
+import static main.userInterface.interfaceUtils.prepareTable;
 
 /**
  *
  * @author pedro
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
-public class JAluno extends javax.swing.JFrame {
+public class JAluno extends javax.swing.JFrame implements Observer {
 
     private SGT sgt;
-
+    private List<Pedido> sugTroca = new ArrayList<>();
     /**
      * Creates new form Aluno
      * @param sgt Business logic instance
      */
     JAluno(SGT sgt) {
         this.sgt = sgt;
+        this.sgt.addObserver(this);
         initComponents();
-        initUserUc();
-        initSugestTroca();
+        updateUserUCs();
+        updateSugestTroca();
     }
 
-    private void initSugestTroca() {
+    private void updateSugestTroca() {
         List<Pedido> sujestoesTroca = this.sgt.getSujestoesTroca();
-        DefaultTableModel tModel = prepareTable(sujestoesTroca.size(),2,this.jTable2PropsTroca);
+        DefaultTableModel tModel = prepareTable(sujestoesTroca.size(),2,this.jTablePropsTroca);
         for (int i = 0; i < sujestoesTroca.size(); i++) {
             Pedido p = sujestoesTroca.get(i);
             tModel.setValueAt(p.getUc(), i, 0);
             tModel.setValueAt(p.getTurno(), i, 1);
+            this.sugTroca.set(i,p);
         }
-        this.jTable2PropsTroca.setModel(tModel);
+        this.jTablePropsTroca.setModel(tModel);
     }
 
-    private void initUserUc() {
+    private void updateUserUCs() {
         Map<String, Integer> horario;
         try {
             horario = ((Aluno) this.sgt.getLoggedUser()).getHorario();
@@ -57,7 +65,7 @@ public class JAluno extends javax.swing.JFrame {
         DefaultTableModel tModel = prepareTable(horario.size(), 2, this.jTableUCsETurnos);
         int i=0;
         for(Map.Entry<String,Integer> e: horario.entrySet()){
-            tModel.setValueAt(this.sgt.getUC(e.getKey()),i,0);
+            tModel.setValueAt(this.sgt.getUC(e.getKey()).getNome(),i,0);
             tModel.setValueAt(e.getValue()!=0 ? e.getValue() : "n\\a",i++,1);
         }
     }
@@ -76,7 +84,9 @@ public class JAluno extends javax.swing.JFrame {
         jTableUCsETurnos = new javax.swing.JTable();
         jButtonPedirTroca = new javax.swing.JButton();
         jScrollPanePropsTroca = new javax.swing.JScrollPane();
-        jTable2PropsTroca = new javax.swing.JTable();
+        jTablePropsTroca = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,7 +102,7 @@ public class JAluno extends javax.swing.JFrame {
 
             },
             new String [] {
-                "UCs:", "Turnos:"
+                "UC:", "Turno:"
             }
         ) {
             Class[] types = new Class [] {
@@ -124,19 +134,19 @@ public class JAluno extends javax.swing.JFrame {
             }
         });
 
-        jTable2PropsTroca.setModel(new javax.swing.table.DefaultTableModel(
+        jTablePropsTroca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Propostas de Troca"
+                "UC:", "Turno:"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -147,7 +157,21 @@ public class JAluno extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPanePropsTroca.setViewportView(jTable2PropsTroca);
+        jTablePropsTroca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTablePropsTrocaMouseClicked(evt);
+            }
+        });
+        jScrollPanePropsTroca.setViewportView(jTablePropsTroca);
+        if (jTablePropsTroca.getColumnModel().getColumnCount() > 0) {
+            jTablePropsTroca.getColumnModel().getColumn(1).setMinWidth(50);
+            jTablePropsTroca.getColumnModel().getColumn(1).setPreferredWidth(50);
+            jTablePropsTroca.getColumnModel().getColumn(1).setMaxWidth(50);
+        }
+
+        jLabel1.setText("UCs:");
+
+        jLabel2.setText("Sugestoes de troca:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -156,24 +180,34 @@ public class JAluno extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonEscolherUCs)
-                        .addGap(0, 214, Short.MAX_VALUE))
-                    .addComponent(jScrollPaneUCsETurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jButtonEscolherUCs)
+                    .addComponent(jScrollPaneUCsETurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPanePropsTroca, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonPedirTroca))
-                .addGap(29, 29, 29))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPanePropsTroca, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButtonPedirTroca)))
+                        .addGap(29, 29, 29))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonEscolherUCs)
-                    .addComponent(jButtonPedirTroca))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonPedirTroca)
+                    .addComponent(jButtonEscolherUCs))
+                .addGap(1, 1, 1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPaneUCsETurnos, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                     .addComponent(jScrollPanePropsTroca, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
@@ -193,6 +227,43 @@ public class JAluno extends javax.swing.JFrame {
         pedirTroca.setVisible(true);
     }//GEN-LAST:event_jButtonPedirTrocaActionPerformed
 
+    private void jTablePropsTrocaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePropsTrocaMouseClicked
+        //TODO double click
+        int selectedRow = this.jTablePropsTroca.getSelectedRow();
+        Pedido pedido = this.sugTroca.get(selectedRow);
+        String uc = pedido.getUc();
+        int turno = pedido.getTurno();
+        boolean ePratico = pedido.ePratico();
+        try {
+            int response;
+            if(this.sgt.horarioConfilcts(uc,turno,ePratico)){
+                response = JOptionPane.showConfirmDialog(null,
+                        "O turno selecionado entra em conflito com o seu horário. Quer continuar?",
+                        "Conflito de turnos", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            }else{
+                response = JOptionPane.showConfirmDialog(null,
+                        "Tem a certeza que pretende trocar para este turno?",
+                        "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            }
+            if (response == JOptionPane.YES_OPTION) {
+                this.sgt.realizarTroca(pedido);
+            }
+        } catch (InvalidUserTypeException e) {
+            e.printStackTrace();
+        } catch (AlunoNaoEstaInscritoNaUcException | UtilizadorJaExisteException e) {
+            this.updateSugestTroca();
+        }
+    }//GEN-LAST:event_jTablePropsTrocaMouseClicked
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (ALUNO_ADDED_TO_UC.equals(o) || ALUNO_REMOVED_FROM_UC.equals(o)) {
+            updateUserUCs();
+        }else if(TROCA_REALIZADA.equals(o)){
+            updateSugestTroca();
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -200,7 +271,7 @@ public class JAluno extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -228,13 +299,14 @@ public class JAluno extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEscolherUCs;
     private javax.swing.JButton jButtonPedirTroca;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPanePropsTroca;
     private javax.swing.JScrollPane jScrollPaneUCsETurnos;
-    private javax.swing.JTable jTable2PropsTroca;
+    private javax.swing.JTable jTablePropsTroca;
     private javax.swing.JTable jTableUCsETurnos;
     // End of variables declaration//GEN-END:variables
 }
