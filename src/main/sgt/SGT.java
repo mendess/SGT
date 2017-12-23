@@ -69,7 +69,9 @@ public class SGT extends Observable{
         this.trocas = new TrocaDAO();
         this.ucs = new UCDAO();
         this.utilizadores = new UserDAO();
+        System.out.println("A carregar dias");
         new DiaDAO().initDias();
+        System.out.println("A carregar pedidos");
         Collection<List<Pedido>> pedidosDB = this.pedidosDAO.values();
         Map<String,List<Pedido>> pedidosMEM = new HashMap<>();
         pedidosDB.stream()
@@ -81,7 +83,9 @@ public class SGT extends Observable{
                         })
                 );
         this.pedidos = pedidosMEM;
+        System.out.println("A carregar utilizadores");
         Collection<Utilizador> utilizadores = this.utilizadores.values();
+        System.out.println("A carregar ucs");
         Collection<UC> ucsValues = this.ucs.values();
         this.ucsRegistadas = !ucsValues.isEmpty();
         this.usersRegistados = !utilizadores.isEmpty();
@@ -93,8 +97,11 @@ public class SGT extends Observable{
                                             .noneMatch(a -> ((Aluno) a).getHorario().isEmpty());
         //TODO remove this:
         /*try {
+            System.out.println("A importar UCS");
             this.importUCs("jsons/ucs.json");
+            System.out.println("A importar Utilizadores");
             this.importUtilizadores("jsons/utilizadores.json");
+            System.out.println("A importar Turnos");
             this.importTurnos("jsons/turnos.json");
         } catch (FileNotFoundException | BadlyFormatedFileException e1) {
             e1.printStackTrace();
