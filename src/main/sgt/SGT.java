@@ -87,11 +87,16 @@ public class SGT extends Observable{
         Collection<Utilizador> utilizadores = this.utilizadores.values();
         System.out.println("A carregar ucs");
         Collection<UC> ucsValues = this.ucs.values();
+        System.out.println("A verificar se as UCS estão registadas");
         this.ucsRegistadas = !ucsValues.isEmpty();
+        System.out.println("A verificar se os users estão registados");
         this.usersRegistados = !utilizadores.isEmpty();
+        System.out.println("A verificar se os turnos estão registados");
         this.turnosRegistados = ucsValues.stream().noneMatch(uc-> uc.getTurnos().isEmpty());
+        System.out.println("A verificar se os logins estão ativos");
         this.loginsAtivos = utilizadores.stream()
                                         .allMatch(Utilizador::isLoginAtivo);
+        System.out.println("A verifcar se os turnos estão atribuidos");
         this.turnosAtribuidos = utilizadores.stream()
                                             .filter(u -> u instanceof Aluno)
                                             .noneMatch(a -> ((Aluno) a).getHorario().isEmpty());
@@ -106,6 +111,7 @@ public class SGT extends Observable{
         } catch (FileNotFoundException | BadlyFormatedFileException e1) {
             e1.printStackTrace();
         }*/
+        System.out.println("100%");
     }
 
     /**
