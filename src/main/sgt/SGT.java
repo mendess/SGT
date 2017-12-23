@@ -69,8 +69,13 @@ public class SGT extends Observable{
         this.trocas = new TrocaDAO();
         this.ucs = new UCDAO();
         this.utilizadores = new UserDAO();
+        
+        long startTime = System.nanoTime();
         System.out.println("A carregar dias");
         new DiaDAO().initDias();
+        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+        
+        startTime = System.nanoTime();
         System.out.println("A carregar pedidos");
         Collection<List<Pedido>> pedidosDB = this.pedidosDAO.values();
         Map<String,List<Pedido>> pedidosMEM = new HashMap<>();
@@ -83,37 +88,64 @@ public class SGT extends Observable{
                         })
                 );
         this.pedidos = pedidosMEM;
+        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+        
+        startTime = System.nanoTime();
         System.out.println("A carregar utilizadores");
         Collection<Utilizador> utilizadores = this.utilizadores.values();
+        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+
+        
+        startTime = System.nanoTime();
         System.out.println("A carregar ucs");
         Collection<UC> ucsValues = this.ucs.values();
+        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+
+
+        startTime = System.nanoTime();
         System.out.println("A verificar se as UCS estão registadas");
         this.ucsRegistadas = !ucsValues.isEmpty();
+        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+
+        
+        startTime = System.nanoTime();
         System.out.println("A verificar se os users estão registados");
         this.usersRegistados = !utilizadores.isEmpty();
+        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+        
+        startTime = System.nanoTime();
         System.out.println("A verificar se os turnos estão registados");
         this.turnosRegistados = ucsValues.stream().noneMatch(uc-> uc.getTurnos().isEmpty());
+        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+
+        startTime = System.nanoTime();
         System.out.println("A verificar se os logins estão ativos");
-        boolean b = true;
-        for (Utilizador utilizadore : utilizadores) {
-            if (!utilizadore.isLoginAtivo()) {
-                b = false;
-                break;
-            }
-        }
-        this.loginsAtivos = b;
+        this.loginsAtivos = utilizadores.stream().allMatch(Utilizador::isLoginAtivo);
+        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+
+        startTime = System.nanoTime();
         System.out.println("A verifcar se os turnos estão atribuidos");
         this.turnosAtribuidos = utilizadores.stream()
                                             .filter(u -> u instanceof Aluno)
                                             .noneMatch(a -> ((Aluno) a).getHorario().isEmpty());
+        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+        
         //TODO remove this:
         /*try {
+            startTime = System.nanoTime();
             System.out.println("A importar UCS");
             this.importUCs("jsons/ucs.json");
+            System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+        
+            startTime = System.nanoTime();
             System.out.println("A importar Utilizadores");
             this.importUtilizadores("jsons/utilizadores.json");
+            System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+        
+            startTime = System.nanoTime();
             System.out.println("A importar Turnos");
             this.importTurnos("jsons/turnos.json");
+            System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
         } catch (FileNotFoundException | BadlyFormatedFileException e1) {
             e1.printStackTrace();
         }*/
