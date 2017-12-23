@@ -169,7 +169,13 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonPedirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPedirActionPerformed
-        // TODO add your handling code here:
+        int turno = this.jTableTurnos.getSelectedRow();
+        String uc  = (String) this.jComboBoxUCs.getSelectedItem();
+        try {
+            this.sgt.pedirTroca(uc,turno);
+        } catch (InvalidUserTypeException e) {
+            //TODO leave frame
+        }
     }//GEN-LAST:event_jButtonPedirActionPerformed
 
     /**
