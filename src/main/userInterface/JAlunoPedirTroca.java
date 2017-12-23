@@ -8,7 +8,6 @@ package main.userInterface;
 import main.sgt.SGT;
 import main.sgt.Turno;
 import main.sgt.exceptions.InvalidUserTypeException;
-import main.sgt.exceptions.WrongCredentialsException;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -32,12 +31,6 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
      */
     JAlunoPedirTroca(SGT sgt) {
         this.sgt = sgt;
-        try{//TODO remove this
-            this.sgt.login("A42274","password");
-        }catch (WrongCredentialsException e) {
-            e.printStackTrace();
-            return;
-        }
         initComponents();
         initComboBoxUcs();
     }

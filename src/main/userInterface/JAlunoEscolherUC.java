@@ -10,12 +10,11 @@ import main.sgt.UC;
 import main.sgt.exceptions.InvalidUserTypeException;
 import main.sgt.exceptions.UtilizadorJaExisteException;
 import main.sgt.exceptions.UtilizadorNaoExisteException;
-import main.sgt.exceptions.WrongCredentialsException;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-import static main.userInterface.interfaceUtils.*;
+import static main.userInterface.interfaceUtils.makeUCLookupTable;
 
 /**
  *
@@ -33,12 +32,6 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
     JAlunoEscolherUC(SGT sgt) {
         initComponents();
         this.sgt = sgt;
-        try {//TODO remove this
-            this.sgt.login("A42274","password");
-        } catch (WrongCredentialsException e) {
-
-            e.printStackTrace();
-        }
         updateUCNEscolhidas();
         updateUCEscolhidas();
     }

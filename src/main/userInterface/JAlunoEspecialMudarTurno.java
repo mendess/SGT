@@ -8,7 +8,6 @@ package main.userInterface;
 import main.sgt.SGT;
 import main.sgt.Turno;
 import main.sgt.exceptions.InvalidUserTypeException;
-import main.sgt.exceptions.WrongCredentialsException;
 
 import java.util.List;
 
@@ -31,11 +30,6 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
      */
     JAlunoEspecialMudarTurno(SGT sgt) {
         this.sgt = sgt;
-        try {//TODO remove this
-            this.sgt.login("A79003","password");
-        } catch (WrongCredentialsException e) {
-            e.printStackTrace();
-        }
         initComponents();
         initUCsComboBox();
     }

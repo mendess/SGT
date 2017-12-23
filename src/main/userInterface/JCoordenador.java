@@ -10,7 +10,6 @@ import main.sgt.SGT;
 import main.sgt.Turno;
 import main.sgt.UC;
 import main.sgt.exceptions.InvalidUserTypeException;
-import main.sgt.exceptions.WrongCredentialsException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,11 +33,6 @@ public class JCoordenador extends javax.swing.JFrame {
      */
     JCoordenador(SGT sgt) {
         this.sgt = sgt;
-        try{//TODO remove this
-            this.sgt.login("D46360","password");
-        } catch (WrongCredentialsException e) {
-            e.printStackTrace();
-        }
         initComponents();
         initComboBoxUCs();    }
 

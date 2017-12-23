@@ -5,7 +5,15 @@
  */
 package main.userInterface;
 
+import main.sgt.Aluno;
+import main.sgt.Pedido;
 import main.sgt.SGT;
+
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import java.util.Map;
+
+import static main.userInterface.interfaceUtils.*;
 
 /**
  *
@@ -23,6 +31,35 @@ public class JAluno extends javax.swing.JFrame {
     JAluno(SGT sgt) {
         this.sgt = sgt;
         initComponents();
+        initUserUc();
+        initSugestTroca();
+    }
+
+    private void initSugestTroca() {
+        List<Pedido> sujestoesTroca = this.sgt.getSujestoesTroca();
+        DefaultTableModel tModel = prepareTable(sujestoesTroca.size(),2,this.jTable2PropsTroca);
+        for (int i = 0; i < sujestoesTroca.size(); i++) {
+            Pedido p = sujestoesTroca.get(i);
+            tModel.setValueAt(p.getUc(), i, 0);
+            tModel.setValueAt(p.getTurno(), i, 1);
+        }
+        this.jTable2PropsTroca.setModel(tModel);
+    }
+
+    private void initUserUc() {
+        Map<String, Integer> horario;
+        try {
+            horario = ((Aluno) this.sgt.getLoggedUser()).getHorario();
+        } catch (ClassCastException e) {
+            this.setVisible(false);
+            return;
+        }
+        DefaultTableModel tModel = prepareTable(horario.size(), 2, this.jTableUCsETurnos);
+        int i=0;
+        for(Map.Entry<String,Integer> e: horario.entrySet()){
+            tModel.setValueAt(this.sgt.getUC(e.getKey()),i,0);
+            tModel.setValueAt(e.getValue()!=0 ? e.getValue() : "n\\a",i++,1);
+        }
     }
 
     /**
