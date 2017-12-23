@@ -50,15 +50,16 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
         this.loggedUser = (Docente) this.sgt.getLoggedUser();
         initComponents();
         initComboBoxUCs();
-        ButtonRenderer buttonPresenca = new ButtonRenderer();
-        buttonPresenca.addTableButtonListener(new TableButtonListener() {
-            @Override
-            public void tableButtonClicked(int row, int col) {
-                marcarPrescenca(row);
-            }
-        });
-        this.jTablePresencas.getColumn("Presenca").setCellRenderer(buttonPresenca);
-        this.jTablePresencas.getColumn("Presenca").setCellEditor(buttonPresenca);
+//        ButtonRenderer buttonPresenca = new ButtonRenderer();
+//        buttonPresenca.addTableButtonListener(new TableButtonListener() {
+//            @Override
+//            public void tableButtonClicked(int row, int col) {
+//                marcarPrescenca(row);
+//            }
+//        });
+//        this.jTablePresencas.getColumn("Presenca").setCellRenderer(new Checkbox());
+//        this.jTablePresencas.getColumn("Presenca").setCellEditor(buttonPresenca);
+
     }
 
     private void initComboBoxUCs() {
@@ -111,14 +112,16 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
             Aluno a = this.sgt.getAluno(aluno);
             tModel.setValueAt(a.getUserNum(),i,0);
             tModel.setValueAt(a.getName(),i,1);
-            tModel.setValueAt("Marcar Presente",i,2);
+//            tModel.setValueAt("Marcar Presente",i,2);
+            tModel.setValueAt(false,i,2);
             i++;
         }
         for (String aluno: presentes){
             Aluno a = this.sgt.getAluno(aluno);
             tModel.setValueAt(a.getUserNum(),i,0);
             tModel.setValueAt(a.getName(),i,1);
-            tModel.setValueAt("Presente",i,2);
+//            tModel.setValueAt("Presente",i,2);
+            tModel.setValueAt(true,i,2);
             i++;
         }
         this.jTablePresencas.setModel(tModel);
@@ -313,7 +316,11 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     private void jTablePresencasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePresencasMouseClicked
-        System.out.println(this.jTablePresencas.getSelectedRow()+","+this.jTablePresencas.getSelectedColumn());
+        int selRow = this.jTablePresencas.getSelectedRow();
+        String aluno = (String) this.jTablePresencas.getValueAt(selRow,0);
+//        this.sgt.marcarPresenca(aluno,this.uc,shiftFromString(this.turno),this.aula,shiftTypeFromStr(this.turno));
+        System.out.println(selRow+","+this.jTablePresencas.getSelectedColumn());
+        System.out.println(this.jTablePresencas.getValueAt(selRow,2));
     }//GEN-LAST:event_jTablePresencasMouseClicked
 
     /**
