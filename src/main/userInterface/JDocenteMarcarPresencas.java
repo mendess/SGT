@@ -210,6 +210,11 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
         });
         jScrollPanePresencas.setViewportView(jTablePresencas);
         jTablePresencas.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (jTablePresencas.getColumnModel().getColumnCount() > 0) {
+            jTablePresencas.getColumnModel().getColumn(2).setMinWidth(69);
+            jTablePresencas.getColumnModel().getColumn(2).setPreferredWidth(69);
+            jTablePresencas.getColumnModel().getColumn(2).setMaxWidth(69);
+        }
 
         jButtonAdicionarAula.setText("Adicionar Aula");
         jButtonAdicionarAula.addActionListener(new java.awt.event.ActionListener() {
