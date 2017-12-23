@@ -117,6 +117,11 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
         jScrollPaneTurnos.setViewportView(jTableTurnos);
 
         jButtonPedir.setText("Pedir");
+        jButtonPedir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPedirActionPerformed(evt);
+            }
+        });
 
         jButtonFechar.setText("Fechar");
 
@@ -162,6 +167,10 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonPedirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPedirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonPedirActionPerformed
 
     /**
      * @param args the command line arguments
