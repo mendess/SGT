@@ -4,6 +4,7 @@ import main.sgt.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.util.List;
 import java.util.Set;
 
@@ -56,6 +57,16 @@ class interfaceUtils {
         }
         return tModel;
     }
+
+    static TableModel makeUCLookupTable(JTable jTable, List<UC> ucs) {
+        DefaultTableModel tModel = prepareTable(ucs.size(),2,jTable);
+        for (int i = 0; i < ucs.size(); i++) {
+            UC uc = ucs.get(i);
+            tModel.setValueAt(uc.getId(), i, 0);
+            tModel.setValueAt(uc.getNome(),i,1);
+        }
+        return tModel;
+    }
     static DefaultTableModel makeStudentLookupTable(JTable jTable, List<Aluno> alunos){
         DefaultTableModel tModel = prepareTable(alunos.size(),2, jTable);
         for (int i = 0; i < alunos.size(); i++) {
@@ -70,6 +81,7 @@ class interfaceUtils {
         uCsOfUser.stream().map(UC::getId).forEach(jComboBoxUC::addItem);
         return (String) jComboBoxUC.getSelectedItem();
     }
+
     static String makeComboBoxUCs(JComboBox<String> jComboBoxUC, Set<String> uCsOfUser){
         jComboBoxUC.removeAllItems();
         uCsOfUser.forEach(jComboBoxUC::addItem);

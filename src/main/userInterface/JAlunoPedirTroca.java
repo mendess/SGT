@@ -10,6 +10,7 @@ import main.sgt.Turno;
 import main.sgt.exceptions.InvalidUserTypeException;
 import main.sgt.exceptions.WrongCredentialsException;
 
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 import static main.userInterface.interfaceUtils.makeComboBoxUCs;
@@ -23,6 +24,7 @@ import static main.userInterface.interfaceUtils.makeShiftLookUpTable;
 public class JAlunoPedirTroca extends javax.swing.JFrame {
 
     private final SGT sgt;
+    private String uc;
 
     /**
      * Creates new form AlunoPedirTroca
@@ -42,7 +44,7 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
 
     private void initComboBoxUcs() {
         try {
-            makeComboBoxUCs(this.jComboBoxUCs,this.sgt.getUCsOfUser());
+            this.uc = makeComboBoxUCs(this.jComboBoxUCs, this.sgt.getUCsOfUser());
         } catch (InvalidUserTypeException e) {
             this.setVisible(false);
             return;
@@ -51,8 +53,11 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
     }
 
     private void updateTableTurnos() {
-        if (this.jComboBoxUCs.getSelectedItem() == null) return;
-        List<Turno> turnosOfUC = this.sgt.getTurnosOfUC((String) this.jComboBoxUCs.getSelectedItem());
+        if (this.uc == null){
+            ((DefaultTableModel) this.jTableTurnos.getModel()).setRowCount(0);
+            return;
+        }
+        List<Turno> turnosOfUC = this.sgt.getTurnosOfUC(this.uc);
         List<Turno> turnosUser;
         try {
             turnosUser = this.sgt.getTurnosUser();
@@ -188,7 +193,8 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
-        // TODO add your handling code here:
+        this.uc = (String) this.jComboBoxUCs.getSelectedItem();
+        updateTableTurnos();
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     /**

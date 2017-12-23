@@ -42,35 +42,19 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         updateUCNEscolhidas();
         updateUCEscolhidas();
     }
-    //TODO make these tables more user friendly
+
     private void updateUCNEscolhidas() {
         List<UC> uCsOfUser = this.getUCsOfUser();
         if(uCsOfUser==null) return;
         List<UC> allUCs = this.sgt.getUCs();
         allUCs.removeAll(uCsOfUser);
-        DefaultTableModel tModel = prepareTable(allUCs.size(),1,this.jTableUCNEscolhidas);
-        for (int i = 0; i < allUCs.size(); i++) {
-            UC uc = allUCs.get(i);
-            tModel.setValueAt(uc.getId(), i, 0);
-        }
-        this.jTableUCNEscolhidas.setModel(tModel);
+        this.jTableUCNEscolhidas.setModel(makeUCLookupTable(this.jTableUCNEscolhidas,allUCs));
     }
 
     private void updateUCEscolhidas() {
         List<UC> uCsOfUser = this.getUCsOfUser();
         if(uCsOfUser==null) return;
-        DefaultTableModel tModel = (DefaultTableModel) this.jTableUCEscolhidas.getModel();
-        while(uCsOfUser.size()>tModel.getRowCount()){
-            tModel.addRow(new String[1]);
-        }
-        while (uCsOfUser.size()<tModel.getRowCount()){
-            tModel.removeRow(tModel.getRowCount()-1);
-        }
-        int i=0;
-        for(UC uc: uCsOfUser){
-            tModel.setValueAt(uc.getId(),i++,0);
-        }
-        this.jTableUCEscolhidas.setModel(tModel);
+        this.jTableUCEscolhidas.setModel(makeUCLookupTable(this.jTableUCEscolhidas,uCsOfUser));
     }
 
     private List<UC> getUCsOfUser(){
@@ -242,14 +226,17 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
     private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
         int selectedRow = this.jTableUCNEscolhidas.getSelectedRow();
         if(selectedRow<0) return;
-        String uc = (String) this.jTableUCNEscolhidas.getValueAt(selectedRow, 0);
+        String uc_id = (String) this.jTableUCNEscolhidas.getValueAt(selectedRow, 0);
+        String uc_name = (String) this.jTableUCNEscolhidas.getValueAt(selectedRow,1);
         try {
-            this.sgt.addAlunoToUC(this.sgt.getLoggedUser().getUserNum(),uc);
+            this.sgt.addAlunoToUC(this.sgt.getLoggedUser().getUserNum(),uc_id);
+            //Remove row
             DefaultTableModel tableModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
             tableModel.removeRow(selectedRow);
             this.jTableUCNEscolhidas.setModel(tableModel);
+            //Add row
             tableModel = (DefaultTableModel) this.jTableUCEscolhidas.getModel();
-            tableModel.addRow(new Object[]{uc});
+            tableModel.addRow(new String[]{uc_id,uc_name});
             this.jTableUCEscolhidas.setModel(tableModel);
         } catch (UtilizadorJaExisteException e) {
             updateUCEscolhidas();
@@ -260,16 +247,18 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
     private void jButtonRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverActionPerformed
         int selectedRow = this.jTableUCEscolhidas.getSelectedRow();
         if(selectedRow<0) return;
-        String uc = (String) this.jTableUCEscolhidas.getValueAt(selectedRow, 0);
+        String uc_id = (String) this.jTableUCEscolhidas.getValueAt(selectedRow, 0);
+        String uc_name = (String) this.jTableUCEscolhidas.getValueAt(selectedRow,1);
         try {
-            this.sgt.removeAlunoFromUC(this.sgt.getLoggedUser().getUserNum(),uc);
+            this.sgt.removeAlunoFromUC(this.sgt.getLoggedUser().getUserNum(),uc_id);
+            //Remove row
             DefaultTableModel tableModel;
             tableModel = (DefaultTableModel) this.jTableUCEscolhidas.getModel();
             tableModel.removeRow(selectedRow);
             this.jTableUCEscolhidas.setModel(tableModel);
-
+            //Add row
             tableModel = (DefaultTableModel) this.jTableUCNEscolhidas.getModel();
-            tableModel.addRow(new Object[]{uc});
+            tableModel.addRow(new String[]{uc_id,uc_name});
             this.jTableUCNEscolhidas.setModel(tableModel);
 
         } catch (UtilizadorNaoExisteException e) {
