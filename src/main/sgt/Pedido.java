@@ -6,20 +6,20 @@ public class Pedido {
     /**
      *  Numero do aluno que fez o pedido
      */
-    private String alunoNum;
+    private final String alunoNum;
     /**
      * Nome do aluno que fez o pedido
      */
-    private String alunoNome;
+    private final String alunoNome;
     /**
      * Uc do pedido
      */
-    private String uc;
+    private final String uc;
     /**
      * Turno pedido
      */
-    private int turno;
-    private boolean ePratico;
+    private final int turno;
+    private final boolean ePratico;
 
     /**
      * Construtor do <tt>Pedido</tt>
@@ -27,7 +27,7 @@ public class Pedido {
      * @param alunoNome Nome do aluno que fez o pedido
      * @param uc Identificador da UC a que pertence o turno pedido
      * @param turno Numero do turno pedido
-     * @param ePratico
+     * @param ePratico Se o turno pedido e pratico
      */
     public Pedido(String alunoNum, String alunoNome, String uc, int turno, boolean ePratico) {
         this.alunoNum = alunoNum;

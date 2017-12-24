@@ -283,24 +283,4 @@ public class TrocaDAO implements List<Troca> {
         throw new UnsupportedOperationException();
     }
 
-    public int maxID() {
-        connection = Connect.connect();
-        if (connection == null) return -1;
-        int maxID = -1;
-        PreparedStatement stm = null;
-        try {
-            stm = connection.prepareStatement(
-                    "SELECT max(`id`) FROM `Trocas`;");
-            ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                maxID = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(stm);
-        } finally {
-            Connect.close(connection);
-        }
-        return maxID;
-    }
 }

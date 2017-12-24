@@ -1,9 +1,9 @@
 package main.sgt;
 
 public class TurnoKey {
-    private String uc_id;
-    private int turno_id;
-    private boolean ePratico;
+    private final String uc_id;
+    private final int turno_id;
+    private final boolean ePratico;
 
     public TurnoKey(String uc_id,int turno_id,boolean ePratico){
         this.uc_id = uc_id;

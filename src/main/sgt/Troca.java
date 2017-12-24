@@ -8,25 +8,25 @@ public class Troca {
     /**
      * O id da Troca
      */
-    private int id;
+    private final int id;
     /**
      * O aluno que trocou de turno
      */
-    private String aluno;
+    private final String aluno;
     /**
      * A UC a que os turnos da Troca pertencem
      */
-    private String uc;
+    private final String uc;
     /**
      * O Turno de onde o Aluno veio
      */
-    private int turnoOrigem;
-    private boolean turnoOrigem_ePratico;
+    private final int turnoOrigem;
+    private final boolean turnoOrigem_ePratico;
     /**
      * O Turno para onde o Aluno foi
      */
-    private int turnoDestino;
-    private boolean turnoDestino_ePratico;
+    private final int turnoDestino;
+    private final boolean turnoDestino_ePratico;
     /**
      * A data em que a Troca foi efetuada
      */
@@ -38,9 +38,9 @@ public class Troca {
      * @param aluno O identificador do aluno que mudou de turno
      * @param uc A UC dentro da qual a troca foi efetuada
      * @param turnoOrigem O turno de onde o aluno veio
-     * @param turnoOrigem_ePratico
+     * @param turnoOrigem_ePratico Se o turno origem e pratico
      * @param turnoDestino O turno para onde o aluno foi
-     * @param turnoDestino_ePratico
+     * @param turnoDestino_ePratico Se o turno destino e pratico
      * @param data Data da troca
      */
     public Troca(int id, String aluno, String uc, int turnoOrigem, boolean turnoOrigem_ePratico, int turnoDestino, boolean turnoDestino_ePratico, LocalDateTime data){
@@ -59,9 +59,9 @@ public class Troca {
      * @param aluno O identificador do aluno que mudou de turno
      * @param uc A UC dentro da qual a troca foi efetuada
      * @param turnoOrigem O turno de onde o aluno veio
-     * @param turnoOrigem_ePratico
+     * @param turnoOrigem_ePratico Se o turno origem e pratico
      * @param turnoDestino O turno para onde o aluno foi
-     * @param turnoDestino_ePratico
+     * @param turnoDestino_ePratico Se o turno destino e pratico
      */
     public Troca(int id, String aluno, String uc, int turnoOrigem, boolean turnoOrigem_ePratico, int turnoDestino, boolean turnoDestino_ePratico) {
         this.id = id;
@@ -74,10 +74,19 @@ public class Troca {
         this.data = LocalDateTime.now();
     }
 
+    /**
+     * Contrutor de troca sem id
+     * @param aluno O identificador do aluno que mudou de turno
+     * @param uc A UC dentro da qual a troca foi efetuada
+     * @param turnoOrigem O turno de onde o aluno veio
+     * @param turnoOrigem_ePratico Se o turno origem e pratico
+     * @param turnoDestino O turno para onde o aluno foi
+     * @param turnoDestino_ePratico Se o turno destino e pratico
+     */
     public Troca(String aluno, String uc, int turnoOrigem, boolean turnoOrigem_ePratico, int turnoDestino, boolean turnoDestino_ePratico){
+        this.id=1;
         this.turnoOrigem_ePratico = turnoOrigem_ePratico;
         this.turnoDestino_ePratico = turnoDestino_ePratico;
-        this.id=1;
         this.aluno = aluno;
         this.uc = uc;
         this.turnoOrigem = turnoOrigem;

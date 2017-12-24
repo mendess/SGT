@@ -1,10 +1,10 @@
 package main.sgt;
 
 public class AulaKey {
-    private String uc_id;
-    private int turno_id;
-    private int aula_id;
-    private boolean ePratico;
+    private final String uc_id;
+    private final int turno_id;
+    private final int aula_id;
+    private final boolean ePratico;
 
     public AulaKey(String uc_id, int turno_id, int aula_id, boolean ePratico){
         this.uc_id = uc_id;

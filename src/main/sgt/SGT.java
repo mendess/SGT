@@ -420,13 +420,12 @@ public class SGT extends Observable{
             Pedido newPedido = new Pedido(this.loggedUser.getUserNum(),this.loggedUser.getName(),uc,turno,true);
             if(this.pedidos.containsKey(this.loggedUser.getUserNum())){
                 this.pedidos.get(this.loggedUser.getUserNum()).add(newPedido);
-                this.pedidosDAO.put(newPedido);
             }else{
                 List<Pedido> newPedidos = new ArrayList<>();
                 newPedidos.add(newPedido);
                 this.pedidos.put(this.loggedUser.getUserNum(),newPedidos);
-                this.pedidosDAO.put(this.loggedUser.getUserNum(),newPedidos);
             }
+            this.pedidosDAO.put(newPedido);
         }else{
             throw new InvalidUserTypeException();
         }
@@ -473,6 +472,8 @@ public class SGT extends Observable{
         }else{
             throw new InvalidUserTypeException();
         }
+        this.pedidosDAO.remove(pedido);
+        this.pedidos.get(pedido.getAlunoNum()).remove(pedido);
         this.setChanged();
         this.notifyObservers(TROCA_REALIZADA);
     }

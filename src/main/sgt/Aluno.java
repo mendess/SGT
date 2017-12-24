@@ -6,7 +6,7 @@ import java.util.Map;
 public class Aluno extends Utilizador {
 
     private boolean eEspecial;
-    private Map<String, Integer> horario;
+    private final Map<String, Integer> horario;
 
     /**
      * O construtor do aluno
