@@ -9,6 +9,8 @@ import main.sgt.*;
 import main.sgt.exceptions.WrongCredentialsException;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  *
@@ -93,30 +95,39 @@ public class JLogin extends javax.swing.JFrame {
         try {
             this.sgt.login(this.jTextFieldNumero.getText(),this.jPasswordField.getText());
             Utilizador u = this.sgt.getLoggedUser();
+            JFrame newFrame;
             if(u instanceof DiretorDeCurso){
-                JAdmin admin = new JAdmin(this.sgt);
-                admin.setVisible(true);
+                newFrame = new JAdmin(this.sgt);
             }else if(u instanceof Coordenador){
-                JCoordenador coordenador = new JCoordenador(this.sgt);
-                coordenador.setVisible(true);
+                newFrame = new JCoordenador(this.sgt);
             }else if(u instanceof Docente){
-                JDocente docente = new JDocente(this.sgt);
-                docente.setVisible(true);
+                newFrame = new JDocente(this.sgt);
             }else if(u instanceof Aluno){
                 if(((Aluno) u).eEspecial()){
-                    JAlunoEspecial alunoEspecial = new JAlunoEspecial(this.sgt);
-                    alunoEspecial.setVisible(true);
+                    newFrame = new JAlunoEspecial(this.sgt);
                 }else {
-                    JAluno aluno = new JAluno(this.sgt);
-                    aluno.setVisible(true);
+                    newFrame = new JAluno(this.sgt);
                 }
             }else {
                 throw new WrongCredentialsException("Wrong Credentials!");
             }
+            this.setVisible(false);
+            newFrame.setVisible(true);
+            newFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent windowEvent) {
+                    reOpen();
+                }
+            });
         } catch (WrongCredentialsException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }//GEN-LAST:event_jButtonLoginActionPerformed
+
+    private void reOpen() {
+        this.sgt.logout();
+        this.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments

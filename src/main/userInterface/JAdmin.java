@@ -10,6 +10,8 @@ import main.sgt.exceptions.BadlyFormatedFileException;
 
 import javax.swing.*;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Observable;
@@ -110,8 +112,9 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         jButtonAddShift = new javax.swing.JButton();
         jButtonRemoveShift = new javax.swing.JButton();
         jButtonConsultUC = new javax.swing.JButton();
+        jButtonLogout = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jCheckBoxUCsRegistadas.setText("UCs registadas");
 
@@ -185,6 +188,13 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
             }
         });
 
+        jButtonLogout.setText("Logout");
+        jButtonLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -206,49 +216,61 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
                     .addComponent(jCheckBoxTurnosRegistados))
                 .addGap(25, 25, 25)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonAddShift)
-                    .addComponent(jButtonRemoveShift)
-                    .addComponent(jButtonConsultUC))
-                .addContainerGap(93, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonAddShift)
+                            .addComponent(jButtonRemoveShift)
+                            .addComponent(jButtonConsultUC))
+                        .addContainerGap(93, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonLogout)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonImportUCs)
-                            .addComponent(jCheckBoxUCsRegistadas))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonImportUtilizadores)
-                            .addComponent(jCheckBoxUsersRegistered))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonImportTurnos)
-                            .addComponent(jCheckBoxTurnosRegistados))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonActivateLogins)
-                            .addComponent(jCheckBoxLoginsActive))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonAssignShifts)
-                            .addComponent(jCheckBoxShiftsAssigned)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonAddShift)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonRemoveShift)
-                                .addGap(71, 71, 71)
-                                .addComponent(jButtonConsultUC))
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                                .addGap(49, 49, 49)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButtonImportUCs)
+                                    .addComponent(jCheckBoxUCsRegistadas))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButtonImportUtilizadores)
+                                    .addComponent(jCheckBoxUsersRegistered))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButtonImportTurnos)
+                                    .addComponent(jCheckBoxTurnosRegistados))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonActivateLogins)
+                                    .addComponent(jCheckBoxLoginsActive))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButtonAssignShifts)
+                                    .addComponent(jCheckBoxShiftsAssigned)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonAddShift)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonRemoveShift)
+                                        .addGap(71, 71, 71)
+                                        .addComponent(jButtonConsultUC))
+                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 14, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonLogout)))
+                .addContainerGap())
         );
 
         pack();
@@ -259,6 +281,14 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jButtonAddShiftActionPerformed
 
     private void jButtonImportUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportUCsActionPerformed
+        int confirmed = JOptionPane.YES_OPTION;
+        if(this.sgt.isUcsRegistadas()) {
+            confirmed = JOptionPane.showConfirmDialog(this,"Isto ira apagar todos os dados importados até agora, tem a certeza que quer continuar?",
+                    "Warning!",JOptionPane.OK_CANCEL_OPTION);
+        }
+        if(!(confirmed ==JOptionPane.YES_OPTION)){
+            return;
+        }
         int returnVal = fc.showOpenDialog(this);
         if(returnVal==JFileChooser.APPROVE_OPTION){
             File file = fc.getSelectedFile();
@@ -274,6 +304,14 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jButtonImportUCsActionPerformed
 
     private void jButtonImportUtilizadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportUtilizadoresActionPerformed
+        int confirmed = JOptionPane.YES_OPTION;
+        if(this.sgt.isUsersRegistados()) {
+            confirmed = JOptionPane.showConfirmDialog(this,"Isto ira apagar todos os dados importados até agora, excepto as ucs, tem a certeza que quer continuar?",
+                    "Warning!",JOptionPane.OK_CANCEL_OPTION);
+        }
+        if(!(confirmed ==JOptionPane.YES_OPTION)){
+            return;
+        }
         int returnVal = fc.showOpenDialog(this);
         if(returnVal==JFileChooser.APPROVE_OPTION){
             File file = fc.getSelectedFile();
@@ -289,6 +327,14 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jButtonImportUtilizadoresActionPerformed
 
     private void jButtonImportTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportTurnosActionPerformed
+        int confirmed = JOptionPane.YES_OPTION;
+        if(this.sgt.isTurnosRegistados()) {
+            confirmed = JOptionPane.showConfirmDialog(this,"Isto ira apagar todos os turnos importados, tem a certeza que quer continuar?",
+                    "Warning!",JOptionPane.OK_CANCEL_OPTION);
+        }
+        if(!(confirmed ==JOptionPane.YES_OPTION)){
+            return;
+        }
         int returnVal = fc.showOpenDialog(this);
         if(returnVal==JFileChooser.APPROVE_OPTION){
             File file = fc.getSelectedFile();
@@ -304,10 +350,24 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_jButtonImportTurnosActionPerformed
 
     private void jButtonActivateLoginsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActivateLoginsActionPerformed
+        int confirmed = JOptionPane.showConfirmDialog(this,"Isto ira enviar um email a todos os utilizadores, tem a certeza que quer continuar?",
+                "Warning!",JOptionPane.OK_CANCEL_OPTION);
+        if(!(confirmed ==JOptionPane.YES_OPTION)){
+            return;
+        }
         this.sgt.activateLogins();
     }//GEN-LAST:event_jButtonActivateLoginsActionPerformed
 
     private void jButtonAssignShiftsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAssignShiftsActionPerformed
+        int confirmed = JOptionPane.YES_OPTION;
+        if(this.sgt.isTurnosAtribuidos()){
+            confirmed = JOptionPane.showConfirmDialog(this,"Isto ira re-distibuir os turnos, tem a certeza que quer continuar?",
+                    "Warning!",JOptionPane.OK_CANCEL_OPTION);
+
+        }
+        if(!(confirmed ==JOptionPane.YES_OPTION)){
+            return;
+        }
         this.sgt.assignShifts();
     }//GEN-LAST:event_jButtonAssignShiftsActionPerformed
 
@@ -317,8 +377,23 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
 
     private void jButtonConsultUCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultUCActionPerformed
         JAdminConsultarUCs consultarUCs = new JAdminConsultarUCs(this.sgt);
+        this.setVisible(false);
         consultarUCs.setVisible(true);
+        consultarUCs.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                reOpen();
+            }
+        });
     }//GEN-LAST:event_jButtonConsultUCActionPerformed
+
+    private void reOpen() {
+        this.setVisible(true);
+    }
+
+    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonLogoutActionPerformed
 
     @Override
     public void update(Observable observable, Object o) {
@@ -373,6 +448,7 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton jButtonImportTurnos;
     private javax.swing.JButton jButtonImportUCs;
     private javax.swing.JButton jButtonImportUtilizadores;
+    private javax.swing.JButton jButtonLogout;
     private javax.swing.JButton jButtonRemoveShift;
     private javax.swing.JCheckBox jCheckBoxLoginsActive;
     private javax.swing.JCheckBox jCheckBoxShiftsAssigned;

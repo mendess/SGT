@@ -27,7 +27,7 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
 
     /**
      * Creates new form AlunoEscolherUC
-     * @param sgt Business logic instance 
+     * @param sgt Business logic instance
      */
     JAlunoEscolherUC(SGT sgt) {
         initComponents();
@@ -91,7 +91,7 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTableUCNEscolhidas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -180,19 +180,18 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jScrollPaneUCNEscolhidas, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonFechar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPaneUCNEscolhidas, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButtonRemover)
-                            .addComponent(jButtonAdicionar))
-                        .addGap(32, 32, 32)
-                        .addComponent(jScrollPaneUCEscolhidas, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))))
+                    .addComponent(jButtonRemover)
+                    .addComponent(jButtonAdicionar))
+                .addGap(32, 32, 32)
+                .addComponent(jScrollPaneUCEscolhidas, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonFechar)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,7 +260,7 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRemoverActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     /**

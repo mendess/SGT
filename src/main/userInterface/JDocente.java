@@ -11,6 +11,8 @@ import main.sgt.Turno;
 import main.sgt.UC;
 import main.sgt.exceptions.InvalidUserTypeException;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +31,7 @@ public class JDocente extends javax.swing.JFrame {
 
     /**
      * Creates new form Docente
-     * @param sgt Business logic instance 
+     * @param sgt Business logic instance
      */
     JDocente(SGT sgt) {
         this.sgt = sgt;
@@ -42,7 +44,7 @@ public class JDocente extends javax.swing.JFrame {
         try {
             uCsOfUser = this.sgt.getUCsOfUser();
         } catch (InvalidUserTypeException e) {
-            this.setVisible(false);
+            this.dispose();
             return;
         }
         this.uc = makeComboBoxUCs(this.jComboBoxUC,uCsOfUser);
@@ -55,7 +57,7 @@ public class JDocente extends javax.swing.JFrame {
         try {
             turnosUser = this.sgt.getTurnosUser();
         } catch (InvalidUserTypeException e) {
-            this.setVisible(false);
+            this.dispose();
             return;
         }
         this.turno = makeComboBoxTurnos(this.jComboBoxTurno,turnosUser,this.uc);
@@ -88,8 +90,9 @@ public class JDocente extends javax.swing.JFrame {
         jLabelAlunos = new javax.swing.JLabel();
         jLabelUC = new javax.swing.JLabel();
         jLabelTurno = new javax.swing.JLabel();
+        jButtonLogout = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButtonMarcarPresencas.setText("Marcar Presenças");
         jButtonMarcarPresencas.addActionListener(new java.awt.event.ActionListener() {
@@ -141,6 +144,13 @@ public class JDocente extends javax.swing.JFrame {
 
         jLabelTurno.setText("Turnos:");
 
+        jButtonLogout.setText("Logout");
+        jButtonLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -160,7 +170,11 @@ public class JDocente extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelTurno)
                             .addComponent(jComboBoxTurno, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonLogout)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,7 +192,9 @@ public class JDocente extends javax.swing.JFrame {
                 .addComponent(jLabelAlunos)
                 .addGap(2, 2, 2)
                 .addComponent(jScrollPaneAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jButtonLogout)
+                .addContainerGap())
         );
 
         pack();
@@ -187,6 +203,13 @@ public class JDocente extends javax.swing.JFrame {
     private void jButtonMarcarPresencasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMarcarPresencasActionPerformed
         JDocenteMarcarPresencas marcarPresencas = new JDocenteMarcarPresencas(this.sgt);
         marcarPresencas.setVisible(true);
+        this.setVisible(false);
+        marcarPresencas.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                reOpen();
+            }
+        });
     }//GEN-LAST:event_jButtonMarcarPresencasActionPerformed
 
     private void jComboBoxUCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCActionPerformed
@@ -199,6 +222,14 @@ public class JDocente extends javax.swing.JFrame {
         updateTableAlunos();
     }//GEN-LAST:event_jComboBoxTurnoActionPerformed
 
+    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonLogoutActionPerformed
+
+    private void reOpen() {
+        this.setVisible(true);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -206,7 +237,7 @@ public class JDocente extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -236,6 +267,7 @@ public class JDocente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonLogout;
     private javax.swing.JButton jButtonMarcarPresencas;
     private javax.swing.JComboBox<String> jComboBoxTurno;
     private javax.swing.JComboBox<String> jComboBoxUC;

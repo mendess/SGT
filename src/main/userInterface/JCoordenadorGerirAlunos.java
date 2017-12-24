@@ -25,6 +25,7 @@ import static main.userInterface.InterfaceUtils.shiftFromString;
  */
 @SuppressWarnings({"Anonymous2MethodRef", "Convert2Lambda", "TryWithIdenticalCatches", "FieldCanBeLocal", "unused"})
 public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
+
     private SGT sgt;
     private String ucOfUser;
     
@@ -37,7 +38,7 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
         if(this.sgt.getLoggedUser() instanceof Coordenador){
             this.ucOfUser = ((Coordenador) this.sgt.getLoggedUser()).getUcRegida();
         }else{
-            this.setVisible(false);
+            this.dispose();
             throw new InvalidUserTypeException();
         }
         initComponents();
@@ -95,7 +96,7 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
         jButtonFechar = new javax.swing.JButton();
         jLabelTurno = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jComboBoxTurnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,22 +188,21 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
                         .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButtonFechar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPaneAlunosNEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonAdicionar)
-                                    .addComponent(jButtonRemover))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                                .addComponent(jScrollPaneAlunosEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPaneAlunosNEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonAdicionar)
+                            .addComponent(jButtonRemover))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                        .addComponent(jScrollPaneAlunosEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelTurno)
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonFechar)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,9 +246,7 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
         } catch (UtilizadorJaExisteException | AlunoNaoEstaInscritoNaUcException e) {
             updateAlunosTables(turno);
         } catch (InvalidUserTypeException e) {
-            e.printStackTrace();
-            System.out.println("Invalid user");
-            this.setVisible(false);
+            this.dispose();
         }
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
 
@@ -276,7 +274,7 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRemoverActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed

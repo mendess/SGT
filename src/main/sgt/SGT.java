@@ -15,11 +15,11 @@ import static main.sgt.NotifyFlags.*;
 
 @SuppressWarnings({"WeakerAccess", "unused", "FieldCanBeLocal"})
 public class SGT extends Observable{
-
     /**
      * Utilizador que está neste momento a utilizar a aplicação
      */
     private Utilizador loggedUser;
+
     /**
      * DAO de acesso aos pedidos de troca.
      */
@@ -259,6 +259,10 @@ public class SGT extends Observable{
         }else{
             throw new WrongCredentialsException("No such user");
         }
+    }
+
+    public void logout() {
+        this.loggedUser=null;
     }
 
     public Utilizador getLoggedUser(){

@@ -11,6 +11,8 @@ import main.sgt.Turno;
 import main.sgt.UC;
 import main.sgt.exceptions.InvalidUserTypeException;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +31,7 @@ public class JCoordenador extends javax.swing.JFrame {
 
     /**
      * Creates new form Coordenador
-     * @param sgt Business logic instance 
+     * @param sgt Business logic instance
      */
     JCoordenador(SGT sgt) {
         this.sgt = sgt;
@@ -41,7 +43,7 @@ public class JCoordenador extends javax.swing.JFrame {
         try {
             uCsOfUser = this.sgt.getUCsOfUser();
         } catch (InvalidUserTypeException e) {
-            this.setVisible(false);
+            this.dispose();
             return;
         }
         this.uc = makeComboBoxUCs(this.jComboBoxUC,uCsOfUser);
@@ -54,7 +56,7 @@ public class JCoordenador extends javax.swing.JFrame {
         try {
             turnosUser = this.sgt.getTurnosUser();
         } catch (InvalidUserTypeException e) {
-            this.setVisible(false);
+            this.dispose();
             return;
         }
         this.turno = makeComboBoxTurnos(this.jComboBoxTurno,turnosUser,this.uc);
@@ -86,8 +88,9 @@ public class JCoordenador extends javax.swing.JFrame {
         jTableAlunos = new javax.swing.JTable();
         jLabelAlunos = new javax.swing.JLabel();
         jButtonGerirAlunos = new javax.swing.JButton();
+        jButtonLogout = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButtonMarcarPresencas.setText("Marcar Presenças");
         jButtonMarcarPresencas.addActionListener(new java.awt.event.ActionListener() {
@@ -142,6 +145,13 @@ public class JCoordenador extends javax.swing.JFrame {
             }
         });
 
+        jButtonLogout.setText("Logout");
+        jButtonLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -154,8 +164,11 @@ public class JCoordenador extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelAlunos)
-                            .addComponent(jScrollPaneAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(171, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPaneAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                                .addComponent(jButtonLogout)))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jComboBoxUC, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(56, 56, 56)
@@ -174,9 +187,12 @@ public class JCoordenador extends javax.swing.JFrame {
                     .addComponent(jComboBoxTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonGerirAlunos))
                 .addGap(18, 18, 18)
-                .addComponent(jLabelAlunos)
-                .addGap(2, 2, 2)
-                .addComponent(jScrollPaneAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelAlunos)
+                        .addGap(2, 2, 2)
+                        .addComponent(jScrollPaneAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonLogout))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -197,6 +213,13 @@ public class JCoordenador extends javax.swing.JFrame {
     private void jButtonMarcarPresencasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMarcarPresencasActionPerformed
         JDocenteMarcarPresencas marcarPresencas = new JDocenteMarcarPresencas(this.sgt);
         marcarPresencas.setVisible(true);
+        this.setVisible(false);
+        marcarPresencas.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                reOpen();
+            }
+        });
     }//GEN-LAST:event_jButtonMarcarPresencasActionPerformed
 
     private void jComboBoxUCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCActionPerformed
@@ -209,6 +232,14 @@ public class JCoordenador extends javax.swing.JFrame {
         updateTableAlunos();
     }//GEN-LAST:event_jComboBoxTurnoActionPerformed
 
+    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonLogoutActionPerformed
+
+    private void reOpen() {
+        this.setVisible(true);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -216,7 +247,7 @@ public class JCoordenador extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -247,6 +278,7 @@ public class JCoordenador extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonGerirAlunos;
+    private javax.swing.JButton jButtonLogout;
     private javax.swing.JButton jButtonMarcarPresencas;
     private javax.swing.JComboBox<String> jComboBoxTurno;
     private javax.swing.JComboBox<String> jComboBoxUC;

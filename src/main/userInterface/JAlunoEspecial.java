@@ -7,6 +7,9 @@ package main.userInterface;
 
 import main.sgt.SGT;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 /**
  *
  * @author pedro
@@ -41,8 +44,9 @@ public class JAlunoEspecial extends javax.swing.JFrame {
         jScrollPanePropsTroca = new javax.swing.JScrollPane();
         jTable2PropsTroca = new javax.swing.JTable();
         jButtonMudarDeTurno = new javax.swing.JButton();
+        jButtonFechar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButtonEscolherUCs.setText("Escolher UCs");
         jButtonEscolherUCs.addActionListener(new java.awt.event.ActionListener() {
@@ -115,6 +119,8 @@ public class JAlunoEspecial extends javax.swing.JFrame {
             }
         });
 
+        jButtonFechar.setText("Fechar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,6 +140,10 @@ public class JAlunoEspecial extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonMudarDeTurno)
                         .addGap(32, 32, 32))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonFechar)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +157,9 @@ public class JAlunoEspecial extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPaneUCsETurnos, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                     .addComponent(jScrollPanePropsTroca, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(61, 61, 61))
+                .addGap(26, 26, 26)
+                .addComponent(jButtonFechar)
+                .addContainerGap())
         );
 
         pack();
@@ -156,16 +168,41 @@ public class JAlunoEspecial extends javax.swing.JFrame {
     private void jButtonEscolherUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEscolherUCsActionPerformed
         JAlunoEscolherUC escolherUC = new JAlunoEscolherUC(this.sgt);
         escolherUC.setVisible(true);
+        this.setVisible(false);
+        escolherUC.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                reOpen();
+            }
+        });
     }//GEN-LAST:event_jButtonEscolherUCsActionPerformed
+
+    private void reOpen() {
+        this.setVisible(true);
+    }
 
     private void jButtonPedirTrocaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPedirTrocaActionPerformed
         JAlunoPedirTroca pedirTroca = new JAlunoPedirTroca(this.sgt);
         pedirTroca.setVisible(true);
+        this.setVisible(false);
+        pedirTroca.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                reOpen();
+            }
+        });
     }//GEN-LAST:event_jButtonPedirTrocaActionPerformed
 
     private void jButtonMudarDeTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMudarDeTurnoActionPerformed
         JAlunoEspecialMudarTurno mudarTurno = new JAlunoEspecialMudarTurno(this.sgt);
         mudarTurno.setVisible(true);
+        this.setVisible(false);
+        mudarTurno.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                reOpen();
+            }
+        });
     }//GEN-LAST:event_jButtonMudarDeTurnoActionPerformed
 
     /**
@@ -206,6 +243,7 @@ public class JAlunoEspecial extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEscolherUCs;
+    private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonMudarDeTurno;
     private javax.swing.JButton jButtonPedirTroca;
     private javax.swing.JScrollPane jScrollPanePropsTroca;

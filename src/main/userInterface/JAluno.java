@@ -14,6 +14,8 @@ import main.sgt.exceptions.UtilizadorJaExisteException;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 
 import static main.sgt.NotifyFlags.*;
@@ -62,7 +64,7 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         try {
             horario = ((Aluno) this.sgt.getLoggedUser()).getHorario();
         } catch (ClassCastException e) {
-            this.setVisible(false);
+            this.dispose();
             return;
         }
         DefaultTableModel tModel = prepareTable(horario.size(), 2, this.jTableUCsETurnos);
@@ -91,8 +93,9 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         jTablePropsTroca = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButtonLogout = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButtonEscolherUCs.setText("Escolher UCs");
         jButtonEscolherUCs.setEnabled(!this.sgt.isTurnosAtribuidos());
@@ -179,6 +182,13 @@ public class JAluno extends javax.swing.JFrame implements Observer {
 
         jLabel2.setText("Sugestoes de troca:");
 
+        jButtonLogout.setText("Logout");
+        jButtonLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,6 +211,10 @@ public class JAluno extends javax.swing.JFrame implements Observer {
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButtonPedirTroca)))
                         .addGap(29, 29, 29))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonLogout)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +231,9 @@ public class JAluno extends javax.swing.JFrame implements Observer {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPaneUCsETurnos, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                     .addComponent(jScrollPanePropsTroca, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(61, 61, 61))
+                .addGap(26, 26, 26)
+                .addComponent(jButtonLogout)
+                .addContainerGap())
         );
 
         pack();
@@ -225,12 +241,30 @@ public class JAluno extends javax.swing.JFrame implements Observer {
 
     private void jButtonEscolherUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEscolherUCsActionPerformed
         JAlunoEscolherUC escolherUC = new JAlunoEscolherUC(this.sgt);
+        this.setVisible(false);
         escolherUC.setVisible(true);
+        escolherUC.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                reOpen();
+            }
+        });
     }//GEN-LAST:event_jButtonEscolherUCsActionPerformed
+
+    private void reOpen() {
+        this.setVisible(true);
+    }
 
     private void jButtonPedirTrocaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPedirTrocaActionPerformed
         JAlunoPedirTroca pedirTroca = new JAlunoPedirTroca(this.sgt);
         pedirTroca.setVisible(true);
+        this.setVisible(false);
+        pedirTroca.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                reOpen();
+            }
+        });
     }//GEN-LAST:event_jButtonPedirTrocaActionPerformed
 
     private void jTablePropsTrocaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePropsTrocaMouseClicked
@@ -260,6 +294,10 @@ public class JAluno extends javax.swing.JFrame implements Observer {
             this.updateSugestTroca();
         }
     }//GEN-LAST:event_jTablePropsTrocaMouseClicked
+
+    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonLogoutActionPerformed
 
     @Override
     public void update(Observable observable, Object o) {
@@ -317,6 +355,7 @@ public class JAluno extends javax.swing.JFrame implements Observer {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEscolherUCs;
+    private javax.swing.JButton jButtonLogout;
     private javax.swing.JButton jButtonPedirTroca;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

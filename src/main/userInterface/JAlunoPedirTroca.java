@@ -27,7 +27,7 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
 
     /**
      * Creates new form AlunoPedirTroca
-     * @param sgt Business logic instance 
+     * @param sgt Business logic instance
      */
     JAlunoPedirTroca(SGT sgt) {
         this.sgt = sgt;
@@ -55,7 +55,7 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
         try {
             turnosUser = this.sgt.getTurnosUser();
         } catch (InvalidUserTypeException e) {
-            this.setVisible(false);
+            this.dispose();
             return;
         }
         turnosOfUC.removeAll(turnosUser);
@@ -79,7 +79,7 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
         jButtonPedir = new javax.swing.JButton();
         jButtonFechar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jComboBoxUCs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,12 +177,12 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
         try {
             this.sgt.pedirTroca(uc,turno);
         } catch (InvalidUserTypeException e) {
-            this.setVisible(false);
+            this.dispose();
         }
     }//GEN-LAST:event_jButtonPedirActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt){//GEN-FIRST:event_jButtonFecharActionPerformed
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed

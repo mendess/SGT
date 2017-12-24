@@ -7,12 +7,15 @@ package main.userInterface;
 
 import main.sgt.SGT;
 import main.sgt.Turno;
+import main.sgt.exceptions.AlunoNaoEstaInscritoNaUcException;
 import main.sgt.exceptions.InvalidUserTypeException;
+import main.sgt.exceptions.UtilizadorJaExisteException;
 
 import java.util.List;
 
 import static main.userInterface.InterfaceUtils.makeComboBoxUCs;
 import static main.userInterface.InterfaceUtils.makeShiftLookUpTable;
+import static main.userInterface.InterfaceUtils.shiftFromString;
 
 /**
  *
@@ -26,15 +29,15 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
 
     /**
      * Creates new form AlunoEspecialMudarTurno
-     * @param sgt Business logic instance 
+     * @param sgt Business logic instance
      */
     JAlunoEspecialMudarTurno(SGT sgt) {
         this.sgt = sgt;
         initComponents();
-        initUCsComboBox();
+        updateUCsComboBox();
     }
 
-    private void initUCsComboBox() {
+    private void updateUCsComboBox() {
         try {
             this.uc = makeComboBoxUCs(this.jComboBoxUCs,this.sgt.getUCsOfUser());
         } catch (InvalidUserTypeException e) {
@@ -72,7 +75,7 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
         jButtonMudar = new javax.swing.JButton();
         jButtonFechar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jComboBoxUCs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,6 +118,11 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
         });
 
         jButtonFechar.setText("Fechar");
+        jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFecharActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -164,8 +172,22 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     private void jButtonMudarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMudarActionPerformed
-        this.setVisible(false);
+        int selectedRow = this.jTableTurnos.getSelectedRow();
+        int turno = shiftFromString((String) this.jTableTurnos.getValueAt(selectedRow,0));
+        try {
+            this.sgt.moveAlunoToTurno(this.sgt.getLoggedUser().getUserNum(),this.uc,turno);
+        } catch (InvalidUserTypeException e) {
+            this.dispose();
+        } catch (AlunoNaoEstaInscritoNaUcException e) {
+            updateUCsComboBox();
+        } catch (UtilizadorJaExisteException e) {
+            updateTurnosTable();
+        }
     }//GEN-LAST:event_jButtonMudarActionPerformed
+
+    private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonFecharActionPerformed
 
     /**
      * @param args the command line arguments
