@@ -26,11 +26,11 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jButtonImportShifts" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonImportUsers" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonImportTurnos" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonImportUtilizadores" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonImportUCs" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonActivateLogins" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonActivateShifts" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAssignShifts" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -64,12 +64,12 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButtonImportUsers" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonImportUtilizadores" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jCheckBoxUsersRegistered" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButtonImportShifts" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonImportTurnos" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jCheckBoxTurnosRegistados" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -79,7 +79,7 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButtonActivateShifts" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonAssignShifts" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jCheckBoxShiftsAssigned" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -97,7 +97,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="166" max="32767" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -136,36 +136,48 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonImportUCsActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButtonImportUsers">
+    <Component class="javax.swing.JButton" name="jButtonImportUtilizadores">
       <Properties>
         <Property name="text" type="java.lang.String" value="Importar Utilizadores"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="this.sgt.isUcsRegistadas()" type="code"/>
+        </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonImportUsersActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonImportUtilizadoresActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButtonImportShifts">
+    <Component class="javax.swing.JButton" name="jButtonImportTurnos">
       <Properties>
         <Property name="text" type="java.lang.String" value="Importar turnos"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="this.sgt.isUsersRegistados()" type="code"/>
+        </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonImportShiftsActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonImportTurnosActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonActivateLogins">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ativar Logins"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="this.sgt.isTurnosRegistados()" type="code"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonActivateLoginsActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButtonActivateShifts">
+    <Component class="javax.swing.JButton" name="jButtonAssignShifts">
       <Properties>
         <Property name="text" type="java.lang.String" value="Atribuir turnos"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="this.sgt.isLoginsAtivos()" type="code"/>
+        </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonActivateShiftsActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAssignShiftsActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">

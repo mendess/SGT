@@ -77,6 +77,9 @@
     <Component class="javax.swing.JButton" name="jButtonEscolherUCs">
       <Properties>
         <Property name="text" type="java.lang.String" value="Escolher UCs"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="!this.sgt.isTurnosAtribuidos()" type="code"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEscolherUCsActionPerformed"/>
@@ -121,6 +124,9 @@
     <Component class="javax.swing.JButton" name="jButtonPedirTroca">
       <Properties>
         <Property name="text" type="java.lang.String" value="Pedir Troca"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="this.sgt.isTurnosAtribuidos()" type="code"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonPedirTrocaActionPerformed"/>

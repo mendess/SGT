@@ -6,15 +6,27 @@
 package main.userInterface;
 
 import main.sgt.SGT;
+import main.sgt.exceptions.BadlyFormatedFileException;
+
+import javax.swing.*;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  *
  * @author pedro
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
-public class JAdmin extends javax.swing.JFrame {
+public class JAdmin extends javax.swing.JFrame implements Observer {
 
     private SGT sgt;
+    private JButton[] buttons = new JButton[5];
+    private JCheckBox[] checkBoxes = new JCheckBox[5];
+    private final JFileChooser fc = new JFileChooser();
+
     /**
      * Creates new form Admin
      * @param sgt Business logic instance
@@ -22,6 +34,57 @@ public class JAdmin extends javax.swing.JFrame {
     JAdmin(SGT sgt) {
         this.sgt = sgt;
         initComponents();
+        this.sgt.addObserver(this);
+        initLists();
+        initCheckBoxes();
+        //for(int i=0;i<5;i++) this.checkBoxes[i].setEnabled(false);
+    }
+
+    private void initLists() {
+        this.buttons[0] = this.jButtonImportUCs;
+        this.buttons[1] = this.jButtonImportUtilizadores;
+        this.buttons[2] = this.jButtonImportTurnos;
+        this.buttons[3] = this.jButtonActivateLogins;
+        this.buttons[4] = this.jButtonAssignShifts;
+        this.checkBoxes[0] = this.jCheckBoxUCsRegistadas;
+        this.checkBoxes[1] = this.jCheckBoxUsersRegistered;
+        this.checkBoxes[2] = this.jCheckBoxTurnosRegistados;
+        this.checkBoxes[3] = this.jCheckBoxLoginsActive;
+        this.checkBoxes[4] = this.jCheckBoxShiftsAssigned;
+        for(int i=0;i<5;i++){
+            for (MouseListener aMl : this.checkBoxes[i].getListeners(MouseListener.class))
+                this.checkBoxes[i].removeMouseListener(aMl);
+            InputMap im = this.checkBoxes[i].getInputMap();
+            im.put(KeyStroke.getKeyStroke("SPACE"), "none");
+            im.put(KeyStroke.getKeyStroke("released SPACE"), "none");
+        }
+    }
+
+    private void initCheckBoxes() {
+        int state;
+        if(this.sgt.isTurnosAtribuidos()){
+            state = 5;
+        }else if(this.sgt.isLoginsAtivos()){
+            state = 4;
+        }else if(this.sgt.isTurnosRegistados()){
+            state = 3;
+        }else if(this.sgt.isUsersRegistados()){
+            state = 2;
+        }else if(this.sgt.isUcsRegistadas()){
+            state = 1;
+        }else {
+            state = 0;
+        }
+        for(int i=0;i<state;i++){
+            this.checkBoxes[i].setSelected(true);
+        }
+    }
+
+    private void disableFrom(int index){
+        while (index<5) {
+            this.buttons[index].setEnabled(false);
+            this.checkBoxes[index++].setSelected(false);
+        }
     }
 
     /**
@@ -39,10 +102,10 @@ public class JAdmin extends javax.swing.JFrame {
         jCheckBoxLoginsActive = new javax.swing.JCheckBox();
         jCheckBoxShiftsAssigned = new javax.swing.JCheckBox();
         jButtonImportUCs = new javax.swing.JButton();
-        jButtonImportUsers = new javax.swing.JButton();
-        jButtonImportShifts = new javax.swing.JButton();
+        jButtonImportUtilizadores = new javax.swing.JButton();
+        jButtonImportTurnos = new javax.swing.JButton();
         jButtonActivateLogins = new javax.swing.JButton();
-        jButtonActivateShifts = new javax.swing.JButton();
+        jButtonAssignShifts = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jButtonAddShift = new javax.swing.JButton();
         jButtonRemoveShift = new javax.swing.JButton();
@@ -67,31 +130,35 @@ public class JAdmin extends javax.swing.JFrame {
             }
         });
 
-        jButtonImportUsers.setText("Importar Utilizadores");
-        jButtonImportUsers.addActionListener(new java.awt.event.ActionListener() {
+        jButtonImportUtilizadores.setText("Importar Utilizadores");
+        jButtonImportUtilizadores.setEnabled(this.sgt.isUcsRegistadas());
+        jButtonImportUtilizadores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonImportUsersActionPerformed(evt);
+                jButtonImportUtilizadoresActionPerformed(evt);
             }
         });
 
-        jButtonImportShifts.setText("Importar turnos");
-        jButtonImportShifts.addActionListener(new java.awt.event.ActionListener() {
+        jButtonImportTurnos.setText("Importar turnos");
+        jButtonImportTurnos.setEnabled(this.sgt.isUsersRegistados());
+        jButtonImportTurnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonImportShiftsActionPerformed(evt);
+                jButtonImportTurnosActionPerformed(evt);
             }
         });
 
         jButtonActivateLogins.setText("Ativar Logins");
+        jButtonActivateLogins.setEnabled(this.sgt.isTurnosRegistados());
         jButtonActivateLogins.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonActivateLoginsActionPerformed(evt);
             }
         });
 
-        jButtonActivateShifts.setText("Atribuir turnos");
-        jButtonActivateShifts.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAssignShifts.setText("Atribuir turnos");
+        jButtonAssignShifts.setEnabled(this.sgt.isLoginsAtivos());
+        jButtonAssignShifts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonActivateShiftsActionPerformed(evt);
+                jButtonAssignShiftsActionPerformed(evt);
             }
         });
 
@@ -125,11 +192,11 @@ public class JAdmin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonImportShifts)
-                    .addComponent(jButtonImportUsers)
+                    .addComponent(jButtonImportTurnos)
+                    .addComponent(jButtonImportUtilizadores)
                     .addComponent(jButtonImportUCs)
                     .addComponent(jButtonActivateLogins)
-                    .addComponent(jButtonActivateShifts))
+                    .addComponent(jButtonAssignShifts))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCheckBoxLoginsActive)
@@ -157,11 +224,11 @@ public class JAdmin extends javax.swing.JFrame {
                             .addComponent(jCheckBoxUCsRegistadas))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonImportUsers)
+                            .addComponent(jButtonImportUtilizadores)
                             .addComponent(jCheckBoxUsersRegistered))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonImportShifts)
+                            .addComponent(jButtonImportTurnos)
                             .addComponent(jCheckBoxTurnosRegistados))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,7 +236,7 @@ public class JAdmin extends javax.swing.JFrame {
                             .addComponent(jCheckBoxLoginsActive))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonActivateShifts)
+                            .addComponent(jButtonAssignShifts)
                             .addComponent(jCheckBoxShiftsAssigned)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
@@ -181,7 +248,7 @@ public class JAdmin extends javax.swing.JFrame {
                                 .addGap(71, 71, 71)
                                 .addComponent(jButtonConsultUC))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(166, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -192,32 +259,76 @@ public class JAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAddShiftActionPerformed
 
     private void jButtonImportUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportUCsActionPerformed
-        // TODO add your handling code here:
+        int returnVal = fc.showOpenDialog(this);
+        if(returnVal==JFileChooser.APPROVE_OPTION){
+            File file = fc.getSelectedFile();
+            try {
+                this.sgt.importUCs(file.getAbsolutePath());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (BadlyFormatedFileException e) {
+                JOptionPane.showMessageDialog(this,"Badly formated file","Bad file",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jButtonImportUCsActionPerformed
 
-    private void jButtonImportUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportUsersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonImportUsersActionPerformed
+    private void jButtonImportUtilizadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportUtilizadoresActionPerformed
+        int returnVal = fc.showOpenDialog(this);
+        if(returnVal==JFileChooser.APPROVE_OPTION){
+            File file = fc.getSelectedFile();
+            try {
+                this.sgt.importUtilizadores(file.getAbsolutePath());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (BadlyFormatedFileException e) {
+                JOptionPane.showMessageDialog(this,"Badly formated file","Bad file",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButtonImportUtilizadoresActionPerformed
 
-    private void jButtonImportShiftsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportShiftsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonImportShiftsActionPerformed
+    private void jButtonImportTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportTurnosActionPerformed
+        int returnVal = fc.showOpenDialog(this);
+        if(returnVal==JFileChooser.APPROVE_OPTION){
+            File file = fc.getSelectedFile();
+            try {
+                this.sgt.importTurnos(file.getAbsolutePath());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (BadlyFormatedFileException e) {
+                JOptionPane.showMessageDialog(this,"Badly formated file","Bad file",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButtonImportTurnosActionPerformed
 
     private void jButtonActivateLoginsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActivateLoginsActionPerformed
-        // TODO add your handling code here:
+        this.sgt.activateLogins();
     }//GEN-LAST:event_jButtonActivateLoginsActionPerformed
 
-    private void jButtonActivateShiftsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActivateShiftsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonActivateShiftsActionPerformed
+    private void jButtonAssignShiftsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAssignShiftsActionPerformed
+        this.sgt.assignShifts();
+    }//GEN-LAST:event_jButtonAssignShiftsActionPerformed
 
     private void jButtonRemoveShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveShiftActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonRemoveShiftActionPerformed
 
     private void jButtonConsultUCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultUCActionPerformed
-        // TODO add your handling code here:
+        JAdminConsultarUCs consultarUCs = new JAdminConsultarUCs(this.sgt);
+        consultarUCs.setVisible(true);
     }//GEN-LAST:event_jButtonConsultUCActionPerformed
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if(o instanceof Integer){
+            int flag = (Integer) o;
+            this.checkBoxes[flag].setSelected(true);
+            this.disableFrom(flag+1);
+            if(flag<4) this.buttons[flag+1].setEnabled(true);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -226,7 +337,7 @@ public class JAdmin extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -254,15 +365,14 @@ public class JAdmin extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonActivateLogins;
-    private javax.swing.JButton jButtonActivateShifts;
     private javax.swing.JButton jButtonAddShift;
+    private javax.swing.JButton jButtonAssignShifts;
     private javax.swing.JButton jButtonConsultUC;
-    private javax.swing.JButton jButtonImportShifts;
+    private javax.swing.JButton jButtonImportTurnos;
     private javax.swing.JButton jButtonImportUCs;
-    private javax.swing.JButton jButtonImportUsers;
+    private javax.swing.JButton jButtonImportUtilizadores;
     private javax.swing.JButton jButtonRemoveShift;
     private javax.swing.JCheckBox jCheckBoxLoginsActive;
     private javax.swing.JCheckBox jCheckBoxShiftsAssigned;

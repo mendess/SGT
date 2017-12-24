@@ -12,8 +12,8 @@ import main.sgt.exceptions.InvalidUserTypeException;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-import static main.userInterface.interfaceUtils.makeComboBoxUCs;
-import static main.userInterface.interfaceUtils.makeShiftLookUpTable;
+import static main.userInterface.InterfaceUtils.makeComboBoxUCs;
+import static main.userInterface.InterfaceUtils.makeShiftLookUpTable;
 
 /**
  *

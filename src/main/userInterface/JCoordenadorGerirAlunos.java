@@ -16,8 +16,8 @@ import main.sgt.exceptions.UtilizadorJaExisteException;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-import static main.userInterface.interfaceUtils.prepareTable;
-import static main.userInterface.interfaceUtils.shiftFromString;
+import static main.userInterface.InterfaceUtils.prepareTable;
+import static main.userInterface.InterfaceUtils.shiftFromString;
 
 /**
  *
@@ -49,7 +49,7 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
         List<Turno> turnosOfUC = this.sgt.getTurnosOfUC(this.ucOfUser);
         turnosOfUC.stream()
                 .filter(Turno::ePratico)
-                .map(interfaceUtils::makeShiftString)
+                .map(InterfaceUtils::makeShiftString)
                 .forEach(this.jComboBoxTurnos::addItem);
     }
 

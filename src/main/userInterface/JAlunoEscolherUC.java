@@ -14,7 +14,7 @@ import main.sgt.exceptions.UtilizadorNaoExisteException;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-import static main.userInterface.interfaceUtils.makeUCLookupTable;
+import static main.userInterface.InterfaceUtils.makeUCLookupTable;
 
 /**
  *

@@ -46,7 +46,7 @@ public class UserDAO implements Map<String, Utilizador> {
         boolean r = false;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT `id` FROM `Utilizador` WHERE `id`=?;");
             stm.setString(1, user);
             ResultSet rs = stm.executeQuery();
@@ -118,7 +118,7 @@ public class UserDAO implements Map<String, Utilizador> {
     }
 
     private String getUcRegida(String id) throws SQLException {
-        PreparedStatement stm = connection.prepareStatement("" +
+        PreparedStatement stm = connection.prepareStatement("\n" +
                 "SELECT id FROM UC WHERE responsavel_id=?");
         stm.setString(1,id);
         ResultSet rs = stm.executeQuery();
@@ -230,7 +230,7 @@ public class UserDAO implements Map<String, Utilizador> {
             }
 
             if (value instanceof Coordenador) {
-                stmCoord = connection.prepareStatement("" +
+                stmCoord = connection.prepareStatement("\n" +
                         "UPDATE UC SET responsavel_id=? WHERE id=?;");
                 stmCoord.setString(1, value.getUserNum());
                 stmCoord.setString(2, ((Coordenador) value).getUcRegida());
@@ -252,7 +252,7 @@ public class UserDAO implements Map<String, Utilizador> {
     }
 
     private PreparedStatement updateTurnosAluno(Aluno value) throws SQLException {
-        PreparedStatement stm = connection.prepareStatement("" +
+        PreparedStatement stm = connection.prepareStatement("\n" +
                 "INSERT INTO Turno_has_Aluno (Turno_id, UC_id, Aluno_id,ePratico) " +
                 "VALUES (?,?,?,TRUE);");
         for(String uc : value.getHorario().keySet()){
@@ -266,7 +266,7 @@ public class UserDAO implements Map<String, Utilizador> {
     }
 
     private PreparedStatement updateTurnosDocente(Docente value) throws SQLException {
-        PreparedStatement stm = connection.prepareStatement("" +
+        PreparedStatement stm = connection.prepareStatement("\n" +
                 "UPDATE Turno SET Docente_id=? WHERE id=? AND UC_id=? AND ePratico=?;\n");
         for(String uc : value.getUcsEturnos().keySet()){
             List<TurnoKey> turnos = value.getUcsEturnos().get(uc);
@@ -335,7 +335,7 @@ public class UserDAO implements Map<String, Utilizador> {
         if (connection == null) return keySet;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT id FROM `Utilizador`;");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {

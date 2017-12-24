@@ -16,10 +16,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.*;
 
-import static main.sgt.NotifyFlags.ALUNO_ADDED_TO_UC;
-import static main.sgt.NotifyFlags.ALUNO_REMOVED_FROM_UC;
-import static main.sgt.NotifyFlags.TROCA_REALIZADA;
-import static main.userInterface.interfaceUtils.prepareTable;
+import static main.sgt.NotifyFlags.*;
+import static main.userInterface.InterfaceUtils.prepareTable;
 
 /**
  *
@@ -38,6 +36,11 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         this.sgt = sgt;
         this.sgt.addObserver(this);
         initComponents();
+        if(this.sgt.isTurnosAtribuidos()){
+            this.jButtonEscolherUCs.setEnabled(false);
+        }else{
+            this.jButtonPedirTroca.setEnabled(false);
+        }
         updateUserUCs();
         updateSugestTroca();
     }
@@ -68,6 +71,7 @@ public class JAluno extends javax.swing.JFrame implements Observer {
             tModel.setValueAt(this.sgt.getUC(e.getKey()).getNome(),i,0);
             tModel.setValueAt(e.getValue()!=0 ? e.getValue() : "n\\a",i++,1);
         }
+        this.jTableUCsETurnos.setModel(tModel);
     }
 
     /**
@@ -91,6 +95,7 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButtonEscolherUCs.setText("Escolher UCs");
+        jButtonEscolherUCs.setEnabled(!this.sgt.isTurnosAtribuidos());
         jButtonEscolherUCs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEscolherUCsActionPerformed(evt);
@@ -128,6 +133,7 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         }
 
         jButtonPedirTroca.setText("Pedir Troca");
+        jButtonPedirTroca.setEnabled(this.sgt.isTurnosAtribuidos());
         jButtonPedirTroca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPedirTrocaActionPerformed(evt);
@@ -257,10 +263,20 @@ public class JAluno extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if (ALUNO_ADDED_TO_UC.equals(o) || ALUNO_REMOVED_FROM_UC.equals(o)) {
-            updateUserUCs();
-        }else if(TROCA_REALIZADA.equals(o)){
-            updateSugestTroca();
+        if(o instanceof Integer){
+            switch ((Integer) o) {
+                case ALUNO_ADDED_TO_UC:
+                case ALUNO_REMOVED_FROM_UC:
+                    updateUserUCs();
+                    break;
+                case TROCA_REALIZADA:
+                    updateSugestTroca();
+                    break;
+                case LOGINS_ATIVADOS:
+                    this.jButtonEscolherUCs.setEnabled(false);
+                    this.jButtonPedirTroca.setEnabled(true);
+                    break;
+            }
         }
     }
 

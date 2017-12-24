@@ -85,8 +85,8 @@ public class UCDAO implements Map<String, UC> {
                             "  Turno.Docente_id AS docente," +
                             "  Turno_has_Aluno.Aluno_id AS aluno\n" +
                             "FROM UC " +
-                            "INNER JOIN Turno ON UC.id = Turno.UC_id\n" +
-                            "LEFT JOIN Turno_has_Aluno ON Turno.id = Turno_has_Aluno.Turno_id AND Turno.UC_id = Turno_has_Aluno.UC_id\n" +
+                            "   INNER JOIN Turno ON UC.id = Turno.UC_id\n" +
+                            "   LEFT JOIN Turno_has_Aluno ON Turno.id = Turno_has_Aluno.Turno_id AND Turno.UC_id = Turno_has_Aluno.UC_id\n" +
                             "WHERE UC.id=?");
             stm.setString(1, user);
             ResultSet rs = stm.executeQuery();
@@ -127,7 +127,7 @@ public class UCDAO implements Map<String, UC> {
         if (this.connection == null) return null;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "INSERT INTO `UC`(id, nome, acron, responsavel_id) \n" +
                     "VALUES (?, ?, ?, ?)\n" +
                     "ON DUPLICATE KEY UPDATE id=VALUES(id),\n" +
@@ -154,12 +154,12 @@ public class UCDAO implements Map<String, UC> {
     private void updateAlunosUC(UC value) throws SQLException {
         List<String> alunos = value.getAlunos();
         for(String aluno: alunos){
-            PreparedStatement stm = this.connection.prepareStatement("" +
+            PreparedStatement stm = this.connection.prepareStatement("\n" +
                     "SELECT aluno_id FROM Turno_has_Aluno WHERE UC_id=?;");
             stm.setString(1,value.getId());
             ResultSet rs = stm.executeQuery();
             if(!rs.next()){
-                PreparedStatement stmInsert = this.connection.prepareStatement("" +
+                PreparedStatement stmInsert = this.connection.prepareStatement("\n" +
                         "INSERT INTO Turno_has_Aluno (Turno_id, UC_id, ePratico, Aluno_id) " +
                         "   VALUES (?,?,?,?);");
                 stmInsert.setInt(1,0);
@@ -186,7 +186,7 @@ public class UCDAO implements Map<String, UC> {
             for (Turno t : uc.getTurnos()) {
                 new TurnoDAO().remove(new TurnoKey(t));
             }
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "DELETE FROM UC WHERE id=?;");
             stm.setString(1, uc.getId());
             stm.executeUpdate();
@@ -217,7 +217,7 @@ public class UCDAO implements Map<String, UC> {
         if (this.connection == null) return keySet;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT id FROM UC;");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -246,10 +246,11 @@ public class UCDAO implements Map<String, UC> {
     public Set<Entry<String, UC>> entrySet() {
         Set<Entry<String,UC>> entrySet = new HashSet<>();
         Set<String> keySet = this.keySet();
-        for(String uck : keySet){
+        keySet.forEach(uck -> {
             UC uc = this.get(uck);
-            entrySet.add(new AbstractMap.SimpleEntry<>(uck,uc));
-        }
+            if (uc != null)
+                entrySet.add(new AbstractMap.SimpleEntry<>(uck, uc));
+        });
         return entrySet;
     }
 }

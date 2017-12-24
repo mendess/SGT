@@ -18,7 +18,7 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
         int i = -1;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT count(*) FROM Pedido;");
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
@@ -46,7 +46,7 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
         boolean r = false;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT `UC_id` FROM Pedido" +
                     "   WHERE UC_id=?;");
             stm.setString(1, (String) key);
@@ -78,7 +78,7 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
         List<Pedido> pedidos = null;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT * FROM Pedido" +
                     "       WHERE UC_id=?");
             stm.setString(1, pKey);
@@ -116,10 +116,10 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
         PreparedStatement stmAdd = null;
         try {
             connection.setAutoCommit(false);
-            stmRem = connection.prepareStatement("" +
+            stmRem = connection.prepareStatement("\n" +
                     "DELETE FROM Pedido WHERE UC_id=?");
             stmRem.setString(1, key);
-            stmAdd = connection.prepareStatement("" +
+            stmAdd = connection.prepareStatement("\n" +
                     "INSERT INTO Pedido (Aluno_id, Turno_id, UC_id,ePratico) " +
                     "   VALUES (?,?,?,?)");
             for (Pedido p : value) {
@@ -148,7 +148,7 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
         Pedido pedido = null;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "INSERT INTO `Pedido` (Aluno_id, Turno_id, UC_id,ePratico)" +
                     "   VALUES (?,?,?,?);");
             stm.setString(1, value.getAlunoNum());
@@ -172,7 +172,7 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
         if (pedidos == null || connection == null) return null;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "DELETE FROM Pedido WHERE UC_id=?");
             stm.setString(1, pedidos.get(0).getUc());
             stm.executeUpdate();
@@ -189,7 +189,7 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
         if (connection == null) return null;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "DELETE FROM Pedido WHERE UC_id=? AND Turno_id=? AND Aluno_id=? AND ePratico=?");
             stm.setString(1, pedido.getUc());
             stm.setInt(2, pedido.getTurno());
@@ -221,7 +221,7 @@ public class PedidosDAO implements Map<String,List<Pedido>> {
         if (connection == null) return keySet;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT UC_id FROM Pedido;");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {

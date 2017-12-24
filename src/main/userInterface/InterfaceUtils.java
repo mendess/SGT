@@ -8,7 +8,7 @@ import javax.swing.table.TableModel;
 import java.util.List;
 import java.util.Set;
 
-class interfaceUtils {
+class InterfaceUtils {
     static boolean shiftTypeFromStr(String turno) {
         return turno.contains("TP");
     }
@@ -92,7 +92,7 @@ class interfaceUtils {
         jComboBoxTurno.removeAllItems();
         turnos.stream()
                 .filter(t->t.getUcId().equals(uc))
-                .map(interfaceUtils::makeShiftString)
+                .map(InterfaceUtils::makeShiftString)
                 .forEach(jComboBoxTurno::addItem);
         return (String) jComboBoxTurno.getSelectedItem();
     }
@@ -100,7 +100,7 @@ class interfaceUtils {
     static String makeComboBoxTurnos(JComboBox<String> jComboBoxTurno, List<TurnoKey> turnoKeys) {
         jComboBoxTurno.removeAllItems();
         turnoKeys.stream()
-                .map(interfaceUtils::makeShiftString)
+                .map(InterfaceUtils::makeShiftString)
                 .forEach(jComboBoxTurno::addItem);
         return (String) jComboBoxTurno.getSelectedItem();
     }

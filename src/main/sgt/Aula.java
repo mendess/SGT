@@ -111,7 +111,7 @@ public class Aula {
                 +"Numero: "+this.numero+"\t"
                 +"Turno: "+this.turno+"\t"
                 +"UC: "+this.uc+"\t"
-                +"E Pratica"+ this.ePratico +"\t"
+                +"E Pratica: "+ this.ePratico +"\t"
                 +"Presencas: "+this.presencas.toString();
     }
 }

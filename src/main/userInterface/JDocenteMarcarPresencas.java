@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.Set;
 
-import static main.userInterface.interfaceUtils.*;
+import static main.userInterface.InterfaceUtils.*;
 
 /**
  *

@@ -43,7 +43,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
         boolean r = false;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT `id` FROM `Turno` WHERE `id`=? AND UC_id=? AND ePratico=?;");
             stm.setInt(1, turno.getTurno_id());
             stm.setString(2, turno.getUc_id());
@@ -80,7 +80,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
         PreparedStatement stm = null;
         try {
             if(tKey.ePratico()){
-                stm = connection.prepareStatement("" +
+                stm = connection.prepareStatement("\n" +
                         "SELECT Turno.id AS T_id," +
                         "       Turno.UC_id AS uc," +
                         "       Turno.Docente_id AS docente," +
@@ -95,7 +95,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
                         "   LEFT JOIN TurnoInfo ON Turno.id = TurnoInfo.Turno_id AND Turno.UC_id = TurnoInfo.UC_id AND Turno.ePratico = TurnoInfo.ePratico" +
                         "   WHERE Turno.UC_id=? AND Turno.id=? AND Turno.ePratico=?;");
             }else {
-                stm = connection.prepareStatement("" +
+                stm = connection.prepareStatement("\n" +
                         "SELECT Turno.id AS T_id," +
                         "       Turno.UC_id AS uc," +
                         "       Turno.Docente_id AS docente," +
@@ -161,7 +161,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
         PreparedStatement stm = null;
         try {
             connection.setAutoCommit(false);
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "INSERT INTO Turno (id, UC_id, Docente_id, vagas, ePratico)\n" +
                     "   VALUES (?,?,?,?,?)\n" +
                     "ON DUPLICATE KEY UPDATE id=VALUES(id)," +
@@ -203,7 +203,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
     }
 
     private PreparedStatement updateAlunos(Turno value) throws SQLException {
-        PreparedStatement stm = connection.prepareStatement("" +
+        PreparedStatement stm = connection.prepareStatement("\n" +
                 "INSERT INTO Turno_has_Aluno (Turno_id, UC_id, Aluno_id,ePratico) " +
                 "   VALUES (?,?,?,?);");
         for(String a: value.getAlunos()){
@@ -217,7 +217,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
     }
 
     private PreparedStatement updateTInfos(Turno value) throws SQLException {
-        PreparedStatement stm = connection.prepareStatement("" +
+        PreparedStatement stm = connection.prepareStatement("\n" +
                 "INSERT INTO TurnoInfo (id, Turno_id, UC_id, dia_id, horaInicio, horaFim,ePratico) " +
                 "   VALUES (?,?,?,?,?,?,?)" +
                 "ON DUPLICATE KEY UPDATE id=VALUES(id)," +
@@ -251,7 +251,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
             for (Aula a : t.getAulas()) {
                 new AulaDAO().remove(new AulaKey(a));
             }
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "DELETE FROM TurnoInfo       WHERE UC_id=? AND Turno_id=? AND ePratico=?;\n" +
                     "DELETE FROM Turno_has_Aluno WHERE UC_id=? AND Turno_id=? AND ePratico=?;\n" +
                     "DELETE FROM Pedido          WHERE UC_id=? AND Turno_id=? AND ePratico=?;\n" +
@@ -296,7 +296,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
         if (connection == null) return keySet;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT id,UC_id,ePratico FROM Turno;");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -336,7 +336,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
         int i = -1;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT max(id) FROM Turno WHERE UC_id=? AND ePratico=?;");
             stm.setString(1, uc);
             stm.setBoolean(2, ePratico);

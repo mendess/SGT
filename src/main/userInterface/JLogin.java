@@ -41,7 +41,7 @@ public class JLogin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabelNumero.setText("Numero:");
+        jLabelNumero.setText("Número:");
 
         jLabelPassword.setText("Password");
 

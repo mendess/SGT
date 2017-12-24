@@ -17,6 +17,7 @@ public class AulaKey {
         this.uc_id = a.getUc();
         this.turno_id = a.getTurno();
         this.aula_id = a.getNumero();
+        this.ePratico = a.ePratico();
     }
 
     public String getUc_id() {
@@ -40,6 +41,7 @@ public class AulaKey {
         return "AulaKey: \t"
                 + "Num: " + this.aula_id +"\t"
                 + "Turno: " + this.turno_id + "\t"
-                + "UC: " + this.uc_id +"\t";
+                + "UC: " + this.uc_id +"\t"
+                + "E Pratica: " + this.ePratico;
     }
 }

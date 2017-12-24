@@ -69,12 +69,13 @@ public class SGT extends Observable{
         this.trocas = new TrocaDAO();
         this.ucs = new UCDAO();
         this.utilizadores = new UserDAO();
-        
+
         long startTime = System.nanoTime();
+        long totalTime = startTime;
         System.out.println("A carregar dias");
         new DiaDAO().initDias();
-        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
-        
+        System.out.println((System.nanoTime() - startTime)/1000000+" milisegundos");
+
         startTime = System.nanoTime();
         System.out.println("A carregar pedidos");
         Collection<List<Pedido>> pedidosDB = this.pedidosDAO.values();
@@ -88,68 +89,53 @@ public class SGT extends Observable{
                         })
                 );
         this.pedidos = pedidosMEM;
-        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
-        
+        System.out.println((System.nanoTime() - startTime)/1000000+" milisegundos");
+
         startTime = System.nanoTime();
         System.out.println("A carregar utilizadores");
         Collection<Utilizador> utilizadores = this.utilizadores.values();
-        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+        System.out.println((System.nanoTime() - startTime)/1000000+" milisegundos");
 
-        
+
         startTime = System.nanoTime();
         System.out.println("A carregar ucs");
         Collection<UC> ucsValues = this.ucs.values();
-        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+        System.out.println((System.nanoTime() - startTime)/1000000+" milisegundos");
 
 
         startTime = System.nanoTime();
         System.out.println("A verificar se as UCS estão registadas");
-        this.ucsRegistadas = !ucsValues.isEmpty();
-        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
+        this.setUcsRegistadas(!ucsValues.isEmpty());
+        System.out.println((System.nanoTime() - startTime)/1000000+" milisegundos");
 
-        
-        startTime = System.nanoTime();
-        System.out.println("A verificar se os users estão registados");
-        this.usersRegistados = !utilizadores.isEmpty();
-        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
-        
-        startTime = System.nanoTime();
-        System.out.println("A verificar se os turnos estão registados");
-        this.turnosRegistados = ucsValues.stream().noneMatch(uc-> uc.getTurnos().isEmpty());
-        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
-
-        startTime = System.nanoTime();
-        System.out.println("A verificar se os logins estão ativos");
-        this.loginsAtivos = utilizadores.stream().allMatch(Utilizador::isLoginAtivo);
-        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
-
-        startTime = System.nanoTime();
-        System.out.println("A verifcar se os turnos estão atribuidos");
-        this.turnosAtribuidos = utilizadores.stream()
-                                            .filter(u -> u instanceof Aluno)
-                                            .noneMatch(a -> ((Aluno) a).getHorario().isEmpty());
-        System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
-        
-        //TODO remove this:
-        /*try {
+        if(this.ucsRegistadas){
             startTime = System.nanoTime();
-            System.out.println("A importar UCS");
-            this.importUCs("jsons/ucs.json");
-            System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
-        
-            startTime = System.nanoTime();
-            System.out.println("A importar Utilizadores");
-            this.importUtilizadores("jsons/utilizadores.json");
-            System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
-        
-            startTime = System.nanoTime();
-            System.out.println("A importar Turnos");
-            this.importTurnos("jsons/turnos.json");
-            System.out.println((System.nanoTime() - startTime)/1000000+"milisegundos");
-        } catch (FileNotFoundException | BadlyFormatedFileException e1) {
-            e1.printStackTrace();
-        }*/
+            System.out.println("A verificar se os users estão registados");
+            this.setUsersRegistados(!utilizadores.isEmpty());
+            System.out.println((System.nanoTime() - startTime)/1000000+" milisegundos");
+            if(this.usersRegistados){
+                startTime = System.nanoTime();
+                System.out.println("A verificar se os turnos estão registados");
+                this.setTurnosRegistados(ucsValues.stream().noneMatch(uc-> uc.getTurnos().isEmpty()));
+                System.out.println((System.nanoTime() - startTime)/1000000+" milisegundos");
+                if(this.turnosRegistados){
+                    startTime = System.nanoTime();
+                    System.out.println("A verificar se os logins estão ativos");
+                    this.setLoginsAtivos(utilizadores.stream().allMatch(Utilizador::isLoginAtivo));
+                    System.out.println((System.nanoTime() - startTime)/1000000+" milisegundos");
+                    if(this.loginsAtivos){
+                        startTime = System.nanoTime();
+                        System.out.println("A verifcar se os turnos estão atribuidos");
+                        this.setTurnosAtribuidos(utilizadores.stream()
+                                                             .filter(u -> u instanceof Aluno)
+                                                             .noneMatch(a -> ((Aluno) a).getHorario().isEmpty()));
+                        System.out.println((System.nanoTime() - startTime)/1000000+" milisegundos");
+                    }
+                }
+            }
+        }
         System.out.println("100%");
+        System.out.println("Tempo total: "+(System.nanoTime()-totalTime)/1000000);
     }
 
     /**
@@ -193,6 +179,70 @@ public class SGT extends Observable{
     }
 
     /**
+     * Muda o estado do sistema comecando pelas UCs
+     * @param ucsRegistadas Novo estado
+     */
+    private void setUcsRegistadas(boolean ucsRegistadas) {
+        if(ucsRegistadas){
+            this.setChanged();
+            this.notifyObservers(UCS_IMPORTADAS);
+        }
+        this.ucsRegistadas = ucsRegistadas;
+        this.setUsersRegistados(false);
+    }
+
+    /**
+     * Muda o estado do sistema comecando pelos utilizadores
+     * @param usersRegistados Novo estado
+     */
+    private void setUsersRegistados(boolean usersRegistados) {
+        if(usersRegistados){
+            this.setChanged();
+            this.notifyObservers(UTILIZADORES_IMPORTADOS);
+        }
+        this.usersRegistados = usersRegistados;
+        this.setTurnosRegistados(false);
+    }
+
+    /**
+     * Muda o estado do sistema comecando pelos turnos
+     * @param turnosRegistados Novo estado
+     */
+    private void setTurnosRegistados(boolean turnosRegistados) {
+        if(turnosRegistados){
+            this.setChanged();
+            this.notifyObservers(TURNOS_IMPORTADOS);
+        }
+        this.turnosRegistados = turnosRegistados;
+        this.setLoginsAtivos(false);
+    }
+
+    /**
+     * Muda o estado do sistema comecando pelos logins
+     * @param loginsAtivos Novo estado
+     */
+    private void setLoginsAtivos(boolean loginsAtivos) {
+        if(loginsAtivos){
+            this.setChanged();
+            this.notifyObservers(LOGINS_ATIVADOS);
+        }
+        this.loginsAtivos = loginsAtivos;
+        this.setTurnosAtribuidos(false);
+    }
+
+    /**
+     * Muda o estado do sistema comecando pela atribuicao dos turnos
+     * @param turnosAtribuidos Novo estado
+     */
+    private void setTurnosAtribuidos(boolean turnosAtribuidos) {
+        if(turnosAtribuidos){
+            this.setChanged();
+            this.notifyObservers(TURNOS_ATRIBUIDOS);
+        }
+        this.turnosAtribuidos = turnosAtribuidos;
+    }
+
+    /**
      * Autentica o utilizador
      * @param userNum Número do utilizador
      * @param password Password do utilizador
@@ -212,7 +262,7 @@ public class SGT extends Observable{
     }
 
     public Utilizador getLoggedUser(){
-        return this.loggedUser;
+        return this.loggedUser = this.utilizadores.get(this.loggedUser.getUserNum());
     }
 
     /**
@@ -505,6 +555,13 @@ public class SGT extends Observable{
         this.ucs.put(tmpUC.getId(),tmpUC);
     }
 
+    /**
+     * Remove um docente de uma UC
+     * @param uc O identificador da UC do turno
+     * @param turno O numero do turno
+     * @param docente O identificador do docente
+     * @param ePratico Se o turno e pratico
+     */
     public void removeDocenteFromTurno(String uc, int turno, String docente, boolean ePratico){
         UC tmpUC = this.ucs.get(uc);
         tmpUC.removeDocenteFromTurno(turno,docente, ePratico);
@@ -572,42 +629,27 @@ public class SGT extends Observable{
     }
 
     /**
-     * Importa os turnos de um ficheiro
+     * Importa as UCs de um ficheiro
      * @param filepath Caminho para o ficheiro
      * @throws FileNotFoundException Se o ficheiro nao existe
      * @throws BadlyFormatedFileException Se o ficheiro tem a sintaxe errada
      */
-    public void importTurnos(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
-        new TurnoDAO().clear();
-        JsonReader jsonReader = Json.createReader(new FileReader(new File(filepath)));
-        JsonObject jsonObject = jsonReader.readObject();
-        Set<String> keySet = jsonObject.keySet();
+    public void importUCs(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
+        JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
+        JsonArray jarray = jreader.readArray();
+        this.ucs.clear();
         try{
-            for(String key: keySet){
-                JsonArray jsonArray = jsonObject.getJsonArray(key);
-                int tCount = 1;
-                int tpCount = 1;
-                for(JsonValue j: jsonArray){
-                    JsonObject jTurno = (JsonObject) j;
-                    boolean ePratico = jTurno.getBoolean("ePratico");
-                    int id = ePratico ? tpCount++ : tCount++;
-                    List<TurnoInfo> tInfos = new ArrayList<>();
-                    JsonArray jTinfos = jTurno.getJsonArray("tinfo");
-                    for (JsonValue jvInfo: jTinfos){
-                        JsonObject jTinfo = (JsonObject) jvInfo;
-                        LocalTime horaInicio = LocalTime.parse(jTinfo.getString("horaInicio"));
-                        LocalTime horaFim = LocalTime.parse(jTinfo.getString("horaFim"));
-                        DiaSemana dia = DiaSemana.fromString(jTinfo.getString("dia"));
-                        TurnoInfo tinfo = new TurnoInfo(horaInicio,horaFim,dia);
-                        tInfos.add(tinfo);
-                    }
-                    Turno t = new Turno(id,key,jTurno.getInt("vagas"),ePratico, tInfos);
-                    new TurnoDAO().put(new TurnoKey(t),t);
-                }
+            for (JsonValue j : jarray) {
+                JsonObject jobj = (JsonObject) j;
+                String id = jobj.getString("id");
+                String name = jobj.getString("name");
+                String acron = jobj.getString("acron");
+                this.ucs.put(id,new UC(id,name,acron));
             }
         }catch (NullPointerException e){
             throw new BadlyFormatedFileException();
         }
+        this.setUcsRegistadas(true);
     }
 
     /**
@@ -617,9 +659,9 @@ public class SGT extends Observable{
      * @throws BadlyFormatedFileException Se o ficheiro tem a sintaxe errada
      */
     public void importUtilizadores(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
-        this.utilizadores.clear();
         JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
         JsonArray jarray = jreader.readArray();
+        this.utilizadores.clear();
         for(JsonValue j: jarray){
             JsonObject jobj = (JsonObject) j;
             String num = jobj.getString("Num");
@@ -652,29 +694,56 @@ public class SGT extends Observable{
 
             this.utilizadores.put(num,user);
         }
+        this.setUsersRegistados(true);
     }
 
     /**
-     * Importa as UCs de um ficheiro
+     * Importa os turnos de um ficheiro
      * @param filepath Caminho para o ficheiro
      * @throws FileNotFoundException Se o ficheiro nao existe
      * @throws BadlyFormatedFileException Se o ficheiro tem a sintaxe errada
      */
-    public void importUCs(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
-        this.ucs.clear();
-        JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
-        JsonArray jarray = jreader.readArray();
+    public void importTurnos(String filepath) throws FileNotFoundException, BadlyFormatedFileException {
+        JsonReader jsonReader = Json.createReader(new FileReader(new File(filepath)));
+        JsonObject jsonObject = jsonReader.readObject();
+        new TurnoDAO().clear();
+        Set<String> keySet = jsonObject.keySet();
         try{
-            for (JsonValue j : jarray) {
-                JsonObject jobj = (JsonObject) j;
-                String id = jobj.getString("id");
-                String name = jobj.getString("name");
-                String acron = jobj.getString("acron");
-                this.ucs.put(id,new UC(id,name,acron));
+            for(String key: keySet){
+                JsonArray jsonArray = jsonObject.getJsonArray(key);
+                int tCount = 1;
+                int tpCount = 1;
+                for(JsonValue j: jsonArray){
+                    JsonObject jTurno = (JsonObject) j;
+                    boolean ePratico = jTurno.getBoolean("ePratico");
+                    int id = ePratico ? tpCount++ : tCount++;
+                    List<TurnoInfo> tInfos = new ArrayList<>();
+                    JsonArray jTinfos = jTurno.getJsonArray("tinfo");
+                    for (JsonValue jvInfo: jTinfos){
+                        JsonObject jTinfo = (JsonObject) jvInfo;
+                        LocalTime horaInicio = LocalTime.parse(jTinfo.getString("horaInicio"));
+                        LocalTime horaFim = LocalTime.parse(jTinfo.getString("horaFim"));
+                        DiaSemana dia = DiaSemana.fromString(jTinfo.getString("dia"));
+                        TurnoInfo tinfo = new TurnoInfo(horaInicio,horaFim,dia);
+                        tInfos.add(tinfo);
+                    }
+                    Turno t = new Turno(id,key,jTurno.getInt("vagas"),ePratico, tInfos);
+                    new TurnoDAO().put(new TurnoKey(t),t);
+                }
             }
         }catch (NullPointerException e){
             throw new BadlyFormatedFileException();
         }
+        this.setTurnosRegistados(true);
+    }
+
+    /**
+     * Ativa os logins para os alunos
+     */
+    public void activateLogins() {
+        //this.utilizadores.values().forEach(Utilizador::ativarLogin);
+        System.out.println("logins ativos");
+        this.setLoginsAtivos(true);
     }
 
     /**
@@ -695,18 +764,7 @@ public class SGT extends Observable{
 
 
         // TODO - implement SGT.assignShifts
-        this.turnosAtribuidos=true;
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Ativa os logins para os alunos
-     */
-    public void activateLogins() {
-        this.utilizadores.values().forEach(Utilizador::ativarLogin);
-        this.loginsAtivos = true;
-        this.setChanged();
-        this.notifyObservers(LOGINS_ATIVADOS);
+        this.setTurnosAtribuidos(true);
     }
 
     /**

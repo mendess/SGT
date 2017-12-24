@@ -12,7 +12,7 @@ import main.sgt.UC;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static main.userInterface.interfaceUtils.*;
+import static main.userInterface.InterfaceUtils.*;
 
 /**
  *

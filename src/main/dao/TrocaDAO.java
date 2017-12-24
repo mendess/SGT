@@ -16,7 +16,7 @@ public class TrocaDAO implements List<Troca> {
         if(connection==null) return -1;
         int i=-1;
         try{
-            PreparedStatement stm = connection.prepareStatement("" +
+            PreparedStatement stm = connection.prepareStatement("\n" +
                     "SELECT count(*) FROM Trocas;");
             ResultSet rs = stm.executeQuery();
             if(rs.next()){
@@ -46,7 +46,7 @@ public class TrocaDAO implements List<Troca> {
         Troca troca = (Troca) o;
         boolean r=false;
         try {
-            PreparedStatement stm = connection.prepareStatement("" +
+            PreparedStatement stm = connection.prepareStatement("\n" +
                     "SELECT * FROM `Trocas` WHERE `id`=?;");
             stm.setInt(1, troca.getId());
             ResultSet rs = stm.executeQuery();
@@ -81,7 +81,7 @@ public class TrocaDAO implements List<Troca> {
         Object[] array = null;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT * FROM Trocas;");
             ResultSet rs = stm.executeQuery();
             array = new Object[size];
@@ -204,7 +204,7 @@ public class TrocaDAO implements List<Troca> {
         Troca t = null;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "SELECT * FROM Trocas WHERE id=?;");
             stm.setInt(1, index);
             ResultSet rs = stm.executeQuery();
@@ -245,7 +245,7 @@ public class TrocaDAO implements List<Troca> {
         if (connection == null) return null;
         PreparedStatement stm = null;
         try {
-            stm = connection.prepareStatement("" +
+            stm = connection.prepareStatement("\n" +
                     "DELETE FROM Trocas WHERE id=?");
             stm.setInt(1, index);
             stm.executeUpdate();
