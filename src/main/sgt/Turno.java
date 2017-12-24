@@ -1,6 +1,7 @@
 package main.sgt;
 
 import main.dao.AulaDAO;
+import main.sgt.exceptions.TurnoCheioException;
 import main.sgt.exceptions.UtilizadorJaExisteException;
 
 import java.util.ArrayList;
@@ -238,11 +239,15 @@ public class Turno {
      * Adiciona um aluno ao turno
      * @param aluno Identificador do aluno a adicionar
      */
-    void addAluno(String aluno) throws UtilizadorJaExisteException {
+    void addAluno(String aluno) throws UtilizadorJaExisteException, TurnoCheioException {
         if (this.alunos.contains(aluno)){
             if(this.id!=0) throw new UtilizadorJaExisteException();
         }else{
-            this.alunos.add(aluno);
+            if(this.alunos.size()<this.vagas) {
+                this.alunos.add(aluno);
+            }else{
+                throw new TurnoCheioException();
+            }
         }
     }
 
@@ -285,6 +290,14 @@ public class Turno {
         this.aulas.remove(new AulaKey(this.ucId,this.id,aula, ePratico));
     }
 
+    /**
+     * Retorna <tt>True</tt> se o turno tem vagas
+     * @return <tt>True</tt> se o turno tem vagas
+     */
+    boolean temVagas(){
+        return this.alunos.size()<this.vagas;
+    }
+
     public boolean equals(Object o) {
         if(this == o) {
             return true;
@@ -303,6 +316,7 @@ public class Turno {
                 this.alunos.equals(a.getAlunos()) &&
                 this.tinfo.equals(a.getTurnoInfos());
     }
+
     public String toString() {
         return "Turno \t"
                 + "Id: "+ this.id + ": \t"

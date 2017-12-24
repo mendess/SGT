@@ -276,7 +276,7 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         boolean ePratico = pedido.ePratico();
         try {
             int response;
-            if(this.sgt.horarioConfilcts(uc,turno,ePratico)){
+            if(this.sgt.horarioConfilcts((Aluno) this.sgt.getLoggedUser(), uc,turno,ePratico)){
                 response = JOptionPane.showConfirmDialog(null,
                         "O turno selecionado entra em conflito com o seu horário. Quer continuar?",
                         "Conflito de turnos", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -288,8 +288,8 @@ public class JAluno extends javax.swing.JFrame implements Observer {
             if (response == JOptionPane.YES_OPTION) {
                 this.sgt.realizarTroca(pedido);
             }
-        } catch (InvalidUserTypeException e) {
-            e.printStackTrace();
+        } catch (InvalidUserTypeException | ClassCastException e) {
+            this.dispose();
         } catch (AlunoNaoEstaInscritoNaUcException | UtilizadorJaExisteException e) {
             this.updateSugestTroca();
         }

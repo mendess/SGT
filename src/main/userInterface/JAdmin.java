@@ -7,6 +7,8 @@ package main.userInterface;
 
 import main.sgt.SGT;
 import main.sgt.exceptions.BadlyFormatedFileException;
+import main.sgt.exceptions.NaoFoiPossivelAtribuirTurnosException;
+import main.sgt.exceptions.TurnoCheioException;
 
 import javax.swing.*;
 import java.awt.event.MouseListener;
@@ -368,7 +370,13 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         if(!(confirmed ==JOptionPane.YES_OPTION)){
             return;
         }
-        this.sgt.assignShifts();
+        try {
+            this.sgt.assignShifts();
+        } catch (TurnoCheioException e) {
+            JOptionPane.showMessageDialog(this,"Os turnos nao tem capacidade para todos os alunos","Erro",JOptionPane.ERROR_MESSAGE);
+        } catch (NaoFoiPossivelAtribuirTurnosException e) {
+            JOptionPane.showMessageDialog(this,"Não foi possivel atribuir turnos a todos os alunos","Erro",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonAssignShiftsActionPerformed
 
     private void jButtonRemoveShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveShiftActionPerformed

@@ -46,9 +46,9 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
         UC uc = this.sgt.getUC(this.uc);
         if(uc==null) return;
         this.jLabelCoordenadorNome.setText(uc.getResponsavel());
-        this.jLabelDocentesNomes.setText(uc.getDocentes()
-                .stream()
-                .reduce("",(d1,d2)->d1+"\n"+d2));
+        this.jLabelDocentesNomes.setText(this.sgt.getDocentesOfUC(this.uc)
+                                                    .stream()
+                                                    .reduce("",(d1,d2)->d1+"\n"+d2));
         this.turno = makeComboBoxTurnos(this.jComboBoxTurnos,this.sgt.getTurnosOfUC(this.uc),this.uc);
         updateTableAlunos();
     }
