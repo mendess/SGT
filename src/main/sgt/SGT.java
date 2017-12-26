@@ -866,13 +866,16 @@ public class SGT extends Observable {
         for(Map.Entry<String,UC> e : entries){
             UCsETurnos.put(e.getKey(), e.getValue().getTurnos());
         }
-        List<Aluno> alunos = this.utilizadores.values()
-                .stream()
-                .filter(e->e instanceof Aluno)
-                .map(e->(Aluno) e).collect(Collectors.toList());
+        List<Aluno> alunos = new ArrayList<>();
+        for (Utilizador e : this.utilizadores.values()) {
+            if (e instanceof Aluno) {
+                Aluno aluno = (Aluno) e;
+                alunos.add(aluno);
+            }
+        }
         List<UC> allUCs = new ArrayList<>(this.ucs.values());
-        alunos.sort(Comparator.comparingInt((Aluno a)->a.getHorario().keySet().size()).reversed());
-        allUCs.sort((uc1, uc2)->{
+        //alunos.sort(Comparator.comparingInt((Aluno a)->a.getHorario().keySet().size()).reversed());
+        /*allUCs.sort((uc1, uc2)->{
             int tIsize1 = uc1.getTurno(1,true).getTurnoInfos().size();
             int tIsize2 = uc2.getTurno(1,true).getTurnoInfos().size();
             if(tIsize1==tIsize2){
@@ -883,7 +886,7 @@ public class SGT extends Observable {
             }
             return tIsize1>tIsize2 ?-1 : 1;
         });
-        //Para cada aluno
+        *///Para cada aluno
         for(Aluno a : alunos){
             //Para cada UC do aluno
             Set<String> horario = a.getHorario().keySet();
@@ -891,7 +894,7 @@ public class SGT extends Observable {
             for(UC uc : ucs){
                 String ucID = uc.getId();
                 List<Turno> turnos = UCsETurnos.get(ucID);
-                turnos.sort(Comparator.comparingInt(Turno::getId));
+                //turnos.sort(Comparator.comparingInt(Turno::getId));
                 boolean haVagas = false;
                 boolean temTurnoNaUC = a.getHorario().get(ucID)!=0;
                 //Para cada turno da UC
