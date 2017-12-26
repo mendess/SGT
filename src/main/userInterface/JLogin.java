@@ -102,7 +102,7 @@ public class JLogin extends javax.swing.JFrame {
                 newFrame = new JCoordenador(this.sgt);
             }else if(u instanceof Docente){
                 newFrame = new JDocente(this.sgt);
-            }else if(u instanceof Aluno){
+            }else if(u.isLoginAtivo() && u instanceof Aluno){
                 if(((Aluno) u).eEspecial()){
                     newFrame = new JAlunoEspecial(this.sgt);
                 }else {

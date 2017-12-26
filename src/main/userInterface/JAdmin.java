@@ -30,6 +30,7 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
     private JButton[] buttons = new JButton[5];
     private JCheckBox[] checkBoxes = new JCheckBox[5];
     private final JFileChooser fc = new JFileChooser();
+    private JDialog loadingScreen;
 
     /**
      * Creates new form Admin
@@ -266,13 +267,18 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         int returnVal = fc.showOpenDialog(this);
         if(returnVal==JFileChooser.APPROVE_OPTION){
             File file = fc.getSelectedFile();
-            try {
+            try{
+                makeLoadingScreen("Importing UCs");
+                this.setVisible(false);
                 this.sgt.importUCs(file.getAbsolutePath());
-            } catch (FileNotFoundException e) {
+            }catch(FileNotFoundException e){
                 e.printStackTrace();
-            } catch (BadlyFormatedFileException e) {
-                JOptionPane.showMessageDialog(this,"Badly formated file","Bad file",
+            }catch(BadlyFormatedFileException e){
+                JOptionPane.showMessageDialog(this, "Badly formated file", "Bad file",
                         JOptionPane.ERROR_MESSAGE);
+            }finally{
+                this.loadingScreen.dispose();
+                this.setVisible(true);
             }
         }
     }//GEN-LAST:event_jButtonImportUCsActionPerformed
@@ -290,12 +296,17 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         if(returnVal==JFileChooser.APPROVE_OPTION){
             File file = fc.getSelectedFile();
             try {
+                makeLoadingScreen("Importing Utilizadores");
+                this.setVisible(false);
                 this.sgt.importUtilizadores(file.getAbsolutePath());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (BadlyFormatedFileException e) {
                 JOptionPane.showMessageDialog(this,"Badly formated file","Bad file",
                         JOptionPane.ERROR_MESSAGE);
+            }finally{
+                this.loadingScreen.dispose();
+                this.setVisible(true);
             }
         }
     }//GEN-LAST:event_jButtonImportUtilizadoresActionPerformed
@@ -313,12 +324,17 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         if(returnVal==JFileChooser.APPROVE_OPTION){
             File file = fc.getSelectedFile();
             try {
+                makeLoadingScreen("Importing Turnos");
+                this.setVisible(false);
                 this.sgt.importTurnos(file.getAbsolutePath());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (BadlyFormatedFileException e) {
                 JOptionPane.showMessageDialog(this,"Badly formated file","Bad file",
                         JOptionPane.ERROR_MESSAGE);
+            }finally{
+                this.loadingScreen.dispose();
+                this.setVisible(true);
             }
         }
     }//GEN-LAST:event_jButtonImportTurnosActionPerformed
@@ -329,7 +345,11 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         if(!(confirmed ==JOptionPane.YES_OPTION)){
             return;
         }
+        makeLoadingScreen("A ativar logins");
+        this.setVisible(false);
         this.sgt.activateLogins();
+        this.loadingScreen.dispose();
+        this.setVisible(true);
     }//GEN-LAST:event_jButtonActivateLoginsActionPerformed
 
     private void jButtonAssignShiftsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAssignShiftsActionPerformed
@@ -343,11 +363,16 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
             return;
         }
         try {
+            makeLoadingScreen("A atribuir turnos");
+            this.setVisible(false);
             this.sgt.assignShifts();
         } catch (TurnoCheioException e) {
             JOptionPane.showMessageDialog(this,"Os turnos nao tem capacidade para todos os alunos","Erro",JOptionPane.ERROR_MESSAGE);
         } catch (NaoFoiPossivelAtribuirTurnosException e) {
             JOptionPane.showMessageDialog(this,"Não foi possivel atribuir turnos a todos os alunos","Erro",JOptionPane.ERROR_MESSAGE);
+        }finally{
+            this.loadingScreen.dispose();
+            this.setVisible(true);
         }
     }//GEN-LAST:event_jButtonAssignShiftsActionPerformed
 
@@ -363,13 +388,27 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         });
     }//GEN-LAST:event_jButtonConsultUCActionPerformed
 
+    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonLogoutActionPerformed
+
     private void reOpen() {
         this.setVisible(true);
     }
 
-    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButtonLogoutActionPerformed
+    private void makeLoadingScreen(String title){
+        JOptionPane loadingPane = new JOptionPane(title,JOptionPane.INFORMATION_MESSAGE,
+                                                 JOptionPane.DEFAULT_OPTION,null,
+                                                 new Object[]{},null);
+        JDialog dialog = new JDialog();
+        dialog.setTitle(title);
+        dialog.setContentPane(loadingPane);
+//        dialog.setModalityType(Dialog.ModalityType.MODELESS);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.pack();
+        dialog.setVisible(true);
+        this.loadingScreen = dialog;
+    }
 
     @Override
     public void update(Observable observable, Object o) {

@@ -8,7 +8,6 @@ package main.userInterface;
 import main.sgt.Aluno;
 import main.sgt.SGT;
 import main.sgt.UC;
-import main.sgt.Utilizador;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,28 +38,30 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
     private void initComboBoxUCs() {
         List<UC> ucs = this.sgt.getUCs();
         this.uc = makeComboBoxUCs(this.jComboBoxUCs,ucs);
-        if(this.uc==null) return;
-        UC uc = this.sgt.getUC(this.uc);
-        this.jLabelCoordenadorNome.setText(this.sgt.getUser(uc.getResponsavel()).getName());
         updateComboBoxTurnos();
     }
 
     private void updateComboBoxTurnos() {
         if(this.uc==null)return;
         UC uc = this.sgt.getUC(this.uc);
-        if(uc==null) return;
-        this.jLabelDocentesNomes.setText("<html>"
-                                          +this.sgt.getDocentesOfUC(this.uc)
-                                                    .stream()
-                                                    .map(user -> this.sgt.getUser(user).getName())
-                                                    .reduce("",(d1,d2)->d1+"<br/>"+d2)
-                                          +"</html>");
+        this.jLabelCoordenadorNome.setText(this.sgt.getUser(uc.getResponsavel()).getName());
+        this.jLabelDocentesNomes.setText(
+                "<html>"
+                        +this.sgt.getDocentesOfUC(this.uc)
+                                 .stream()
+                                 .map(user -> this.sgt.getUser(user).getName())
+                                 .reduce("",(d1,d2)->d1+"<br/>"+d2)
+                                 .replaceFirst("<br/>","")
+                        +"</html>");
         this.turno = makeComboBoxTurnos(this.jComboBoxTurnos,this.sgt.getTurnosOfUC(this.uc),this.uc);
-        updateTableAlunos();
+        updateTableAlunos(uc);
     }
 
-    private void updateTableAlunos() {
-        if(this.turno==null) return;
+    private void updateTableAlunos(UC uc) {
+        if(this.uc == null || this.turno == null) return;
+        this.jLabelDocenteNome.setText(this.sgt.getUser(uc.getTurno(shiftFromString(turno),shiftTypeFromStr(turno))
+                                                          .getDocente())
+                                               .getName());
         List<Aluno> alunos = this.sgt.getUC(this.uc)
                                      .getTurno(shiftFromString(this.turno),shiftTypeFromStr(this.turno))
                                      .getAlunos()
@@ -93,6 +94,8 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
         jLabelUCs = new javax.swing.JLabel();
         jLabelTurnos = new javax.swing.JLabel();
         jButtonFechar = new javax.swing.JButton();
+        jLabelDocente = new javax.swing.JLabel();
+        jLabelDocenteNome = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -111,6 +114,8 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
         jLabelCoordenador.setText("Coordenador");
 
         jLabelDocentes.setText("Docentes");
+
+        jLabelDocentesNomes.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jLabelAlunos.setText("Alunos");
 
@@ -150,6 +155,8 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
             }
         });
 
+        jLabelDocente.setText("Docente:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,29 +164,38 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jComboBoxUCs, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelAlunos)
-                            .addComponent(jScrollPaneAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelTurnos))
-                        .addGap(140, 140, 140))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelUCs)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelCoordenador)
-                            .addComponent(jLabelDocentes))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabelDocentesNomes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelCoordenadorNome, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonFechar)
-                        .addContainerGap())))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelCoordenador)
+                                    .addComponent(jLabelDocentes))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabelDocentesNomes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabelCoordenadorNome, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)))
+                            .addComponent(jComboBoxUCs, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButtonFechar)
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelAlunos)
+                                    .addComponent(jScrollPaneAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabelTurnos))
+                                .addGap(49, 49, 49))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelDocente)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelDocenteNome, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,15 +204,9 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
                 .addComponent(jLabelUCs)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBoxUCs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabelTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jComboBoxUCs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelCoordenador)
                             .addComponent(jLabelCoordenadorNome))
@@ -207,6 +217,14 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
                                 .addGap(0, 275, Short.MAX_VALUE))
                             .addComponent(jLabelDocentesNomes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelDocente)
+                                .addComponent(jLabelDocenteNome)))
+                        .addGap(18, 18, 18)
                         .addComponent(jLabelAlunos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPaneAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -219,11 +237,13 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUCsActionPerformed
+        this.uc = (String) this.jComboBoxUCs.getSelectedItem();
         updateComboBoxTurnos();
     }//GEN-LAST:event_jComboBoxUCsActionPerformed
 
     private void jComboBoxTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTurnosActionPerformed
-        updateTableAlunos();
+        this.turno = (String) this.jComboBoxTurnos.getSelectedItem();
+        if(this.uc!=null) updateTableAlunos(this.sgt.getUC(this.uc));
     }//GEN-LAST:event_jComboBoxTurnosActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
@@ -273,6 +293,8 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelAlunos;
     private javax.swing.JLabel jLabelCoordenador;
     private javax.swing.JLabel jLabelCoordenadorNome;
+    private javax.swing.JLabel jLabelDocente;
+    private javax.swing.JLabel jLabelDocenteNome;
     private javax.swing.JLabel jLabelDocentes;
     private javax.swing.JLabel jLabelDocentesNomes;
     private javax.swing.JLabel jLabelTurnos;

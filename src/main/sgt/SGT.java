@@ -4,6 +4,7 @@ import main.dao.*;
 import main.sgt.exceptions.*;
 
 import javax.json.*;
+import javax.json.stream.JsonParsingException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -737,10 +738,11 @@ public class SGT extends Observable {
      * @throws BadlyFormatedFileException Se o ficheiro tem a sintaxe errada
      */
     public void importUCs(String filepath) throws FileNotFoundException, BadlyFormatedFileException{
-        JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
-        JsonArray jarray = jreader.readArray();
-        this.ucs.clear();
         try{
+            JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
+            JsonArray jarray = jreader.readArray();
+            this.ucs.clear();
+            this.utilizadores.clear();
             for(JsonValue j : jarray){
                 JsonObject jobj = (JsonObject) j;
                 String id = jobj.getString("id");
@@ -748,10 +750,10 @@ public class SGT extends Observable {
                 String acron = jobj.getString("acron");
                 this.ucs.put(id, new UC(id, name, acron));
             }
-        }catch(NullPointerException e){
+            this.setUcsRegistadas(true);
+        }catch(NullPointerException | JsonParsingException e){
             throw new BadlyFormatedFileException();
         }
-        this.setUcsRegistadas(true);
     }
 
     /**
@@ -762,40 +764,44 @@ public class SGT extends Observable {
      * @throws BadlyFormatedFileException Se o ficheiro tem a sintaxe errada
      */
     public void importUtilizadores(String filepath) throws FileNotFoundException, BadlyFormatedFileException{
-        JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
-        JsonArray jarray = jreader.readArray();
-        this.utilizadores.clear();
-        for(JsonValue j : jarray){
-            JsonObject jobj = (JsonObject) j;
-            String num = jobj.getString("Num");
-            String nome = jobj.getString("Nome");
-            String email = jobj.getString("Email");
-            String password = jobj.getString("password");
-            Utilizador user = null;
-            switch(jobj.getString("Type")){
-                case "A":{
-                    boolean eEspecial = jobj.getBoolean("eEspecial");
-                    user = new Aluno(num, password, email, nome, eEspecial, new HashMap<>());
-                    break;
+        try{
+            JsonReader jreader = Json.createReader(new FileReader(new File(filepath)));
+            JsonArray jarray = jreader.readArray();
+            this.utilizadores.clear();
+            for(JsonValue j : jarray){
+                JsonObject jobj = (JsonObject) j;
+                String num = jobj.getString("Num");
+                String nome = jobj.getString("Nome");
+                String email = jobj.getString("Email");
+                String password = jobj.getString("password");
+                Utilizador user = null;
+                switch(jobj.getString("Type")){
+                    case "A":{
+                        boolean eEspecial = jobj.getBoolean("eEspecial");
+                        user = new Aluno(num, password, email, nome, eEspecial, new HashMap<>());
+                        break;
+                    }
+                    case "D":{
+                        user = new Docente(num, password, email, nome, new HashMap<>());
+                        break;
+                    }
+                    case "C":{
+                        String ucRegida = jobj.getString("ucRegida");
+                        user = new Coordenador(num, password, email, nome, new HashMap<>(), ucRegida);
+                        break;
+                    }
+                    case "K":{
+                        user = new DiretorDeCurso(num, password, email, nome);
+                        break;
+                    }
                 }
-                case "D":{
-                    user = new Docente(num, password, email, nome, new HashMap<>());
-                    break;
-                }
-                case "C":{
-                    String ucRegida = jobj.getString("ucRegida");
-                    user = new Coordenador(num, password, email, nome, new HashMap<>(), ucRegida);
-                    break;
-                }
-                case "K":{
-                    user = new DiretorDeCurso(num, password, email, nome);
-                    break;
-                }
-            }
-            if(user == null)
-                throw new BadlyFormatedFileException();
+                if(user == null)
+                    throw new BadlyFormatedFileException();
 
-            this.utilizadores.put(num, user);
+                this.utilizadores.put(num, user);
+            }
+        }catch(NullPointerException | JsonParsingException e){
+            throw new BadlyFormatedFileException();
         }
         this.setUsersRegistados(true);
     }
@@ -808,11 +814,11 @@ public class SGT extends Observable {
      * @throws BadlyFormatedFileException Se o ficheiro tem a sintaxe errada
      */
     public void importTurnos(String filepath) throws FileNotFoundException, BadlyFormatedFileException{
-        JsonReader jsonReader = Json.createReader(new FileReader(new File(filepath)));
-        JsonObject jsonObject = jsonReader.readObject();
-        new TurnoDAO().clear();
-        Set<String> keySet = jsonObject.keySet();
         try{
+            JsonReader jsonReader = Json.createReader(new FileReader(new File(filepath)));
+            JsonObject jsonObject = jsonReader.readObject();
+            new TurnoDAO().clear();
+            Set<String> keySet = jsonObject.keySet();
             for(String key : keySet){
                 JsonArray jsonArray = jsonObject.getJsonArray(key);
                 int tCount = 1;
@@ -835,7 +841,7 @@ public class SGT extends Observable {
                     new TurnoDAO().put(new TurnoKey(t), t);
                 }
             }
-        }catch(NullPointerException e){
+        }catch(NullPointerException | JsonParsingException e){
             throw new BadlyFormatedFileException();
         }
         this.setTurnosRegistados(true);
