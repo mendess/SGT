@@ -155,8 +155,9 @@ public class UCDAO implements Map<String, UC> {
         List<String> alunos = value.getAlunos();
         for(String aluno: alunos){
             PreparedStatement stm = this.connection.prepareStatement("\n" +
-                    "SELECT aluno_id FROM Turno_has_Aluno WHERE UC_id=?;");
+                    "SELECT aluno_id FROM Turno_has_Aluno WHERE UC_id=? AND Aluno_id=?;");
             stm.setString(1,value.getId());
+            stm.setString(2,aluno);
             ResultSet rs = stm.executeQuery();
             if(!rs.next()){
                 PreparedStatement stmInsert = this.connection.prepareStatement("\n" +

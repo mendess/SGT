@@ -28,6 +28,12 @@ public class Docente extends Utilizador {
         this.ucsEturnos = ucsEturnos;
     }
 
+    public Docente(String id, String password, String email, String nome, boolean loginAtivo,
+                   Map<String, List<TurnoKey>> ucsEturnos){
+        super(id, password, email, nome, loginAtivo);
+        this.ucsEturnos = ucsEturnos;
+    }
+
     /**
      * Retorna as UCs e turnos do Docente
      * @return UCs e turnos do docente

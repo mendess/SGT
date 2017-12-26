@@ -111,8 +111,6 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         jButtonActivateLogins = new javax.swing.JButton();
         jButtonAssignShifts = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jButtonAddShift = new javax.swing.JButton();
-        jButtonRemoveShift = new javax.swing.JButton();
         jButtonConsultUC = new javax.swing.JButton();
         jButtonLogout = new javax.swing.JButton();
 
@@ -169,20 +167,6 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jButtonAddShift.setText("Adicionar Turno");
-        jButtonAddShift.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAddShiftActionPerformed(evt);
-            }
-        });
-
-        jButtonRemoveShift.setText("Remover Turno");
-        jButtonRemoveShift.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRemoveShiftActionPerformed(evt);
-            }
-        });
-
         jButtonConsultUC.setText("Consultar UCs");
         jButtonConsultUC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,11 +205,8 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonAddShift)
-                            .addComponent(jButtonRemoveShift)
-                            .addComponent(jButtonConsultUC))
-                        .addContainerGap(93, Short.MAX_VALUE))
+                        .addComponent(jButtonConsultUC)
+                        .addContainerGap(100, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonLogout)
@@ -234,7 +215,7 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -260,27 +241,18 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
                                     .addComponent(jCheckBoxShiftsAssigned)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(26, 26, 26)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButtonAddShift)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButtonRemoveShift)
-                                        .addGap(71, 71, 71)
-                                        .addComponent(jButtonConsultUC))
-                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 14, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jButtonConsultUC)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonLogout)))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonAddShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddShiftActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonAddShiftActionPerformed
 
     private void jButtonImportUCsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportUCsActionPerformed
         int confirmed = JOptionPane.YES_OPTION;
@@ -379,10 +351,6 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         }
     }//GEN-LAST:event_jButtonAssignShiftsActionPerformed
 
-    private void jButtonRemoveShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveShiftActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonRemoveShiftActionPerformed
-
     private void jButtonConsultUCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultUCActionPerformed
         JAdminConsultarUCs consultarUCs = new JAdminConsultarUCs(this.sgt);
         this.setVisible(false);
@@ -450,14 +418,12 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonActivateLogins;
-    private javax.swing.JButton jButtonAddShift;
     private javax.swing.JButton jButtonAssignShifts;
     private javax.swing.JButton jButtonConsultUC;
     private javax.swing.JButton jButtonImportTurnos;
     private javax.swing.JButton jButtonImportUCs;
     private javax.swing.JButton jButtonImportUtilizadores;
     private javax.swing.JButton jButtonLogout;
-    private javax.swing.JButton jButtonRemoveShift;
     private javax.swing.JCheckBox jCheckBoxLoginsActive;
     private javax.swing.JCheckBox jCheckBoxShiftsAssigned;
     private javax.swing.JCheckBox jCheckBoxTurnosRegistados;

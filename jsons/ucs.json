@@ -30,36 +30,6 @@
     "acron": "LI1"
   },
   {
-    "id": "H502N1",
-    "name": "Sistemas de Computação",
-    "acron": "SC"
-  },
-  {
-    "id": "H502N2",
-    "name": "Análise",
-    "acron": "ANALISE"
-  },
-  {
-    "id": "H502N3",
-    "name": "Tópicos de Física Moderna",
-    "acron": "TFM"
-  },
-  {
-    "id": "H502N4",
-    "name": "Lógica EI",
-    "acron": "Log"
-  },
-  {
-    "id": "H502N5",
-    "name": "Programação Imperativa",
-    "acron": "PI"
-  },
-  {
-    "id": "H502N6",
-    "name": "Laboratórios de Informática II",
-    "acron": "LI2"
-  },
-  {
     "id": "H503N1",
     "name": "Introdução aos Sistemas Dinâmicos",
     "acron": "ISD"
@@ -90,31 +60,6 @@
     "acron": "ALG"
   },
   {
-    "id": "H504N1",
-    "name": "Sistemas Operativos",
-    "acron": "SO"
-  },
-  {
-    "id": "H504N2",
-    "name": "Programação Orientada aos Objetos",
-    "acron": "POO"
-  },
-  {
-    "id": "H504N3",
-    "name": "Eletromagnetismo EE",
-    "acron": "EM"
-  },
-  {
-    "id": "H504N5",
-    "name": "Cálculo de Programas",
-    "acron": "CP"
-  },
-  {
-    "id": "H504N6",
-    "name": "Laboratórios de Informática III",
-    "acron": "LI3"
-  },
-  {
     "id": "H505N1",
     "name": "Bases de Dados",
     "acron": "BD"
@@ -143,35 +88,5 @@
     "id": "H505N6",
     "name": "Métodos Numéricos e Otimização não Linear",
     "acron": "MNOnL"
-  },
-  {
-    "id": "H506N1",
-    "name": "Sistemas de Representação de Conhecimento e Raciocínio",
-    "acron": "SRCR"
-  },
-  {
-    "id": "H506N2",
-    "name": "Computação Gráfica",
-    "acron": "CG"
-  },
-  {
-    "id": "H506N3",
-    "name": "Modelos Estocásticos de Investigação Operacional",
-    "acron": "MEIO"
-  },
-  {
-    "id": "H506N4",
-    "name": "Comunicações por Computador",
-    "acron": "CC"
-  },
-  {
-    "id": "H506N5",
-    "name": "Processamento de Linguagens",
-    "acron": "PL"
-  },
-  {
-    "id": "H506N6",
-    "name": "Laboratórios de Informática IV",
-    "acron": "LI4"
   }
 ]

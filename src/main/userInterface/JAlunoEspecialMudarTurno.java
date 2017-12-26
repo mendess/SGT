@@ -9,8 +9,10 @@ import main.sgt.SGT;
 import main.sgt.Turno;
 import main.sgt.exceptions.AlunoNaoEstaInscritoNaUcException;
 import main.sgt.exceptions.InvalidUserTypeException;
+import main.sgt.exceptions.TurnoCheioException;
 import main.sgt.exceptions.UtilizadorJaExisteException;
 
+import javax.swing.*;
 import java.util.List;
 
 import static main.userInterface.InterfaceUtils.makeComboBoxUCs;
@@ -182,6 +184,8 @@ public class JAlunoEspecialMudarTurno extends javax.swing.JFrame {
             updateUCsComboBox();
         } catch (UtilizadorJaExisteException e) {
             updateTurnosTable();
+        }catch(TurnoCheioException e){
+            JOptionPane.showMessageDialog(this,"Turno cheio","Turno cheio",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonMudarActionPerformed
 

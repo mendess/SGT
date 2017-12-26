@@ -45,6 +45,14 @@ public abstract class Utilizador {
         this.loginAtivo=false;
     }
 
+    Utilizador(String userNum, String password, String email, String name, boolean loginAtivo){
+        this.userNum = userNum;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.loginAtivo = loginAtivo;
+    }
+
     /**
      * Retorna o identificador do utilizador
      * @return O identificador do utilizador
@@ -114,13 +122,14 @@ public abstract class Utilizador {
      */
     void ativarLogin() {
         if(this.loginAtivo) return;
-        int tries = 0;
+        this.loginAtivo = true;
+/*        int tries = 0;
         boolean success = false;
         while (!success && tries != 5) {
             success = sendEmail(this.getEmail());
             tries++;
         }
-        this.loginAtivo = success;
+        this.loginAtivo = success;*/
     }
     /**
      * Envia um email para o aluno para este poder fazer Login

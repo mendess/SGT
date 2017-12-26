@@ -1,5 +1,8 @@
 package main.sgt;
 
+import main.sgt.exceptions.UtilizadorJaExisteException;
+import main.sgt.exceptions.UtilizadorNaoExisteException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +22,13 @@ public class Aluno extends Utilizador {
      */
     public Aluno(String userNum, String password, String email, String name, boolean eEspecial, Map<String, Integer> inscricoes) {
         super(userNum,password,email,name);
+        this.eEspecial = eEspecial;
+        this.horario = inscricoes;
+    }
+
+    public Aluno(String id, String password, String email, String nome, boolean loginAtivo, boolean eEspecial,
+                 Map<String, Integer> inscricoes){
+        super(id, password, email, nome, loginAtivo);
         this.eEspecial = eEspecial;
         this.horario = inscricoes;
     }
@@ -52,7 +62,10 @@ public class Aluno extends Utilizador {
      * @param uc O identificador da UC do turno
      * @param turno O numero do turno
      */
-    void inscrever(String uc, int turno) {
+    void inscrever(String uc, int turno) throws UtilizadorJaExisteException{
+        if(turno == 0 && this.horario.containsKey(uc)){
+            throw new UtilizadorJaExisteException();
+        }
         this.horario.put(uc,turno);
     }
 
@@ -61,8 +74,9 @@ public class Aluno extends Utilizador {
      * @param uc Identificador da UC do turno
      * @param turno Numero do turno
      */
-    void desinscrever(String uc, int turno) {
-        this.horario.put(uc,null);
+    void desinscrever(String uc, int turno) throws UtilizadorNaoExisteException{
+        if(turno==0 && !this.horario.containsKey(uc)) throw new UtilizadorNaoExisteException();
+        this.horario.put(uc,0);
     }
 
     @Override

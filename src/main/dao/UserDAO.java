@@ -93,18 +93,19 @@ public class UserDAO implements Map<String, Utilizador> {
                 String nome = rs.getString("nome");
                 String password = rs.getString("pass");
                 String email = rs.getString("Email");
+                boolean loginAtivo = rs.getBoolean("loginAtivo");
                 if (rs.getString("Docente.Utilizador_id") != null) {
                     Map<String, List<TurnoKey>> ucsEturnos = this.getUCsETurnosDocente(id);
                     // Descobrir se ele é docente ou coordenador
                     String ucRegida = this.getUcRegida(id);
                     u = ucRegida == null ?
-                            new Docente(id, password, email, nome, ucsEturnos) :
-                            new Coordenador(id, password, email, nome, ucsEturnos, ucRegida);
+                            new Docente(id, password, email, nome, loginAtivo, ucsEturnos) :
+                            new Coordenador(id, password, email, nome, loginAtivo, ucsEturnos, ucRegida);
                 } else if (rs.getString("Aluno.Utilizador_id") != null) {
                     Map<String, Integer> inscricoes = this.getInscricoesAluno(id);
-                    u = new Aluno(id, password, email, nome, rs.getBoolean("eEspecial"), inscricoes);
+                    u = new Aluno(id, password, email, nome, loginAtivo, rs.getBoolean("eEspecial"), inscricoes);
                 } else if (rs.getString("DiretorDeCurso.Utilizador_id") != null) {
-                    u = new DiretorDeCurso(id, password, email, nome);
+                    u = new DiretorDeCurso(id, password, email, nome, loginAtivo);
                 }
             }
 
@@ -179,12 +180,13 @@ public class UserDAO implements Map<String, Utilizador> {
             connection.setAutoCommit(false);
             //language=MySQL
             String sql =
-                    "INSERT INTO `Utilizador` (id,nome,pass,Email) \n" +
-                            "VALUES (?, ?, ?, ?)\n" +
+                    "INSERT INTO `Utilizador` (id,nome,pass,Email,loginAtivo) \n" +
+                            "VALUES (?, ?, ?, ?, ?)\n" +
                             "ON DUPLICATE KEY UPDATE id=VALUES(id),\n" +
                             "                        pass=VALUES(pass),\n" +
                             "                        nome=VALUES(nome),\n" +
-                            "                        Email=VALUES(Email);\n";
+                            "                        Email=VALUES(Email)," +
+                            "                        loginAtivo=VALUES(loginAtivo);\n";
             String sql2;
             stmTurnos = null;
             if (value instanceof Docente) {
@@ -212,6 +214,7 @@ public class UserDAO implements Map<String, Utilizador> {
             stm1.setString(2, value.getName());
             stm1.setString(3, value.getPassword());
             stm1.setString(4, value.getEmail());
+            stm1.setBoolean(5,value.isLoginAtivo());
             stm1.executeUpdate();
 
             stm2 = connection.prepareStatement(sql2);

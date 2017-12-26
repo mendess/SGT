@@ -11,8 +11,10 @@ import main.sgt.Turno;
 import main.sgt.UC;
 import main.sgt.exceptions.AlunoNaoEstaInscritoNaUcException;
 import main.sgt.exceptions.InvalidUserTypeException;
+import main.sgt.exceptions.TurnoCheioException;
 import main.sgt.exceptions.UtilizadorJaExisteException;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
@@ -247,6 +249,8 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
             updateAlunosTables(turno);
         } catch (InvalidUserTypeException e) {
             this.dispose();
+        }catch(TurnoCheioException e){
+            JOptionPane.showMessageDialog(this,"Turno cheio","Turno cheio",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
 

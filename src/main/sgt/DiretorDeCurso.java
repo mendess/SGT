@@ -13,6 +13,10 @@ public class DiretorDeCurso extends Utilizador {
         super(userNum,password,email,name);
     }
 
+    public DiretorDeCurso(String id, String password, String email, String nome, boolean loginAtivo){
+        super(id, password, email, nome, loginAtivo);
+    }
+
     @Override
     public boolean equals(Object o) {
         return super.equals(o);

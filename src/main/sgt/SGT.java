@@ -126,9 +126,16 @@ public class SGT extends Observable {
                     if(this.loginsAtivos){
                         startTime = System.nanoTime();
                         System.out.println("A verifcar se os turnos estão atribuidos");
-                        this.setTurnosAtribuidos(utilizadores.stream()
-                                .filter(u->u instanceof Aluno)
-                                .noneMatch(a->((Aluno) a).getHorario().isEmpty()));
+                        boolean b = true;
+                        for(Iterator<Utilizador> iterator = utilizadores.iterator(); b && iterator.hasNext(); ){
+                            Utilizador u = iterator.next();
+                            if(u instanceof Aluno){
+                                if(((Aluno) u).getHorario().isEmpty()){
+                                    b = false;
+                                }
+                            }
+                        }
+                        this.setTurnosAtribuidos(b);
                         System.out.println((System.nanoTime() - startTime) / 1000000 + " milisegundos");
                     }
                 }
@@ -413,10 +420,11 @@ public class SGT extends Observable {
      * @param uc    Numero da UC onde inscrever
      * @throws UtilizadorJaExisteException Quando o aluno ja esta na UC
      */
-    public void addAlunoToUC(String aluno, String uc) throws UtilizadorJaExisteException{
-        UC newUC = this.ucs.get(uc);
-        newUC.addAluno(aluno);
-        this.ucs.put(newUC.getId(), newUC);
+    public void addAlunoToUC(String aluno, String uc) throws UtilizadorJaExisteException, InvalidUserTypeException{
+        Utilizador u = this.utilizadores.get(aluno);
+        if(! (u instanceof Aluno)) throw new InvalidUserTypeException();
+        ((Aluno) u).inscrever(uc,0);
+        this.utilizadores.put(u.getUserNum(),u);
         this.setChanged();
         this.notifyObservers(ALUNO_ADDED_TO_UC);
     }
@@ -428,10 +436,13 @@ public class SGT extends Observable {
      * @param uc    Numero da UC onde remover
      * @throws UtilizadorNaoExisteException Quando o aluno nao esta inscrito a UC
      */
-    public void removeAlunoFromUC(String aluno, String uc) throws UtilizadorNaoExisteException{
-        UC newUC = this.ucs.get(uc);
-        newUC.removeAluno(aluno);
-        this.ucs.put(newUC.getId(), newUC);
+    public void removeAlunoFromUC(String aluno, String uc) throws UtilizadorNaoExisteException,
+                                                                  InvalidUserTypeException{
+        Utilizador u = this.utilizadores.get(aluno);
+        if(u == null) throw new UtilizadorNaoExisteException();
+        if(! (u instanceof Aluno)) throw new InvalidUserTypeException();
+        ((Aluno) u).desinscrever(uc,((Aluno) u).getHorario().get(uc));
+        this.utilizadores.put(u.getUserNum(),u);
         this.setChanged();
         this.notifyObservers(ALUNO_REMOVED_FROM_UC);
     }
@@ -605,12 +616,13 @@ public class SGT extends Observable {
      * @param ePratico Se o turno e pratico
      * @return Retorna <tt>true</tt> se o horario conflite com o turno
      */
-    public boolean horarioConfilcts(Aluno aluno, String uc, int turno, boolean ePratico) throws
-                                                                                         InvalidUserTypeException{
+    public boolean horarioConfilcts(Aluno aluno, String uc, int turno, boolean ePratico){
         Turno novoT = this.ucs.get(uc).getTurno(turno, ePratico);
         List<Turno> turnos = aluno.getHorario().entrySet()
                 .stream()
-                .map(e->this.ucs.get(e.getKey()).getTurno(e.getValue(), ePratico))
+                .map(e->this.ucs.get(e.getKey())
+                                .getTurno(e.getValue(), ePratico))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         return turnos.stream()
                 .anyMatch(t->turnoConflicts(t, novoT));
@@ -630,18 +642,18 @@ public class SGT extends Observable {
             for(TurnoInfo tif2 : tinf2){
                 if(tif1.getDia() == tif2.getDia()){
                     if(tif1.getHoraInicio().isBefore(tif2.getHoraInicio())){
-                        if(!tif2.getHoraFim().isBefore(tif2.getHoraInicio())){
-                            return false;
+                        if(tif2.getHoraInicio().isBefore(tif1.getHoraFim())){
+                            return true;
                         }
                     }else{
-                        if(!tif1.getHoraInicio().isAfter(tif2.getHoraFim())){
-                            return false;
+                        if(tif1.getHoraInicio().isBefore(tif2.getHoraFim())){
+                            return true;
                         }
                     }
                 }
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -838,8 +850,9 @@ public class SGT extends Observable {
      * Ativa os logins para os alunos
      */
     public void activateLogins(){
-        //this.utilizadores.values().forEach(Utilizador::ativarLogin);
-        System.out.println("logins ativos");
+        Collection<Utilizador> users = this.utilizadores.values();
+        users.forEach(Utilizador::ativarLogin);
+        this.utilizadores.putAll(users.stream().collect(Collectors.toMap(Utilizador::getUserNum, user->user, (a, b)->b)));
         this.setLoginsAtivos(true);
     }
 
@@ -848,42 +861,54 @@ public class SGT extends Observable {
      */
     public void assignShifts() throws TurnoCheioException, NaoFoiPossivelAtribuirTurnosException{
         Map<String,List<Turno>> UCsETurnos = new HashMap<>();
-        for(Map.Entry<String,UC> e : this.ucs.entrySet()){
+        Set<Map.Entry<String,UC>> entries = this.ucs.entrySet();
+        for(Map.Entry<String,UC> e : entries){
             UCsETurnos.put(e.getKey(), e.getValue().getTurnos());
         }
         List<Aluno> alunos = this.utilizadores.values()
                 .stream()
                 .filter(e->e instanceof Aluno)
                 .map(e->(Aluno) e).collect(Collectors.toList());
+        List<UC> allUCs = new ArrayList<>(this.ucs.values());
+        alunos.sort(Comparator.comparingInt((Aluno a)->a.getHorario().keySet().size()).reversed());
+        allUCs.sort((uc1, uc2)->{
+            int tIsize1 = uc1.getTurno(1,true).getTurnoInfos().size();
+            int tIsize2 = uc2.getTurno(1,true).getTurnoInfos().size();
+            if(tIsize1==tIsize2){
+                int size1 = uc1.getTurnos().size();
+                int size2 = uc2.getTurnos().size();
+                if(size1==size2) return 0;
+                return size1<size2 ? -1 : 1;
+            }
+            return tIsize1>tIsize2 ?-1 : 1;
+        });
         //Para cada aluno
         for(Aluno a : alunos){
-            try{
-                //Para cada UC do aluno
-                for(String uc : a.getHorario().keySet()){
-                    try{
-                        List<Turno> turnos = UCsETurnos.get(uc);
-                        boolean haVagas = false;
-                        boolean temTurnoNaUC = false;
-                        //Para cada turno da UC
-                        for(int i = 0; i < turnos.size() && !temTurnoNaUC; i++){
-                            Turno t = turnos.get(i);
-                            try{
-                                //Tentar que o aluno possa ser inserido no turno
-                                if(t.temVagas() && !horarioConfilcts(a, uc, t.getId(), t.ePratico())){
-                                    addAlunoTurno(a.getUserNum(), uc, t.getId());
-                                    temTurnoNaUC = true;
-                                }
-                                if(t.temVagas()) haVagas = true;
-                            }catch(UtilizadorJaExisteException e){
-                                temTurnoNaUC = true;
-                            }
+            //Para cada UC do aluno
+            Set<String> horario = a.getHorario().keySet();
+            List<UC> ucs = new ArrayList<>(allUCs).stream().filter(uc -> horario.contains(uc.getId())).collect(Collectors.toList());
+            for(UC uc : ucs){
+                String ucID = uc.getId();
+                List<Turno> turnos = UCsETurnos.get(ucID);
+                turnos.sort(Comparator.comparingInt(Turno::getId));
+                boolean haVagas = false;
+                boolean temTurnoNaUC = a.getHorario().get(ucID)!=0;
+                //Para cada turno da UC
+                for(int i = 0; i < turnos.size() && !temTurnoNaUC; i++){
+                    Turno t = turnos.get(i);
+                    int tID = t.getId();
+                    //Tentar que o aluno possa ser inserido no turno
+                    if(tID!=0 && t.ePratico() && t.temVagas() && !horarioConfilcts(a, ucID, tID, t.ePratico())){
+                        try{
+                            a.inscrever(ucID,tID);
+                        }catch(UtilizadorJaExisteException ignored){
                         }
-                        if(!haVagas) throw new TurnoCheioException();
-                        if(!temTurnoNaUC) throw new NaoFoiPossivelAtribuirTurnosException();
-                    }catch(AlunoNaoEstaInscritoNaUcException ignored){
+                        temTurnoNaUC = true;
                     }
+                    if(t.temVagas()) haVagas = true;
                 }
-            }catch(InvalidUserTypeException ignored){
+                if(!haVagas) throw new TurnoCheioException(a.getUserNum());
+                if(!temTurnoNaUC) throw new NaoFoiPossivelAtribuirTurnosException(a.getUserNum());
             }
         }
         Map<String,Utilizador> alunosMap = new HashMap<>();
@@ -891,6 +916,85 @@ public class SGT extends Observable {
             alunosMap.put(a.getUserNum(), a);
         }
         this.utilizadores.putAll(alunosMap);
+
         this.setTurnosAtribuidos(true);
     }
+
+    /*List<Aluno> assignShifts2() throws TurnoCheioException, NaoFoiPossivelAtribuirTurnosException{
+        Map<String,List<Turno>> UCsETurnos = new HashMap<>();
+        Set<Map.Entry<String,UC>> entries = this.ucs.entrySet();
+        for(Map.Entry<String,UC> e : entries){
+            UCsETurnos.put(e.getKey(), e.getValue().getTurnos());
+        }
+        List<Aluno> alunos = this.utilizadores.values()
+                .stream()
+                .filter(e->e instanceof Aluno)
+                .map(e->(Aluno) e).collect(Collectors.toList());
+        List<Aluno> survivers = new ArrayList<>(alunos);
+        List<UC> allUCs = new ArrayList<>(this.ucs.values());
+        alunos.sort(Comparator.comparingInt((Aluno a)->a.getHorario().keySet().size()).reversed());
+        allUCs.sort((uc1, uc2)->{
+            int tIsize1 = uc1.getTurno(1,true).getTurnoInfos().size();
+            int tIsize2 = uc2.getTurno(1,true).getTurnoInfos().size();
+            if(tIsize1==tIsize2){
+                int size1 = uc1.getTurnos().size();
+                int size2 = uc2.getTurnos().size();
+                if(size1==size2) return 0;
+                return size1<size2 ? -1 : 1;
+            }
+            return tIsize1>tIsize2 ?-1 : 1;
+        });
+        //Para cada aluno
+        for(Aluno a : alunos){
+            //Para cada UC do aluno
+            Set<String> horario = a.getHorario().keySet();
+            List<UC> ucs = new ArrayList<>(allUCs).stream().filter(uc -> horario.contains(uc.getId())).collect(Collectors.toList());
+            boolean inserted = true;
+            for(UC uc : ucs){
+                String ucID = uc.getId();
+                List<Turno> turnos = UCsETurnos.get(ucID);
+                turnos.sort(Comparator.comparingInt(Turno::getId));
+                boolean haVagas = false;
+                boolean temTurnoNaUC = false;
+                //Para cada turno da UC
+                for(int i = 0; i < turnos.size() && !temTurnoNaUC; i++){
+                    Turno t = turnos.get(i);
+                    int tID = t.getId();
+                    //Tentar que o aluno possa ser inserido no turno
+                    if(tID!=0 && t.ePratico() && t.temVagas() && !horarioConfilcts(a, ucID, tID, t.ePratico())){
+                        try{
+                            a.inscrever(ucID,tID);
+                        }catch(UtilizadorJaExisteException ignored){
+                        }
+                        temTurnoNaUC = true;
+                    }
+                    if(t.temVagas()) haVagas = true;
+                }
+                if(!haVagas) throw new TurnoCheioException(a.getUserNum());
+                if(!temTurnoNaUC){
+                    System.out.println("\u001B[31m"+a+" \u001B[0m ");
+                    removeAluno(a.getUserNum());
+                    survivers.remove(a);
+                    inserted = false;
+                    break;
+                    //throw new NaoFoiPossivelAtribuirTurnosException(a.getUserNum());
+                }
+            }
+            if(inserted) System.out.println("\u001B[32m"+a+" \u001B[0m ");
+        }
+        Map<String,Utilizador> alunosMap = new HashMap<>();
+        for(Aluno a : alunos){
+            alunosMap.put(a.getUserNum(), a);
+        }
+        return survivers;
+        //this.utilizadores.putAll(alunosMap);
+
+        //this.setTurnosAtribuidos(true);
+    }
+
+    void removeAluno(String aluno){
+        this.utilizadores.remove(aluno);
+    }
+    Collection<Utilizador> getUtilizadores(){return this.utilizadores.values();}
+*/
 }

@@ -233,6 +233,8 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         } catch (UtilizadorJaExisteException e) {
             updateUCEscolhidas();
             updateUCNEscolhidas();
+        }catch(InvalidUserTypeException e){
+            this.dispose();
         }
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
 
@@ -256,6 +258,8 @@ public class JAlunoEscolherUC extends javax.swing.JFrame {
         } catch (UtilizadorNaoExisteException e) {
             updateUCEscolhidas();
             updateUCNEscolhidas();
+        }catch(InvalidUserTypeException e){
+            this.dispose();
         }
     }//GEN-LAST:event_jButtonRemoverActionPerformed
 

@@ -37,6 +37,12 @@ public class Coordenador extends Docente {
         this.ucRegida = null;
     }
 
+    public Coordenador(String id, String password, String email, String nome, boolean loginAtivo,
+                       Map<String, List<TurnoKey>> ucsEturnos, String ucRegida){
+        super(id, password, email, nome, loginAtivo, ucsEturnos);
+        this.ucRegida = ucRegida;
+    }
+
     /**
      * Retorna a UC que este Coordenador rege.
      * @return A UC que este Coordenador rege.

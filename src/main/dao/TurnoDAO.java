@@ -286,7 +286,7 @@ public class TurnoDAO implements Map<TurnoKey,Turno> {
 
     @Override
     public void clear() {
-        this.keySet().forEach(this::remove);
+        this.keySet().stream().filter(t->t.getTurno_id()>0).forEach(this::remove);
     }
 
     @Override
