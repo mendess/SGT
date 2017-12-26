@@ -15,9 +15,7 @@ import main.sgt.exceptions.UtilizadorJaExisteException;
 import javax.swing.*;
 import java.util.List;
 
-import static main.userInterface.InterfaceUtils.makeComboBoxUCs;
-import static main.userInterface.InterfaceUtils.makeShiftLookUpTable;
-import static main.userInterface.InterfaceUtils.shiftFromString;
+import static main.userInterface.InterfaceUtils.*;
 
 /**
  *

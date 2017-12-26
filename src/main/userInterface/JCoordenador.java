@@ -68,7 +68,7 @@ public class JCoordenador extends javax.swing.JFrame {
         List<String> alunosStr = this.sgt.getUC(this.uc)
                 .getTurno(shiftFromString(this.turno), shiftTypeFromStr(this.turno))
                 .getAlunos();
-        List<Aluno> alunos = alunosStr.stream().map(this.sgt::getAluno).collect(Collectors.toList());
+        List<Aluno> alunos = alunosStr.stream().map(this.sgt::getUser).filter(u->u instanceof Aluno).map(u->(Aluno) u).collect(Collectors.toList());
         this.jTableAlunos.setModel(makeStudentLookupTable(this.jTableAlunos,alunos));
     }
 

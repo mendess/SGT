@@ -8,6 +8,7 @@ package main.userInterface;
 import main.sgt.Aluno;
 import main.sgt.SGT;
 import main.sgt.UC;
+import main.sgt.Utilizador;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,9 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
     private void initComboBoxUCs() {
         List<UC> ucs = this.sgt.getUCs();
         this.uc = makeComboBoxUCs(this.jComboBoxUCs,ucs);
+        if(this.uc==null) return;
+        UC uc = this.sgt.getUC(this.uc);
+        this.jLabelCoordenadorNome.setText(this.sgt.getUser(uc.getResponsavel()).getName());
         updateComboBoxTurnos();
     }
 
@@ -45,10 +49,12 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
         if(this.uc==null)return;
         UC uc = this.sgt.getUC(this.uc);
         if(uc==null) return;
-        this.jLabelCoordenadorNome.setText(uc.getResponsavel());
-        this.jLabelDocentesNomes.setText(this.sgt.getDocentesOfUC(this.uc)
+        this.jLabelDocentesNomes.setText("<html>"
+                                          +this.sgt.getDocentesOfUC(this.uc)
                                                     .stream()
-                                                    .reduce("",(d1,d2)->d1+"\n"+d2));
+                                                    .map(user -> this.sgt.getUser(user).getName())
+                                                    .reduce("",(d1,d2)->d1+"<br/>"+d2)
+                                          +"</html>");
         this.turno = makeComboBoxTurnos(this.jComboBoxTurnos,this.sgt.getTurnosOfUC(this.uc),this.uc);
         updateTableAlunos();
     }
@@ -59,7 +65,9 @@ public class JAdminConsultarUCs extends javax.swing.JFrame {
                                      .getTurno(shiftFromString(this.turno),shiftTypeFromStr(this.turno))
                                      .getAlunos()
                                      .stream()
-                                     .map(this.sgt::getAluno)
+                                     .map(this.sgt::getUser)
+                                     .filter(u->u instanceof Aluno)
+                                     .map(u -> (Aluno) u)
                                      .collect(Collectors.toList());
         this.jTableAlunos.setModel(makeStudentLookupTable(this.jTableAlunos,alunos));
     }

@@ -381,18 +381,13 @@ public class SGT extends Observable {
     }
 
     /**
-     * Devolve um aluno
+     * Devolve um utilizador
      *
-     * @param aluno Identfificador do aluno
+     * @param user Identfificador do utilizador
      * @return Uma instancia do aluno
      */
-    public Aluno getAluno(String aluno){
-        Utilizador u = this.utilizadores.get(aluno);
-        if(u instanceof Aluno){
-            return (Aluno) u;
-        }else{
-            return null;
-        }
+    public Utilizador getUser(String user){
+        return this.utilizadores.get(user);
     }
 
     /**
@@ -920,81 +915,4 @@ public class SGT extends Observable {
         this.setTurnosAtribuidos(true);
     }
 
-    /*List<Aluno> assignShifts2() throws TurnoCheioException, NaoFoiPossivelAtribuirTurnosException{
-        Map<String,List<Turno>> UCsETurnos = new HashMap<>();
-        Set<Map.Entry<String,UC>> entries = this.ucs.entrySet();
-        for(Map.Entry<String,UC> e : entries){
-            UCsETurnos.put(e.getKey(), e.getValue().getTurnos());
-        }
-        List<Aluno> alunos = this.utilizadores.values()
-                .stream()
-                .filter(e->e instanceof Aluno)
-                .map(e->(Aluno) e).collect(Collectors.toList());
-        List<Aluno> survivers = new ArrayList<>(alunos);
-        List<UC> allUCs = new ArrayList<>(this.ucs.values());
-        alunos.sort(Comparator.comparingInt((Aluno a)->a.getHorario().keySet().size()).reversed());
-        allUCs.sort((uc1, uc2)->{
-            int tIsize1 = uc1.getTurno(1,true).getTurnoInfos().size();
-            int tIsize2 = uc2.getTurno(1,true).getTurnoInfos().size();
-            if(tIsize1==tIsize2){
-                int size1 = uc1.getTurnos().size();
-                int size2 = uc2.getTurnos().size();
-                if(size1==size2) return 0;
-                return size1<size2 ? -1 : 1;
-            }
-            return tIsize1>tIsize2 ?-1 : 1;
-        });
-        //Para cada aluno
-        for(Aluno a : alunos){
-            //Para cada UC do aluno
-            Set<String> horario = a.getHorario().keySet();
-            List<UC> ucs = new ArrayList<>(allUCs).stream().filter(uc -> horario.contains(uc.getId())).collect(Collectors.toList());
-            boolean inserted = true;
-            for(UC uc : ucs){
-                String ucID = uc.getId();
-                List<Turno> turnos = UCsETurnos.get(ucID);
-                turnos.sort(Comparator.comparingInt(Turno::getId));
-                boolean haVagas = false;
-                boolean temTurnoNaUC = false;
-                //Para cada turno da UC
-                for(int i = 0; i < turnos.size() && !temTurnoNaUC; i++){
-                    Turno t = turnos.get(i);
-                    int tID = t.getId();
-                    //Tentar que o aluno possa ser inserido no turno
-                    if(tID!=0 && t.ePratico() && t.temVagas() && !horarioConfilcts(a, ucID, tID, t.ePratico())){
-                        try{
-                            a.inscrever(ucID,tID);
-                        }catch(UtilizadorJaExisteException ignored){
-                        }
-                        temTurnoNaUC = true;
-                    }
-                    if(t.temVagas()) haVagas = true;
-                }
-                if(!haVagas) throw new TurnoCheioException(a.getUserNum());
-                if(!temTurnoNaUC){
-                    System.out.println("\u001B[31m"+a+" \u001B[0m ");
-                    removeAluno(a.getUserNum());
-                    survivers.remove(a);
-                    inserted = false;
-                    break;
-                    //throw new NaoFoiPossivelAtribuirTurnosException(a.getUserNum());
-                }
-            }
-            if(inserted) System.out.println("\u001B[32m"+a+" \u001B[0m ");
-        }
-        Map<String,Utilizador> alunosMap = new HashMap<>();
-        for(Aluno a : alunos){
-            alunosMap.put(a.getUserNum(), a);
-        }
-        return survivers;
-        //this.utilizadores.putAll(alunosMap);
-
-        //this.setTurnosAtribuidos(true);
-    }
-
-    void removeAluno(String aluno){
-        this.utilizadores.remove(aluno);
-    }
-    Collection<Utilizador> getUtilizadores(){return this.utilizadores.values();}
-*/
 }

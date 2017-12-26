@@ -72,14 +72,14 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
         DefaultTableModel tModel = prepareTable(naoPresentes.size()+presentes.size(),3,this.jTablePresencas);
         int i = 0;
         for(String aluno: naoPresentes){
-            Aluno a = this.sgt.getAluno(aluno);
+            Aluno a = (Aluno) this.sgt.getUser(aluno);
             tModel.setValueAt(a.getUserNum(),i,0);
             tModel.setValueAt(a.getName(),i,1);
             tModel.setValueAt(false,i,2);
             i++;
         }
         for (String aluno: presentes){
-            Aluno a = this.sgt.getAluno(aluno);
+            Aluno a = (Aluno) this.sgt.getUser(aluno);
             tModel.setValueAt(a.getUserNum(),i,0);
             tModel.setValueAt(a.getName(),i,1);
             tModel.setValueAt(true,i,2);
