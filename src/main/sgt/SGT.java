@@ -836,7 +836,7 @@ public class SGT extends Observable {
                         TurnoInfo tinfo = new TurnoInfo(horaInicio, horaFim, dia);
                         tInfos.add(tinfo);
                     }
-                    Turno t = new Turno(id, key, jTurno.getInt("vagas"), ePratico, tInfos);
+                    Turno t = new Turno(id, key, jTurno.getString("docente"), jTurno.getInt("vagas"), ePratico, tInfos);
                     new TurnoDAO().put(new TurnoKey(t), t);
                 }
             }

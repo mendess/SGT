@@ -1,1118 +1,1448 @@
 {
-  "H501N1": [
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]}
-  ],
-  "H503N4": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "13:00:00",
-        "horaFim": "14:00:00"
-      },
-      {
-        "dia": "SEX",
-        "horaInicio": "13:00:00",
-        "horaFim": "14:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "15:00:00",
-        "horaFim": "17:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]}
-  ],
-  "H501N2": [
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "15:00:00",
-        "horaFim": "17:00:00"
-      },
-      {
-        "dia": "SEX",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]}
-  ],
-  "H505N2": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]}
-  ],
   "H505N4": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]}
-  ],
-  "H503N1": [
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "15:00:00",
-        "horaFim": "17:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      },
-      {
-        "dia": "SEX",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      },
-      {
-        "dia": "QUA",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]}
-  ],
-  "H505N6": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]}
-  ],
-  "H503N2": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "13:00:00",
-        "horaFim": "15:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "17:00:00",
-        "horaFim": "19:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "17:00:00",
-        "horaFim": "19:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "15:00:00",
-        "horaFim": "17:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "17:00:00",
-        "horaFim": "19:00:00"
-      }
-    ]}
-  ],
-  "H503N3": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "13:00:00",
-        "horaFim": "15:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "17:00:00",
-        "horaFim": "19:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "15:00:00",
-        "horaFim": "17:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "15:00:00",
-        "horaFim": "17:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "17:00:00",
-        "horaFim": "19:00:00"
-      }
-    ]}
-  ],
-  "H501N4": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "14:00:00",
-        "horaFim": "15:00:00"
-      },
-      {
-        "dia": "SEX",
-        "horaInicio": "10:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]}
-  ],
-  "H503N5": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "17:00:00",
-        "horaFim": "19:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "15:00:00",
-        "horaFim": "17:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]}
-  ],
-  "H501N3": [
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "13:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "09:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      },
-      {
-        "dia": "QUI",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]}
-  ],
-  "H501N6": [
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]}
-  ],
-  "H501N5": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "13:00:00",
-        "horaFim": "15:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]}
-  ],
-  "H505N3": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]}
+    {
+      "ePratico": false,
+      "docente": "D14015",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D93038",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D88352",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D88601",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D39674",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D56522",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D08575",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "TER"
+        }
+      ]
+    }
   ],
   "H503N6": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "17:00:00",
-        "horaFim": "19:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "15:00:00",
-        "horaFim": "17:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "17:00:00",
-        "horaFim": "19:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "15:00:00",
-        "horaFim": "17:00:00"
-      }
-    ]}
+    {
+      "ePratico": false,
+      "docente": "D01563",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D36886",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D48063",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "17:00:00",
+          "horaFim": "19:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D63941",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D86511",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "15:00:00",
+          "horaFim": "17:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D56522",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "17:00:00",
+          "horaFim": "19:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D86511",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D63941",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D55191",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "15:00:00",
+          "horaFim": "17:00:00",
+          "dia": "QUI"
+        }
+      ]
+    }
+  ],
+  "H505N2": [
+    {
+      "ePratico": false,
+      "docente": "D28366",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D90532",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D88601",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D23901",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D46360",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D00042",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        }
+      ]
+    }
+  ],
+  "H501N3": [
+    {
+      "ePratico": true,
+      "docente": "D48063",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D46360",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D08452",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "13:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D01563",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUI"
+        }
+      ]
+    }
+  ],
+  "H501N6": [
+    {
+      "ePratico": true,
+      "docente": "D39674",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D95887",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D10988",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D93038",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D46360",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D97582",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D79212",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D61793",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUA"
+        }
+      ]
+    }
   ],
   "H505N1": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUA",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]}
+    {
+      "ePratico": false,
+      "docente": "D90532",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D01563",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D63941",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D93038",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D07023",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D49062",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D00042",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "TER"
+        }
+      ]
+    }
+  ],
+  "H503N3": [
+    {
+      "ePratico": false,
+      "docente": "D07023",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "13:00:00",
+          "horaFim": "15:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D03909",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "17:00:00",
+          "horaFim": "19:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D28366",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "15:00:00",
+          "horaFim": "17:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D25045",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "15:00:00",
+          "horaFim": "17:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D36886",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "17:00:00",
+          "horaFim": "19:00:00",
+          "dia": "QUI"
+        }
+      ]
+    }
+  ],
+  "H503N2": [
+    {
+      "ePratico": false,
+      "docente": "D86511",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "13:00:00",
+          "horaFim": "15:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D07023",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "17:00:00",
+          "horaFim": "19:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D07023",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "17:00:00",
+          "horaFim": "19:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D14015",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "15:00:00",
+          "horaFim": "17:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D93038",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "17:00:00",
+          "horaFim": "19:00:00",
+          "dia": "QUI"
+        }
+      ]
+    }
   ],
   "H505N5": [
-    {"ePratico":false,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "11:00:00",
-        "horaFim": "13:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEX",
-        "horaInicio": "14:00:00",
-        "horaFim": "16:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "TER",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "SEG",
-        "horaInicio": "16:00:00",
-        "horaFim": "18:00:00"
-      }
-    ]},
-    {"ePratico":true,
-     "vagas":20,
-     "tinfo":[
-      {
-        "dia": "QUI",
-        "horaInicio": "09:00:00",
-        "horaFim": "11:00:00"
-      }
-    ]}
+    {
+      "ePratico": false,
+      "docente": "D08575",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D00042",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D07023",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D56522",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D23901",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D23901",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D88352",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUI"
+        }
+      ]
+    }
+  ],
+  "H501N4": [
+    {
+      "ePratico": false,
+      "docente": "D95887",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "15:00:00",
+          "dia": "SEG"
+        },
+        {
+          "horaInicio": "10:00:00",
+          "horaFim": "11:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D95887",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D88601",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D99254",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D28366",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D97582",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D48063",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D95887",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D95887",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEX"
+        }
+      ]
+    }
+  ],
+  "H505N3": [
+    {
+      "ePratico": false,
+      "docente": "D03909",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D63941",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D79212",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D18686",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D36886",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    }
+  ],
+  "H501N2": [
+    {
+      "ePratico": true,
+      "docente": "D08575",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D46360",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D07023",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D08452",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D10988",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "15:00:00",
+          "horaFim": "17:00:00",
+          "dia": "SEG"
+        },
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "SEX"
+        }
+      ]
+    }
+  ],
+  "H503N5": [
+    {
+      "ePratico": false,
+      "docente": "D61793",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D79212",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D95887",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "17:00:00",
+          "horaFim": "19:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D99254",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "15:00:00",
+          "horaFim": "17:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D18686",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUA"
+        }
+      ]
+    }
+  ],
+  "H503N1": [
+    {
+      "ePratico": true,
+      "docente": "D08575",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        },
+        {
+          "horaInicio": "15:00:00",
+          "horaFim": "17:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D93038",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D95887",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUA"
+        }
+      ]
+    }
+  ],
+  "H501N5": [
+    {
+      "ePratico": false,
+      "docente": "D86511",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D99254",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D18686",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D14015",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D22902",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D36886",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D79212",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "13:00:00",
+          "horaFim": "15:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D07023",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "SEX"
+        }
+      ]
+    }
+  ],
+  "H501N1": [
+    {
+      "ePratico": true,
+      "docente": "D00042",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D56522",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D23901",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D88601",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUI"
+        }
+      ]
+    }
+  ],
+  "H503N4": [
+    {
+      "ePratico": false,
+      "docente": "D48063",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "13:00:00",
+          "horaFim": "14:00:00",
+          "dia": "TER"
+        },
+        {
+          "horaInicio": "13:00:00",
+          "horaFim": "14:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D88352",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D63941",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "15:00:00",
+          "horaFim": "17:00:00",
+          "dia": "QUI"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D97582",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D88601",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D63941",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D46360",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "TER"
+        }
+      ]
+    }
+  ],
+  "H505N6": [
+    {
+      "ePratico": false,
+      "docente": "D49062",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "11:00:00",
+          "horaFim": "13:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D56522",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "QUA"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D28366",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "16:00:00",
+          "horaFim": "18:00:00",
+          "dia": "SEG"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D10988",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "SEX"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D63941",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "14:00:00",
+          "horaFim": "16:00:00",
+          "dia": "TER"
+        }
+      ]
+    },
+    {
+      "ePratico": true,
+      "docente": "D10988",
+      "vagas": 20,
+      "tinfo": [
+        {
+          "horaInicio": "09:00:00",
+          "horaFim": "11:00:00",
+          "dia": "SEG"
+        }
+      ]
+    }
   ]
 }

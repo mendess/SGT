@@ -52,7 +52,7 @@ public class Turno {
      * Construtor completamente parametrizado do <tt>Turno<\tt>.
      * @param id Numero do turno
      * @param ucId Identificador da UC a que pertence
-     * @param docente Docentes do turno
+     * @param docente Docente do turno
      * @param vagas Numero de vagas do turno
      * @param ePratico Se o turno é pratico ou teorico
      * @param alunos Alunos do turno
@@ -72,14 +72,16 @@ public class Turno {
      * Construtor parameterizado do <tt>Turno</tt> sem utilizadores
      * @param id Numero do turno
      * @param ucId Identificador da UC a que pertence
+     * @param docente Docente do turno
      * @param vagas Numero de vagas do turno
      * @param ePratico Se o turno é pratico ou teorico
      * @param tinfo Informacoes do turno
      */
-    public Turno(int id, String ucId, int vagas, boolean ePratico, List<TurnoInfo> tinfo) {
+    public Turno(int id, String ucId, String docente, int vagas, boolean ePratico, List<TurnoInfo> tinfo) {
         this.id = id;
         this.ucId = ucId;
         this.vagas = vagas;
+        this.docente = docente;
         this.ePratico = ePratico;
         this.tinfo = tinfo;
     }
