@@ -13,8 +13,16 @@ public class DiretorDeCurso extends Utilizador {
         super(userNum,password,email,name,true);
     }
 
-    public DiretorDeCurso(String id, String password, String email, String nome, boolean loginAtivo){
-        super(id, password, email, nome, loginAtivo);
+    /**
+     *  Construtor parametrizado do diretor de curso
+     * @param userNum O identificador do utilizador
+     * @param password A password do utilizador
+     * @param email O email do utilizador
+     * @param nome O nome do utilizador
+     * @param loginAtivo Se o login esta ativo
+     */
+    public DiretorDeCurso(String userNum, String password, String email, String nome, boolean loginAtivo){
+        super(userNum, password, email, nome, loginAtivo);
     }
 
     @Override

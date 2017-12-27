@@ -47,6 +47,7 @@ public class Turno {
      * Informacoes do turno
      */
     private List<TurnoInfo> tinfo = new ArrayList<>();
+
     /**
      * Construtor completamente parametrizado do <tt>Turno<\tt>.
      * @param id Numero do turno

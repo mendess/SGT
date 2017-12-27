@@ -21,7 +21,6 @@ public class Aula {
      * O identificador da UC a que a aula pertence
      */
     private String uc;
-
     /**
      * Se a aula pertence a um turno pratico
      */

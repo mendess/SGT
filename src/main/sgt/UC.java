@@ -39,7 +39,7 @@ public class UC {
     private final TurnoDAO turnos = new TurnoDAO();
 
     /**
-     * Construtor de UC que aceita o id e o nome
+     * Construtor de UC que aceita o id, o nome e o acronimo
      * @param id Identificador da UC
      * @param nome Nome da UC
      * @param acron Acronimo da UC
@@ -53,6 +53,13 @@ public class UC {
         this.alunos = new ArrayList<>();
     }
 
+    /**
+     * Construtor de UC que aceita id, nome, acronimo e o responsavel
+     * @param id Identificador da UC
+     * @param nome Nome da UC
+     * @param acron Acronimo da UC
+     * @param responsavel Responsavel da UC
+     */
     public UC(String id, String nome, String acron, String responsavel){
         this.id = id;
         this.nome = nome;
@@ -60,6 +67,14 @@ public class UC {
         this.responsavel = responsavel;
     }
 
+    /**
+     * Construtor de UC que aceita id, nome, acronimo e o responsavel
+     * @param id Identificador da UC
+     * @param nome Nome da UC
+     * @param acron Acronimo da UC
+     * @param responsavel Responsavel da UC* @param docentes
+     * @param alunos Os alunos da UC
+     */
     public UC(String id, String nome, String acron, String responsavel,List<String> docentes,List<String> alunos){
         this.id = id;
         this.nome = nome;
@@ -147,34 +162,6 @@ public class UC {
      */
     public List<String> getAlunos(){
         return new ArrayList<>(this.alunos);
-    }
-
-    /**
-     * Adiciona um docente à UC
-     * @param docente Numero do docente a adicionar
-     * @throws UtilizadorJaExisteException Quando o docente já leciona a UC
-     */
-    @Deprecated
-    void addDocente(String docente) throws UtilizadorJaExisteException {
-        if(!this.docentes.contains(docente)){
-            this.docentes.add(docente);
-        }else{
-            throw new UtilizadorJaExisteException();
-        }
-    }
-
-    /**
-     * Remove um Docente da UC
-     * @param docente Numero do docente a remover
-     * @throws UtilizadorNaoExisteException Quando o docente nao leciona a UC
-     */
-    @Deprecated
-    void removeDocente(String docente) throws UtilizadorNaoExisteException {
-        if(this.docentes.contains(docente)){
-            this.docentes.add(docente);
-        }else{
-            throw new UtilizadorNaoExisteException();
-        }
     }
 
     /**

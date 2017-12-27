@@ -21,11 +21,13 @@ public class Troca {
      * O Turno de onde o Aluno veio
      */
     private final int turnoOrigem;
+    /**Se o turno origem e pratico*/
     private final boolean turnoOrigem_ePratico;
     /**
      * O Turno para onde o Aluno foi
      */
     private final int turnoDestino;
+    /**Se o turno destino e pratico*/
     private final boolean turnoDestino_ePratico;
     /**
      * A data em que a Troca foi efetuada
