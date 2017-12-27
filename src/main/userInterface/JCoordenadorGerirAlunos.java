@@ -16,6 +16,7 @@ import main.sgt.exceptions.UtilizadorJaExisteException;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.util.List;
 
 import static main.userInterface.InterfaceUtils.prepareTable;
@@ -64,10 +65,12 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
         alunosOffShift.removeAll(alunosInShift);
 
         //Update in shift table
+        List<String> alunosComExcessoDeFaltas = this.sgt.alComExcessoDeFaltas(alunosInShift, this.ucOfUser);
         DefaultTableModel tModel = prepareTable(alunosInShift.size(),1,this.jTableAlunosEstao);
         for (int i = 0; i < alunosInShift.size(); i++) {
             String a = alunosInShift.get(i);
             tModel.setValueAt(a, i, 0);
+            if(alunosComExcessoDeFaltas.contains(a)) this.jTableAlunosEstao.setBackground(Color.RED);
         }
         this.jTableAlunosEstao.setModel(tModel);
         //Update of shift table
