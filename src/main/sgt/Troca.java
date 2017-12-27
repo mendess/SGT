@@ -141,10 +141,18 @@ public class Troca {
         return id;
     }
 
+    /**
+     * Se o turno origem e Pratico
+     * @return <tt>True</tt> se o turno origem e pratico
+     */
     public boolean isTurnoOrigem_Pratico() {
         return this.turnoOrigem_ePratico;
     }
 
+    /**
+     * Se o turno destino e pratico
+     * @return <tt>True</tt> se o turno destino for pratico
+     */
     public boolean isTurnoDestino_Pratico() {
         return this.turnoDestino_ePratico;
     }

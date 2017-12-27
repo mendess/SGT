@@ -338,6 +338,12 @@ public class UC {
         this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
     }
 
+    /**
+     * Adiciona um docente ao turno
+     * @param turno Numero do turno
+     * @param docente Identificador do Docente
+     * @param ePratico Se o turno e pratico
+     */
     void addDocenteToTurno(int turno, String docente, boolean ePratico) {
         if(this.docentes.contains(docente)){
             this.docentes.add(docente);
@@ -347,6 +353,12 @@ public class UC {
         this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
     }
 
+    /**
+     * Remove um docente do turno
+     * @param turno Numero do turno
+     * @param docente Identificador do Docente
+     * @param ePratico Se o turno e pratico
+     */
     void removeDocenteFromTurno(int turno, String docente, boolean ePratico) {
         Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno,ePratico));
         tmpTurno.setDocente(null);
@@ -356,6 +368,11 @@ public class UC {
         }
     }
 
+    /**
+     * Retorna o numero de turnos lecionados por um docente
+     * @param docente Identificador do docente
+     * @return O numero de turnos lecionados
+     */
     private int numTurnosLecionados(String docente) {
         int count=0;
         for(Turno t: this.turnos.values()){

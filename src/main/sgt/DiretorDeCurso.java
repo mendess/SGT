@@ -10,7 +10,7 @@ public class DiretorDeCurso extends Utilizador {
      * @param name O nome do utilizador
      */
     public DiretorDeCurso(String userNum, String password, String email, String name) {
-        super(userNum,password,email,name);
+        super(userNum,password,email,name,true);
     }
 
     public DiretorDeCurso(String id, String password, String email, String nome, boolean loginAtivo){

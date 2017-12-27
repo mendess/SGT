@@ -8,7 +8,13 @@ import java.util.Map;
 
 public class Aluno extends Utilizador {
 
+    /**
+     * Se p aluno tem estatuto especial
+     */
     private boolean eEspecial;
+    /**
+     * O horario do Aluno
+     */
     private final Map<String, Integer> horario;
 
     /**
@@ -18,19 +24,29 @@ public class Aluno extends Utilizador {
      * @param email O email do aluno
      * @param name O nome do aluno
      * @param eEspecial <tt>true</tt> se o aluno tiver estatuto especial
-     * @param inscricoes As ucs e turnos a que o aluno esta inscrito
+     * @param horario As ucs e turnos a que o aluno esta inscrito
      */
-    public Aluno(String userNum, String password, String email, String name, boolean eEspecial, Map<String, Integer> inscricoes) {
+    public Aluno(String userNum, String password, String email, String name, boolean eEspecial, Map<String, Integer> horario) {
         super(userNum,password,email,name);
         this.eEspecial = eEspecial;
-        this.horario = inscricoes;
+        this.horario = horario;
     }
 
-    public Aluno(String id, String password, String email, String nome, boolean loginAtivo, boolean eEspecial,
-                 Map<String, Integer> inscricoes){
-        super(id, password, email, nome, loginAtivo);
+    /**
+     * Construtor completamente parametrizado do Aluno
+     * @param userNum O identificador do aluno
+     * @param password A password do aluno
+     * @param email O email do aluno
+     * @param nome O nome do aluno
+     * @param loginAtivo Se o login esta ativo
+     * @param eEspecial <tt>true</tt> se o aluno tiver estatuto especial
+     * @param horario As ucs e turnos a que o aluno esta inscrito
+     */
+    public Aluno(String userNum, String password, String email, String nome, boolean loginAtivo, boolean eEspecial,
+                 Map<String, Integer> horario){
+        super(userNum, password, email, nome, loginAtivo);
         this.eEspecial = eEspecial;
-        this.horario = inscricoes;
+        this.horario = horario;
     }
 
     /**

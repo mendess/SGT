@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Turno {
-
-
+    /** Retorna um turno vazio */
     public static Turno emptyShift(String uc){
         return new Turno(0, uc, Integer.MAX_VALUE, true);
     }
@@ -198,7 +197,7 @@ public class Turno {
     }
 
     /**
-     *
+     * Altera o UC id do turno
      * @param ucId Novo identificador da UC
      */
     void setUcId(String ucId) {
@@ -206,7 +205,7 @@ public class Turno {
     }
 
     /**
-     *
+     * Altera se o turno e pratico
      * @param ePratico O novo estado do turno.
      */
     void setEPratico(boolean ePratico) {
@@ -214,7 +213,7 @@ public class Turno {
     }
 
     /**
-     *
+     * Altera o id do turno
      * @param id Novo id do turno
      */
     void setId(int id) {
@@ -222,7 +221,7 @@ public class Turno {
     }
 
     /**
-     *
+     * Muda o numero de vagas
      * @param vagas Numero de vagas
      */
     void setVagas(int vagas) {

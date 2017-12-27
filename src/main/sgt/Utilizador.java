@@ -42,9 +42,17 @@ public abstract class Utilizador {
         this.password = password;
         this.email = email;
         this.name = name;
-        this.loginAtivo=false;
+        this.loginAtivo = false;
     }
 
+    /**
+     * Construtor completamente parametrizado de utilizador
+     * @param userNum O identificador do utilizador
+     * @param password A password do utilizador
+     * @param email O email do utilizador
+     * @param name O nome do utilizador
+     * @param loginAtivo Se o login esta ativo
+     */
     Utilizador(String userNum, String password, String email, String name, boolean loginAtivo){
         this.userNum = userNum;
         this.password = password;
@@ -118,6 +126,14 @@ public abstract class Utilizador {
     }
 
     /**
+     * Retorna se o login do utilizador esta ativo
+     * @return Se o login do utilizador esta ativo
+     */
+    public boolean isLoginAtivo() {
+        return loginAtivo;
+    }
+
+    /**
      * Ativa o Login deste aluno, enviando lhe um email com o seu numero e a sua password.
      */
     void ativarLogin() {
@@ -131,6 +147,7 @@ public abstract class Utilizador {
         }
         this.loginAtivo = success;*/
     }
+
     /**
      * Envia um email para o aluno para este poder fazer Login
      * @return <tt>true</tt> se o email foi enviado com sucesso, <tt>false</tt> caso contrario
@@ -187,9 +204,5 @@ public abstract class Utilizador {
                 +"Nome: "+this.name+"\t"
                 +"Email: "+this.email+"\t"
                 +"Password: "+this.password+"\t";
-    }
-
-    public boolean isLoginAtivo() {
-        return loginAtivo;
     }
 }

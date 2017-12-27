@@ -4,8 +4,11 @@ import java.time.LocalTime;
 
 public class TurnoInfo {
 
+    /** A hora de inicio do turno*/
     private LocalTime horaInicio;
+    /** A hora de fim do turno*/
     private LocalTime horaFim;
+    /** O dia da semana do turno */
     private DiaSemana dia;
 
     /**

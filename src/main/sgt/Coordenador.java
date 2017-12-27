@@ -37,9 +37,19 @@ public class Coordenador extends Docente {
         this.ucRegida = null;
     }
 
-    public Coordenador(String id, String password, String email, String nome, boolean loginAtivo,
+    /**
+     * Construtor completamente parametrizado do Coordenador
+     * @param userNum O identificador do docente
+     * @param password A password do docente
+     * @param email O email do docente
+     * @param nome O nome do docente
+     * @param loginAtivo Se o login esta ativo
+     * @param ucsEturnos As ucsEturnos do docente
+     * @param ucRegida A UC regida pelo Coordenador
+     */
+    public Coordenador(String userNum, String password, String email, String nome, boolean loginAtivo,
                        Map<String, List<TurnoKey>> ucsEturnos, String ucRegida){
-        super(id, password, email, nome, loginAtivo, ucsEturnos);
+        super(userNum, password, email, nome, loginAtivo, ucsEturnos);
         this.ucRegida = ucRegida;
     }
 

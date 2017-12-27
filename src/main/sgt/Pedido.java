@@ -4,7 +4,7 @@ package main.sgt;
 public class Pedido {
 
     /**
-     *  Numero do aluno que fez o pedido
+     * Numero do aluno que fez o pedido
      */
     private final String alunoNum;
     /**
@@ -19,6 +19,9 @@ public class Pedido {
      * Turno pedido
      */
     private final int turno;
+    /**
+     * Se o turno e Pratico
+     */
     private final boolean ePratico;
 
     /**
@@ -69,6 +72,10 @@ public class Pedido {
         return this.turno;
     }
 
+    /**
+     * Retorna se o turno e pratico
+     * @return <tt>True</tt> se o turno for pratico
+     */
     public boolean ePratico() {
         return this.ePratico;
     }

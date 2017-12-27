@@ -22,6 +22,9 @@ public class Aula {
      */
     private String uc;
 
+    /**
+     * Se a aula pertence a um turno pratico
+     */
     private boolean ePratico;
 
     /**
@@ -38,6 +41,14 @@ public class Aula {
         this.presencas = new ArrayList<>();
     }
 
+    /**
+     * Construtor completamente parametrizado de Aula
+     * @param numero Numero da Aula
+     * @param uc A UC do turno
+     * @param turno O numero do turno da aula
+     * @param ePratico Se a aula e pratica
+     * @param presencas A lista de presencas da aula
+     */
     public Aula(int numero, String uc, int turno, boolean ePratico, List<String> presencas) {
         this.numero = numero;
         this.uc = uc;
@@ -80,10 +91,18 @@ public class Aula {
         return this.uc;
     }
 
+    /**
+     * Retorna se a Aula pertence a um turno pratico
+     * @return Se a Aula pertence a um turno pratico
+     */
     public boolean ePratico() {
         return this.ePratico;
     }
 
+    /**
+     * Retorna a lista de alunos presentes na aula
+     * @return A lista de alunos presentes na aula
+     */
     public List<String> getPresencas() {
         return new ArrayList<>(presencas);
     }

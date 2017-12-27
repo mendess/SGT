@@ -28,9 +28,18 @@ public class Docente extends Utilizador {
         this.ucsEturnos = ucsEturnos;
     }
 
-    public Docente(String id, String password, String email, String nome, boolean loginAtivo,
+    /**
+     * Constructor completamente parametrizado do Docente
+     * @param userNum O identificador do docente
+     * @param password A password do docente
+     * @param email O email do docente
+     * @param nome O nome do docente
+     * @param loginAtivo Se o login esta ativo
+     * @param ucsEturnos As ucsEturnos do docente
+     */
+    public Docente(String userNum, String password, String email, String nome, boolean loginAtivo,
                    Map<String, List<TurnoKey>> ucsEturnos){
-        super(id, password, email, nome, loginAtivo);
+        super(userNum, password, email, nome, loginAtivo);
         this.ucsEturnos = ucsEturnos;
     }
 
