@@ -25,7 +25,7 @@ import static main.userInterface.InterfaceUtils.prepareTable;
  *
  * @author pedro
  */
-@SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
+@SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches", "Duplicates"})
 public class JAlunoEspecial extends javax.swing.JFrame implements Observer {
 
     private SGT sgt;

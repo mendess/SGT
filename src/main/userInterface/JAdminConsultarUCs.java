@@ -18,7 +18,7 @@ import static main.userInterface.InterfaceUtils.*;
  *
  * @author pedro
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "FieldCanBeLocal", "unused", "TryWithIdenticalCatches"})
 public class JAdminConsultarUCs extends javax.swing.JFrame {
 
     private final SGT sgt;

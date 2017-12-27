@@ -1,6 +1,5 @@
 package main.sgt;
 
-@SuppressWarnings("WeakerAccess")
 public class Pedido {
 
     /**

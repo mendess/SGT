@@ -2,7 +2,6 @@ package main.sgt;
 
 import java.time.LocalDateTime;
 
-@SuppressWarnings("WeakerAccess")
 public class Troca {
 
     /**

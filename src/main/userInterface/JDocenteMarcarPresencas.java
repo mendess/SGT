@@ -9,6 +9,7 @@ import main.sgt.*;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static main.userInterface.InterfaceUtils.*;
@@ -21,7 +22,7 @@ import static main.userInterface.InterfaceUtils.*;
 public class JDocenteMarcarPresencas extends javax.swing.JFrame {
 
     private final SGT sgt;
-    private Docente loggedUser;
+    private Map<String,List<TurnoKey>> ucsETurnos;
     private String uc;
     private String turno;
     private String aula;
@@ -33,20 +34,24 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
      */
     JDocenteMarcarPresencas(SGT sgt) {
         this.sgt = sgt;
-        this.loggedUser = (Docente) this.sgt.getLoggedUser();
+        try{
+            this.ucsETurnos = ((Docente) this.sgt.getLoggedUser()).getUcsEturnos();
+        }catch (ClassCastException e){
+            this.dispose();
+        }
         initComponents();
         initComboBoxUCs();
     }
 
     private void initComboBoxUCs() {
-        Set<String> ucs = this.loggedUser.getUcsEturnos().keySet();
+        Set<String> ucs = this.ucsETurnos.keySet();
         this.uc = makeComboBoxUCs(this.jComboBoxUCs,ucs);
         updateComboBoxTurnos();
     }
 
     private void updateComboBoxTurnos() {
         if(this.uc==null) return;
-        this.turno = makeComboBoxTurnos(this.jComboBoxTurnos,this.loggedUser.getUcsEturnos().get(this.uc));
+        this.turno = makeComboBoxTurnos(this.jComboBoxTurnos,this.ucsETurnos.get(this.uc));
         updateComboBoxAulas();
     }
 
