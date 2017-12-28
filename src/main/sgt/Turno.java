@@ -6,6 +6,7 @@ import main.sgt.exceptions.UtilizadorJaExisteException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -166,7 +167,7 @@ public class Turno {
                                     && a.getTurno()==this.id
                                     && a.ePratico()==this.ePratico)
                             .collect(Collectors.toList()));
-        Collections.sort(listaAulas, new ComparatorAulas());
+        listaAulas.sort(Comparator.comparingInt(Aula::getNumero));
         return listaAulas;
     }
 

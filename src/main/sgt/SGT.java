@@ -306,6 +306,7 @@ public class SGT extends Observable {
     public List<Turno> getTurnosOfUC(String uc){
         List<Turno> turnos = this.ucs.get(uc).getTurnos();
         turnos = turnos.stream().filter(t->t.getId() > 0).collect(Collectors.toList());
+        turnos.sort(new ComparatorTurnos());
         return turnos;
     }
 
@@ -321,6 +322,7 @@ public class SGT extends Observable {
             return aluno.getHorario().entrySet()
                     .stream()
                     .map(e->this.ucs.get(e.getKey()).getTurnos().get(e.getValue()))
+                    .sorted(new ComparatorTurnos())
                     .collect(Collectors.toList());
         }
         if(this.loggedUser instanceof Docente){
@@ -334,6 +336,7 @@ public class SGT extends Observable {
                     turnos.add(tmpUC.getTurno(turno.getTurno_id(), turno.ePratico()));
                 }
             }
+            turnos.sort(new ComparatorTurnos());
             return turnos;
         }
         throw new InvalidUserTypeException();
@@ -361,6 +364,7 @@ public class SGT extends Observable {
             return aluno.getHorario().keySet()
                     .stream()
                     .map(this.ucs::get)
+                    .sorted((uc1,uc2) -> String.CASE_INSENSITIVE_ORDER.compare(uc1.getId(),uc2.getId()))
                     .collect(Collectors.toList());
         }
         if(this.loggedUser instanceof Docente){
@@ -368,6 +372,7 @@ public class SGT extends Observable {
             return docente.getUcsEturnos().keySet()
                     .stream()
                     .map(this.ucs::get)
+                    .sorted((uc1,uc2) -> String.CASE_INSENSITIVE_ORDER.compare(uc1.getId(),uc2.getId()))
                     .collect(Collectors.toList());
         }
         throw new InvalidUserTypeException();
@@ -379,7 +384,9 @@ public class SGT extends Observable {
      * @return Lista das UCs
      */
     public List<UC> getUCs(){
-        return new ArrayList<>(this.ucs.values());
+        List<UC> ucs = new ArrayList<>(this.ucs.values());
+        ucs.sort((uc1,uc2) -> String.CASE_INSENSITIVE_ORDER.compare(uc1.getId(),uc2.getId()));
+        return ucs;
     }
 
     /**
@@ -399,7 +406,7 @@ public class SGT extends Observable {
      */
     public List<String> getDocentesOfUC(String uc){
         List<String> doc = this.ucs.get(uc).getDocentes();
-        Collections.sort(doc);
+        doc.sort(String.CASE_INSENSITIVE_ORDER);
         return doc;
     }
 
@@ -409,7 +416,7 @@ public class SGT extends Observable {
      * @return Lista de trocas efetuadas
      */
     public List<Troca> getTrocas(){
-        return this.trocas;
+        return new ArrayList<>(this.trocas);
     }
 
     /**
