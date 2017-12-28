@@ -208,6 +208,13 @@ public class JCoordenador extends javax.swing.JFrame {
             return;
         }
         gerirAlunos.setVisible(true);
+        this.setVisible(false);
+        gerirAlunos.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent){
+                reOpen();
+            }
+        });
     }//GEN-LAST:event_jButtonGerirAlunosActionPerformed
 
     private void jButtonMarcarPresencasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMarcarPresencasActionPerformed

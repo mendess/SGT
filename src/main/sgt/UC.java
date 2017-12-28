@@ -364,31 +364,19 @@ public class UC {
         return count;
     }
 
-    public List<String> alComExcessoDeFaltas(List<String> alunos) {
-        Collection<Turno> turnos = this.turnos.values();
-        Map<Integer,List<Aula>> aulas = new HashMap<>();
+    List<String> alComExcessoDeFaltas(List<String> alunos, int turnoID, boolean ePratico) {
+        Turno turno = this.getTurno(turnoID,ePratico);
         Map<String,Integer> contagemDeFaltas = new HashMap<>();
         alunos.forEach(a -> contagemDeFaltas.put(a,0));
         List<String> alunosComExcesso = new ArrayList<>();
-        for(Turno t: turnos){
-            for(Aula a: t.getAulas()){
-                if(aulas.containsKey(a.getNumero())){
-                    aulas.get(a.getNumero()).add(a);
-                }else{
-                    List<Aula> x = new ArrayList<>();
-                    x.add(a);
-                    aulas.put(a.getNumero(),x);
-                }
-            }
-        }
-        for (Integer i : aulas.keySet()) {
-            Set<String> presencas = new HashSet<>();
-            aulas.get(i).forEach(aula -> presencas.addAll(aula.getPresencas()));
-            for(String a: alunos){
-                if(!presencas.contains(a)) contagemDeFaltas.put(a,contagemDeFaltas.get(a)+1);
+        for (Aula aula : turno.getAulas()) {
+            List<String> presencas = aula.getPresencas();
+            for(String aluno: alunos){
+                if(!presencas.contains(aluno)) contagemDeFaltas.put(aluno,contagemDeFaltas.get(aluno)+1);
             }
         }
         for (Map.Entry<String,Integer> a : contagemDeFaltas.entrySet()) {
+            System.out.println(a.getKey()+":"+a.getValue());
             if(a.getValue()>10*0.25){
                 alunosComExcesso.add(a.getKey());
             }
