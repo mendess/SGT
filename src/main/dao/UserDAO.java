@@ -371,4 +371,41 @@ public class UserDAO implements Map<String, Utilizador> {
         });
         return entrySet;
     }
+
+    public boolean isTrocasPermitidas(){
+        this.connection = Connect.connect();
+        PreparedStatement stm = null;
+        boolean trocasPerm = false;
+        try{
+            stm = connection.prepareStatement("\n" +
+                    "SELECT trocasPermitidas FROM DiretorDeCurso;");
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                trocasPerm = rs.getBoolean(1);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.out.println(stm);
+        }finally{
+            Connect.close(this.connection);
+        }
+        return trocasPerm;
+    }
+
+    public boolean setTrocasPermitidas(boolean trocasPermitidas){
+        this.connection = Connect.connect();
+        PreparedStatement stm = null;
+        try{
+            stm = connection.prepareStatement("\n" +
+                    "UPDATE DiretorDeCurso SET trocasPermitidas=?;");
+            stm.setBoolean(1,trocasPermitidas);
+            stm.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.out.println(stm);
+        }finally{
+            Connect.close(this.connection);
+        }
+        return trocasPermitidas;
+    }
 }

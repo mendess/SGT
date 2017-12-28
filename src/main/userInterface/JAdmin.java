@@ -26,9 +26,10 @@ import java.util.Observer;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class JAdmin extends javax.swing.JFrame implements Observer {
 
+    private static final int NUM_STATES = 6;
     private SGT sgt;
-    private JButton[] buttons = new JButton[5];
-    private JCheckBox[] checkBoxes = new JCheckBox[5];
+    private JButton[] buttons = new JButton[NUM_STATES];
+    private JCheckBox[] checkBoxes = new JCheckBox[NUM_STATES];
     private final JFileChooser fc = new JFileChooser();
     private JDialog loadingScreen;
 
@@ -51,12 +52,14 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         this.buttons[2] = this.jButtonImportTurnos;
         this.buttons[3] = this.jButtonActivateLogins;
         this.buttons[4] = this.jButtonAssignShifts;
+        this.buttons[5] = this.jButtonProibirTrocas;
         this.checkBoxes[0] = this.jCheckBoxUCsRegistadas;
         this.checkBoxes[1] = this.jCheckBoxUsersRegistered;
         this.checkBoxes[2] = this.jCheckBoxTurnosRegistados;
         this.checkBoxes[3] = this.jCheckBoxLoginsActive;
         this.checkBoxes[4] = this.jCheckBoxShiftsAssigned;
-        for(int i=0;i<5;i++){
+        this.checkBoxes[5] = this.jCheckBoxProibirTrocas;
+        for(int i=0;i<NUM_STATES;i++){
             for (MouseListener aMl : this.checkBoxes[i].getListeners(MouseListener.class))
                 this.checkBoxes[i].removeMouseListener(aMl);
             InputMap im = this.checkBoxes[i].getInputMap();
@@ -67,7 +70,9 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
 
     private void initCheckBoxes() {
         int state;
-        if(this.sgt.isTurnosAtribuidos()){
+        if(!this.sgt.isTrocasPermitidas()){
+            state = 6;
+        }else if(this.sgt.isTurnosAtribuidos()){
             state = 5;
         }else if(this.sgt.isLoginsAtivos()){
             state = 4;
@@ -86,7 +91,7 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
     }
 
     private void disableFrom(int index){
-        while (index<5) {
+        while (index<NUM_STATES) {
             this.buttons[index].setEnabled(false);
             this.checkBoxes[index++].setSelected(false);
         }
@@ -114,6 +119,8 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         jSeparator1 = new javax.swing.JSeparator();
         jButtonConsultUC = new javax.swing.JButton();
         jButtonLogout = new javax.swing.JButton();
+        jButtonProibirTrocas = new javax.swing.JButton();
+        jCheckBoxProibirTrocas = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -182,6 +189,15 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
             }
         });
 
+        jButtonProibirTrocas.setText("Proibir Trocas");
+        jButtonProibirTrocas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonProibirTrocasActionPerformed(evt);
+            }
+        });
+
+        jCheckBoxProibirTrocas.setText("Trocas proibidas");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -193,14 +209,16 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
                     .addComponent(jButtonImportUtilizadores)
                     .addComponent(jButtonImportUCs)
                     .addComponent(jButtonActivateLogins)
-                    .addComponent(jButtonAssignShifts))
+                    .addComponent(jButtonAssignShifts)
+                    .addComponent(jButtonProibirTrocas))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCheckBoxLoginsActive)
                     .addComponent(jCheckBoxShiftsAssigned)
                     .addComponent(jCheckBoxUsersRegistered)
                     .addComponent(jCheckBoxUCsRegistadas)
-                    .addComponent(jCheckBoxTurnosRegistados))
+                    .addComponent(jCheckBoxTurnosRegistados)
+                    .addComponent(jCheckBoxProibirTrocas))
                 .addGap(25, 25, 25)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,8 +236,16 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jButtonConsultUC)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonLogout))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(49, 49, 49)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButtonImportUCs)
@@ -239,16 +265,12 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButtonAssignShifts)
-                                    .addComponent(jCheckBoxShiftsAssigned)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 14, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jButtonConsultUC)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonLogout)))
+                                    .addComponent(jCheckBoxShiftsAssigned))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonProibirTrocas)
+                                    .addComponent(jCheckBoxProibirTrocas))))
+                        .addGap(0, 40, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -392,6 +414,23 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         this.dispose();
     }//GEN-LAST:event_jButtonLogoutActionPerformed
 
+    private void jButtonProibirTrocasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProibirTrocasActionPerformed
+        int confirmed = JOptionPane.YES_OPTION;
+        if(this.sgt.isTurnosAtribuidos()){
+            confirmed = JOptionPane.showConfirmDialog(this,"Isto ira proibir as trocas de turnos entre alunos, tem a certeza que quer continuar?",
+                    "Warning!",JOptionPane.OK_CANCEL_OPTION);
+
+        }
+        if(!(confirmed ==JOptionPane.YES_OPTION)){
+            return;
+        }
+        makeLoadingScreen("A atribuir turnos");
+        this.setVisible(false);
+        this.sgt.setTrocasPermitidas(false);
+        this.loadingScreen.dispose();
+        this.setVisible(true);
+    }//GEN-LAST:event_jButtonProibirTrocasActionPerformed
+
     private void reOpen() {
         this.setVisible(true);
     }
@@ -416,7 +455,7 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
             int flag = (Integer) o;
             this.checkBoxes[flag].setSelected(true);
             this.disableFrom(flag+1);
-            if(flag<4) this.buttons[flag+1].setEnabled(true);
+            if(flag<NUM_STATES-1) this.buttons[flag+1].setEnabled(true);
         }
     }
 
@@ -463,7 +502,9 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton jButtonImportUCs;
     private javax.swing.JButton jButtonImportUtilizadores;
     private javax.swing.JButton jButtonLogout;
+    private javax.swing.JButton jButtonProibirTrocas;
     private javax.swing.JCheckBox jCheckBoxLoginsActive;
+    private javax.swing.JCheckBox jCheckBoxProibirTrocas;
     private javax.swing.JCheckBox jCheckBoxShiftsAssigned;
     private javax.swing.JCheckBox jCheckBoxTurnosRegistados;
     private javax.swing.JCheckBox jCheckBoxUCsRegistadas;

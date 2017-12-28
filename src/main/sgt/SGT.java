@@ -64,6 +64,11 @@ public class SGT extends Observable {
     private boolean turnosAtribuidos;
 
     /**
+     * Se as trocas sao permitidas
+     */
+    private boolean trocasPermitidas;
+
+    /**
      * Construtor do SGT
      */
     public SGT(){
@@ -139,6 +144,12 @@ public class SGT extends Observable {
                         }
                         this.setTurnosAtribuidos(b);
                         System.out.println((System.nanoTime() - startTime) / 1000000 + " milisegundos");
+                        if(this.turnosAtribuidos){
+                            startTime = System.nanoTime();
+                            System.out.println("A verifcar se as trocas são permitidas");
+                            this.setTrocasPermitidas(this.utilizadores.isTrocasPermitidas());
+                            System.out.println((System.nanoTime() - startTime) / 1000000 + " milisegundos");
+                        }
                     }
                 }
             }
@@ -153,7 +164,7 @@ public class SGT extends Observable {
      * @return O estado das ucs
      */
     public boolean isUcsRegistadas(){
-        return ucsRegistadas;
+        return this.ucsRegistadas;
     }
 
     /**
@@ -176,7 +187,7 @@ public class SGT extends Observable {
      * @return O estado dos utilizadores
      */
     public boolean isUsersRegistados(){
-        return usersRegistados;
+        return this.usersRegistados;
     }
 
     /**
@@ -199,7 +210,7 @@ public class SGT extends Observable {
      * @return O estado dos turnos
      */
     public boolean isTurnosRegistados(){
-        return turnosRegistados;
+        return this.turnosRegistados;
     }
 
     /**
@@ -222,7 +233,7 @@ public class SGT extends Observable {
      * @return O estado dos logins
      */
     public boolean isLoginsAtivos(){
-        return loginsAtivos;
+        return this.loginsAtivos;
     }
 
     /**
@@ -245,7 +256,7 @@ public class SGT extends Observable {
      * @return <tt>True</tt> se os turnos estao atribuidos
      */
     public boolean isTurnosAtribuidos(){
-        return turnosAtribuidos;
+        return this.turnosAtribuidos;
     }
 
     /**
@@ -259,6 +270,26 @@ public class SGT extends Observable {
             this.notifyObservers(TURNOS_ATRIBUIDOS);
         }
         this.turnosAtribuidos = turnosAtribuidos;
+    }
+
+    /**
+     * Retorna se as trocas de turno entre alunos sao permitidas
+     * @return Se as trocas de turno entre alunos sao permitidas
+     */
+    public boolean isTrocasPermitidas(){
+        return this.turnosAtribuidos && this.trocasPermitidas;
+    }
+
+    /**
+     * Altera se as trocas de turno entre alunos sao permitidas
+     * @param trocasPermitidas Novo estado
+     */
+    public void setTrocasPermitidas(boolean trocasPermitidas){
+        if(!trocasPermitidas){
+            this.setChanged();
+            this.notifyObservers(TROCAS_PROIBIDAS);
+        }
+        this.trocasPermitidas = this.utilizadores.setTrocasPermitidas(trocasPermitidas);
     }
 
     /**

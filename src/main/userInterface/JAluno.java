@@ -38,10 +38,10 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         this.sgt = sgt;
         this.sgt.addObserver(this);
         initComponents();
-        if(this.sgt.isTurnosAtribuidos()){
-            this.jButtonEscolherUCs.setEnabled(false);
-        }else{
+        if(!this.sgt.isTurnosAtribuidos() || !this.sgt.isTrocasPermitidas()){
             this.jButtonPedirTroca.setEnabled(false);
+        }else{
+            this.jButtonEscolherUCs.setEnabled(false);
         }
         updateUserUCs();
         updateSugestTroca();

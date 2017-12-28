@@ -61,6 +61,7 @@ public class JDocenteMarcarPresencas extends javax.swing.JFrame {
         for(Aula a: this.sgt.getUC(uc).getTurno(shiftFromString(turno),shiftTypeFromStr(turno)).getAulas()){
             this.jComboBoxAula.addItem(String.valueOf(a.getNumero()));
         }
+        this.jComboBoxAula.setSelectedIndex(this.jComboBoxAula.getItemCount()-1);
         this.aula = (String) this.jComboBoxAula.getSelectedItem();
         updatePresencas();
     }
