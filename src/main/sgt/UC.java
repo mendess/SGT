@@ -3,8 +3,7 @@ package main.sgt;
 import main.dao.TurnoDAO;
 import main.sgt.exceptions.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UC {
@@ -307,10 +306,7 @@ public class UC {
      * @return O numero da aula adicionada
      */
     int addAula(int turno, boolean ePratico) {
-        Turno tmpTurno = this.turnos.get(new TurnoKey(this.id,turno,ePratico));
-        int aulaNum = tmpTurno.addAula();
-        this.turnos.put(new TurnoKey(tmpTurno),tmpTurno);
-        return aulaNum;
+        return this.turnos.get(new TurnoKey(this.id,turno,ePratico)).addAula();
     }
 
     /**
@@ -368,6 +364,26 @@ public class UC {
         return count;
     }
 
+    List<String> alComExcessoDeFaltas(List<String> alunos, int turnoID, boolean ePratico) {
+        Turno turno = this.getTurno(turnoID,ePratico);
+        Map<String,Integer> contagemDeFaltas = new HashMap<>();
+        alunos.forEach(a -> contagemDeFaltas.put(a,0));
+        List<String> alunosComExcesso = new ArrayList<>();
+        for (Aula aula : turno.getAulas()) {
+            List<String> presencas = aula.getPresencas();
+            for(String aluno: alunos){
+                if(!presencas.contains(aluno)) contagemDeFaltas.put(aluno,contagemDeFaltas.get(aluno)+1);
+            }
+        }
+        for (Map.Entry<String,Integer> a : contagemDeFaltas.entrySet()) {
+            System.out.println(a.getKey()+":"+a.getValue());
+            if(a.getValue()>10*0.25){
+                alunosComExcesso.add(a.getKey());
+            }
+        }
+        return alunosComExcesso;
+    }
+
     public boolean equals(Object o) {
         if(this==o){
             return true;
@@ -395,5 +411,4 @@ public class UC {
                 "Docentes: " + this.docentes.toString() + "\t" +
                 "Alunos: " + this.alunos.toString() + "\t";
     }
-
 }

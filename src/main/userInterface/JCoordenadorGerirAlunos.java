@@ -64,10 +64,13 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
         alunosOffShift.removeAll(alunosInShift);
 
         //Update in shift table
+        List<String> alunosComExcessoDeFaltas = this.sgt.alComExcessoDeFaltas(alunosInShift, this.ucOfUser,turno,true);
         DefaultTableModel tModel = prepareTable(alunosInShift.size(),1,this.jTableAlunosEstao);
         for (int i = 0; i < alunosInShift.size(); i++) {
             String a = alunosInShift.get(i);
             tModel.setValueAt(a, i, 0);
+            if(alunosComExcessoDeFaltas.contains(a)) tModel.setValueAt(true,i,1);
+            else tModel.setValueAt(false,i,1);
         }
         this.jTableAlunosEstao.setModel(tModel);
         //Update of shift table
@@ -111,14 +114,14 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Alunos que estão no turno"
+                "Alunos que estão no turno", "Faltas"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -130,6 +133,11 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
             }
         });
         jScrollPaneAlunosEstao.setViewportView(jTableAlunosEstao);
+        if (jTableAlunosEstao.getColumnModel().getColumnCount() > 0) {
+            jTableAlunosEstao.getColumnModel().getColumn(1).setMinWidth(50);
+            jTableAlunosEstao.getColumnModel().getColumn(1).setPreferredWidth(50);
+            jTableAlunosEstao.getColumnModel().getColumn(1).setMaxWidth(50);
+        }
 
         jTableAlunosNEstao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -187,20 +195,20 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPaneAlunosNEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonAdicionar)
-                            .addComponent(jButtonRemover))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                        .addComponent(jScrollPaneAlunosEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelTurno)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPaneAlunosNEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButtonRemover)
+                                    .addComponent(jButtonAdicionar))
+                                .addGap(32, 32, 32)
+                                .addComponent(jScrollPaneAlunosEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(29, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonFechar)
@@ -220,9 +228,9 @@ public class JCoordenadorGerirAlunos extends javax.swing.JFrame {
                             .addComponent(jScrollPaneAlunosEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPaneAlunosNEstao, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
+                        .addGap(122, 122, 122)
                         .addComponent(jButtonAdicionar)
-                        .addGap(56, 56, 56)
+                        .addGap(55, 55, 55)
                         .addComponent(jButtonRemover)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonFechar)

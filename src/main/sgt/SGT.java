@@ -653,6 +653,16 @@ public class SGT extends Observable {
     }
 
     /**
+     * Determina a lista de alunos com excesso de faltas a uma UC
+     * @param alunos O identificador do aluno
+     * @param uc O identificador da UC
+     * @return <tt>True</tt> se o aluno tiver excesso de faltas
+     */
+    public List<String> alComExcessoDeFaltas(List<String> alunos, String uc,int turno,boolean ePratico){
+        return this.ucs.get(uc).alComExcessoDeFaltas(alunos,turno,ePratico);
+    }
+
+    /**
      * Devolve uma lista de sujestoes de troca, ou seja, os pedidos que o aluno autenticado pode aceitar
      *
      * @return Lista de pedidos que o aluno autenticado pode aceitar
