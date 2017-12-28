@@ -107,7 +107,7 @@ public class Aula {
         /*
         ArrayList<String> alPresentes = new ArrayList<>();
         for (String aluno : this.presencas)
-            alPresentes.add(aluno);
+            alPresentes.add(aluno.clone());
         return alPresentes.sort();
          */
     }
