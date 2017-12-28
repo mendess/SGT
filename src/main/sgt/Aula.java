@@ -108,7 +108,7 @@ public class Aula {
         ArrayList<String> alPresentes = new ArrayList<>();
         for (String aluno : this.presencas)
             alPresentes.add(aluno);
-        return al.Presentes.sort();
+        return alPresentes.sort();
          */
     }
 
