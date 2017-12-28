@@ -388,8 +388,7 @@ public class UC {
                 alunosComExcesso.add(a.getKey());
             }
         }
-
-        Collections.sort(alunosComExcesso);
+        alunosComExcesso.sort(String.CASE_INSENSITIVE_ORDER);
         return alunosComExcesso;
     }
 

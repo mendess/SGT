@@ -276,7 +276,7 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         boolean ePratico = pedido.ePratico();
         try {
             int response;
-            if(this.sgt.horarioConfilcts((Aluno) this.sgt.getLoggedUser(), uc,turno,ePratico)){
+            if(this.sgt.horarioConflicts((Aluno) this.sgt.getLoggedUser(), uc,turno,ePratico)){
                 response = JOptionPane.showConfirmDialog(null,
                         "O turno selecionado entra em conflito com o seu horário. Quer continuar?",
                         "Conflito de turnos", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
