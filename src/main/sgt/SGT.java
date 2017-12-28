@@ -653,7 +653,7 @@ public class SGT extends Observable {
      * @param ePratico Se o turno e pratico
      * @return Retorna <tt>true</tt> se o horario conflite com o turno
      */
-    public boolean horarioConfilcts(Aluno aluno, String uc, int turno, boolean ePratico){
+    public boolean horarioConflicts(Aluno aluno, String uc, int turno, boolean ePratico){
         Turno novoT = this.ucs.get(uc).getTurno(turno, ePratico);
         List<Turno> turnos = aluno.getHorario().entrySet()
                 .stream()
@@ -947,7 +947,7 @@ public class SGT extends Observable {
                     Turno t = turnos.get(i);
                     int tID = t.getId();
                     //Tentar que o aluno possa ser inserido no turno
-                    if(tID!=0 && t.ePratico() && t.temVagas() && !horarioConfilcts(a, ucID, tID, t.ePratico())){
+                    if(tID!=0 && t.ePratico() && t.temVagas() && !horarioConflicts(a, ucID, tID, t.ePratico())){
                         try{
                             a.inscrever(ucID,tID);
                         }catch(UtilizadorJaExisteException ignored){
