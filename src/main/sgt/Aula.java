@@ -104,6 +104,12 @@ public class Aula {
      */
     public List<String> getPresencas() {
         return new ArrayList<>(presencas);
+        /*
+        ArrayList<String> alPresentes = new ArrayList<>();
+        for (String aluno : this.presencas)
+            alPresentes.add(aluno);
+        return al.Presentes.sort();
+         */
     }
 
     @Override
