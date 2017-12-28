@@ -168,14 +168,17 @@ public class UC {
     }
 
     /**
-     * Retorna a lista de turno desta UC
-     * @return A lista de turnos desta UC
+     * Retorna a lista ordenada de turno desta UC
+     * @return A lista ordenada de turnos desta UC
      */
     public List<Turno> getTurnos() {
-        return new ArrayList<>(this.turnos.values()
+        List<Turno> listaTurnos = new ArrayList<>(this.turnos.values()
                 .stream()
                 .filter(t->t.getUcId().equals(this.id))
                 .collect(Collectors.toList()));
+
+        Collections.sort(listaTurnos, new ComparatorTurnos());
+        return listaTurnos;
     }
 
     /**

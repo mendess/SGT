@@ -156,16 +156,18 @@ public class Turno {
     }
 
     /**
-     * A lista de aulas a que o turno tem.
-     * @return Lista de aulas que o turno tem.
+     * A lista ordenada de aulas a que o turno tem.
+     * @return Lista ordenada de aulas que o turno tem.
      */
     public List<Aula> getAulas(){
-        return new ArrayList<>(this.aulas.values()
+        List<Aula> listaAulas = new ArrayList<>(this.aulas.values()
                             .stream()
                             .filter(a->a.getUc().equals(this.ucId)
                                     && a.getTurno()==this.id
                                     && a.ePratico()==this.ePratico)
                             .collect(Collectors.toList()));
+        Collections.sort(listaAulas, new ComparatorAulas());
+        return listaAulas;
     }
 
     /**
