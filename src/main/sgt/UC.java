@@ -177,7 +177,7 @@ public class UC {
                 .filter(t->t.getUcId().equals(this.id))
                 .collect(Collectors.toList()));
 
-        Collections.sort(listaTurnos, new ComparatorTurnos());
+        listaTurnos.sort(new ComparatorTurnos());
         return listaTurnos;
     }
 
