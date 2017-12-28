@@ -151,9 +151,9 @@ public class UC {
      * Retorna a lista ordenada dos docentes que lecionam a UC
      * @return Lista ordenada dos docentes que lecionam a UC
      */
-    public List<String> getDocentes() {
+    List<String> getDocentes() {
         List<String> doc = new ArrayList<>(this.docentes);
-        Collections.sort(doc);
+        doc.sort(String.CASE_INSENSITIVE_ORDER);
         return doc;
     }
 
@@ -163,7 +163,7 @@ public class UC {
      */
     public List<String> getAlunos(){
         List<String> al = new ArrayList<>(this.alunos);
-        Collections.sort(al);
+        al.sort(String.CASE_INSENSITIVE_ORDER);
         return al;
     }
 
@@ -172,13 +172,11 @@ public class UC {
      * @return A lista ordenada de turnos desta UC
      */
     public List<Turno> getTurnos() {
-        List<Turno> listaTurnos = new ArrayList<>(this.turnos.values()
+        return new ArrayList<>(this.turnos.values()
                 .stream()
                 .filter(t->t.getUcId().equals(this.id))
+                .sorted(new ComparatorTurnos())
                 .collect(Collectors.toList()));
-
-        listaTurnos.sort(new ComparatorTurnos());
-        return listaTurnos;
     }
 
     /**
