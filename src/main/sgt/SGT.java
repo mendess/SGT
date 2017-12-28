@@ -658,8 +658,8 @@ public class SGT extends Observable {
      * @param uc O identificador da UC
      * @return <tt>True</tt> se o aluno tiver excesso de faltas
      */
-    public List<String> alComExcessoDeFaltas(List<String> alunos, String uc){
-        return this.ucs.get(uc).alComExcessoDeFaltas(alunos);
+    public List<String> alComExcessoDeFaltas(List<String> alunos, String uc,int turno,boolean ePratico){
+        return this.ucs.get(uc).alComExcessoDeFaltas(alunos,turno,ePratico);
     }
 
     /**
