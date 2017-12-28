@@ -148,19 +148,23 @@ public class UC {
     }
 
     /**
-     * Retorna os docentes que lecionam a UC
-     * @return Os docentes que lecionam a UC
+     * Retorna a lista ordenada dos docentes que lecionam a UC
+     * @return Lista ordenada dos docentes que lecionam a UC
      */
     public List<String> getDocentes() {
-        return new ArrayList<>(this.docentes);
+        List<String> doc = new ArrayList<>(this.docentes);
+        Collections.sort(doc);
+        return doc;
     }
 
     /**
-     * Retorna a lista de alunos do turno
-     * @return A lista de alunos do turno
+     * Retorna a lista ordenada de alunos do turno
+     * @return A lista ordenada de alunos do turno
      */
     public List<String> getAlunos(){
-        return new ArrayList<>(this.alunos);
+        List<String> al = new ArrayList<>(this.alunos);
+        Collections.sort(al);
+        return al;
     }
 
     /**
@@ -381,6 +385,8 @@ public class UC {
                 alunosComExcesso.add(a.getKey());
             }
         }
+
+        Collections.sort(alunosComExcesso);
         return alunosComExcesso;
     }
 

@@ -1,6 +1,8 @@
 package main.sgt;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Aula {
@@ -99,17 +101,13 @@ public class Aula {
     }
 
     /**
-     * Retorna a lista de alunos presentes na aula
-     * @return A lista de alunos presentes na aula
+     * Retorna a lista ordenada de alunos presentes na aula
+     * @return A lista ordenada de alunos presentes na aula
      */
     public List<String> getPresencas() {
-        return new ArrayList<>(presencas);
-        /*
-        ArrayList<String> alPresentes = new ArrayList<>();
-        for (String aluno : this.presencas)
-            alPresentes.add(aluno.clone());
-        return alPresentes.sort();
-         */
+        List<String> alPresentes = new ArrayList<>(presencas);
+        Collections.sort(alPresentes);
+        return alPresentes;
     }
 
     @Override

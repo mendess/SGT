@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 import static main.sgt.NotifyFlags.*;
 
 @SuppressWarnings("unused")
@@ -397,7 +398,9 @@ public class SGT extends Observable {
      * @param uc Numero da UC
      */
     public List<String> getDocentesOfUC(String uc){
-        return this.ucs.get(uc).getDocentes();
+        List<String> doc = this.ucs.get(uc).getDocentes();
+        Collections.sort(doc);
+        return doc;
     }
 
     /**

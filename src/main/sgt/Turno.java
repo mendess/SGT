@@ -5,6 +5,7 @@ import main.sgt.exceptions.TurnoCheioException;
 import main.sgt.exceptions.UtilizadorJaExisteException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -113,11 +114,13 @@ public class Turno {
     }
 
     /**
-     * Retorna a lista de alunos do turno.
-     * @return Lista de alunos do turno.
+     * Retorna a lista ordenada de alunos do turno.
+     * @return Lista ordenada de alunos do turno.
      */
     public List<String> getAlunos() {
-        return new ArrayList<>(this.alunos);
+        List<String> al = new ArrayList<>(this.alunos);
+        Collections.sort(al);
+        return al;
     }
 
     /**
