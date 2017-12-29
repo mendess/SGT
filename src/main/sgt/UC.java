@@ -3,7 +3,10 @@ package main.sgt;
 import main.dao.TurnoDAO;
 import main.sgt.exceptions.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UC {
@@ -198,7 +201,7 @@ public class UC {
      */
     Troca removerAlunoDeTurno(Aluno aluno, int turno) throws AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException {
         try {
-            return moveAlunoToTurno(aluno,0);
+            return moveAlunoToTurno(aluno,0,false);
         } catch (TurnoCheioException e) {
             return null;
         }
@@ -212,8 +215,10 @@ public class UC {
      * @throws AlunoNaoEstaInscritoNaUcException Um dos alunos nao esta inscrito nesta UC
      */
     Troca[] trocarAlunos(Aluno aluno1, Aluno aluno2) throws AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException, TurnoCheioException {
-        Troca t1 = moveAlunoToTurno(aluno1,aluno2.getHorario().get(this.id));
-        Troca t2 = moveAlunoToTurno(aluno2,aluno1.getHorario().get(this.id));
+        int turno1 = aluno1.getHorario().get(this.id);
+        int turno2 = aluno2.getHorario().get(this.id);
+        Troca t1 = moveAlunoToTurno(aluno1,turno2,true);
+        Troca t2 = moveAlunoToTurno(aluno2,turno1,true);
         return new Troca[]{t1,t2};
     }
 
@@ -226,11 +231,11 @@ public class UC {
      * @throws UtilizadorJaExisteException Se o aluno ja existe no turno
      * @throws TurnoCheioException Se o turno esta cheio
      */
-    Troca moveAlunoToTurno(Aluno aluno, int turno) throws AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException, TurnoCheioException {
+    Troca moveAlunoToTurno(Aluno aluno, int turno, boolean force) throws AlunoNaoEstaInscritoNaUcException, UtilizadorJaExisteException, TurnoCheioException {
         if(this.alunos.contains(aluno.getUserNum())){
             Turno turnoOrigem = this.getTurno(aluno.getHorario().get(this.id),true);
             Turno turnoDestino = this.getTurno(turno, true);
-            turnoDestino.addAluno(aluno.getUserNum());
+            turnoDestino.addAluno(aluno.getUserNum(), force);
             turnoOrigem.removeAluno(aluno.getUserNum());
             this.turnos.put(new TurnoKey(turnoOrigem),turnoOrigem);
             this.turnos.put(new TurnoKey(turnoDestino),turnoDestino);

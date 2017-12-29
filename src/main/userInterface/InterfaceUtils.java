@@ -42,13 +42,13 @@ class InterfaceUtils {
             StringBuilder horasInicio = new StringBuilder();
             StringBuilder horasFim = new StringBuilder();
             for (TurnoInfo ti : t.getTurnoInfos()) {
-                dias.append(ti.getDia()).append("\n");
-                horasInicio.append(ti.getHoraInicio()).append("\n");
-                horasFim.append(ti.getHoraFim()).append("\n");
+                dias.append(ti.getDia()).append(" | ");
+                horasInicio.append(ti.getHoraInicio()).append(" | ");
+                horasFim.append(ti.getHoraFim()).append(" | ");
             }
-            dias.setLength(Math.max(dias.length() - 1, 0));
-            horasInicio.setLength(Math.max(horasInicio.length() - 1, 0));
-            horasFim.setLength(Math.max(horasFim.length() - 1, 0));
+            dias.setLength(Math.max(dias.length() - 2, 0));
+            horasInicio.setLength(Math.max(horasInicio.length() - 2, 0));
+            horasFim.setLength(Math.max(horasFim.length() - 2, 0));
 
             tModel.setValueAt(t.getId(), i, 0);
             tModel.setValueAt(dias.toString(), i, 1);

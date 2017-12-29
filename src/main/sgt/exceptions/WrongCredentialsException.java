@@ -8,6 +8,6 @@ public class WrongCredentialsException extends Throwable {
 
     @Override
     public String getMessage() {
-        return super.getMessage() + message;
+        return this.message;
     }
 }

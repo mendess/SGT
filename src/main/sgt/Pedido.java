@@ -1,5 +1,6 @@
 package main.sgt;
 
+@SuppressWarnings("WeakerAccess")
 public class Pedido {
 
     /**
@@ -37,6 +38,14 @@ public class Pedido {
         this.uc = uc;
         this.turno = turno;
         this.ePratico = ePratico;
+    }
+
+    Pedido(Pedido pedido){
+        this.uc = pedido.getUc();
+        this.turno = pedido.getTurno();
+        this.ePratico = pedido.ePratico();
+        this.alunoNum = pedido.getAlunoNum();
+        this.alunoNome = pedido.getAlunoNome();
     }
 
     /**

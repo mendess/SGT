@@ -1,5 +1,5 @@
 package main.sgt.exceptions;
 
-public class AlunoNaoEstaInscritoNoTurnoException extends Throwable {
+class AlunoNaoEstaInscritoNoTurnoException extends Throwable {
 
 }

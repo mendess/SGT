@@ -38,25 +38,38 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         this.sgt = sgt;
         this.sgt.addObserver(this);
         initComponents();
-        if(!this.sgt.isTurnosAtribuidos() || !this.sgt.isTrocasPermitidas()){
-            this.jButtonPedirTroca.setEnabled(false);
-        }else{
-            this.jButtonEscolherUCs.setEnabled(false);
-        }
+        updateButtons();
         updateUserUCs();
         updateSugestTroca();
     }
 
-    private void updateSugestTroca() {
-        List<Pedido> sujestoesTroca = this.sgt.getSujestoesTroca();
-        DefaultTableModel tModel = prepareTable(sujestoesTroca.size(),2,this.jTablePropsTroca);
-        for (int i = 0; i < sujestoesTroca.size(); i++) {
-            Pedido p = sujestoesTroca.get(i);
-            tModel.setValueAt(p.getUc(), i, 0);
-            tModel.setValueAt(p.getTurno(), i, 1);
-            this.sugTroca.set(i,p);
+    private void updateButtons(){
+        if(this.sgt.isTurnosAtribuidos()){
+            this.jButtonEscolherUCs.setEnabled(false);
+            if(!this.sgt.isTrocasPermitidas())
+                this.jButtonPedirTroca.setEnabled(false);
+        }else{
+            this.jButtonPedirTroca.setEnabled(false);
         }
-        this.jTablePropsTroca.setModel(tModel);
+    }
+
+    private void updateSugestTroca() {
+        if(this.sgt.isTrocasPermitidas()){
+            this.jTablePropsTroca.setEnabled(true);
+            List<Pedido> sujestoesTroca = this.sgt.getSujestoesTroca();
+            DefaultTableModel tModel = prepareTable(sujestoesTroca.size(),2,this.jTablePropsTroca);
+            for (int i = 0; i < sujestoesTroca.size(); i++) {
+                Pedido p = sujestoesTroca.get(i);
+                int tOrigem = ((Aluno) this.sgt.getUser(p.getAlunoNum())).getHorario().get(p.getUc());
+                tModel.setValueAt(this.sgt.getUC(p.getUc()).getNome(), i, 0);
+                tModel.setValueAt(tOrigem, i, 1);
+                this.sugTroca.add(i,p);
+            }
+            this.jTablePropsTroca.setModel(tModel);
+        }else{
+            ((DefaultTableModel) this.jTablePropsTroca.getModel()).setRowCount(0);
+            this.jTablePropsTroca.setEnabled(false);
+        }
     }
 
     private void updateUserUCs() {
@@ -94,6 +107,7 @@ public class JAluno extends javax.swing.JFrame implements Observer {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButtonLogout = new javax.swing.JButton();
+        jButtonRefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -189,6 +203,13 @@ public class JAluno extends javax.swing.JFrame implements Observer {
             }
         });
 
+        jButtonRefresh.setText("Refresh");
+        jButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -202,6 +223,11 @@ public class JAluno extends javax.swing.JFrame implements Observer {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonRefresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonLogout)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -211,15 +237,11 @@ public class JAluno extends javax.swing.JFrame implements Observer {
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButtonPedirTroca)))
                         .addGap(29, 29, 29))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonLogout)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
+                .addContainerGap(53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonPedirTroca)
                     .addComponent(jButtonEscolherUCs))
@@ -231,8 +253,10 @@ public class JAluno extends javax.swing.JFrame implements Observer {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPaneUCsETurnos, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                     .addComponent(jScrollPanePropsTroca, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(26, 26, 26)
-                .addComponent(jButtonLogout)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonLogout)
+                    .addComponent(jButtonRefresh))
                 .addContainerGap())
         );
 
@@ -292,12 +316,18 @@ public class JAluno extends javax.swing.JFrame implements Observer {
             this.dispose();
         } catch (AlunoNaoEstaInscritoNaUcException | UtilizadorJaExisteException e) {
             this.updateSugestTroca();
+        }finally{
+            ((DefaultTableModel) this.jTablePropsTroca.getModel()).removeRow(selectedRow);
         }
     }//GEN-LAST:event_jTablePropsTrocaMouseClicked
 
     private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButtonLogoutActionPerformed
+
+    private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshActionPerformed
+        updateSugestTroca();
+    }//GEN-LAST:event_jButtonRefreshActionPerformed
 
     @Override
     public void update(Observable observable, Object o) {
@@ -309,10 +339,14 @@ public class JAluno extends javax.swing.JFrame implements Observer {
                     break;
                 case TROCA_REALIZADA:
                     updateSugestTroca();
+                    updateUserUCs();
                     break;
                 case LOGINS_ATIVADOS:
-                    this.jButtonEscolherUCs.setEnabled(false);
-                    this.jButtonPedirTroca.setEnabled(true);
+                    updateButtons();
+                    break;
+                case TROCAS_PROIBIDAS:
+                    updateButtons();
+                    updateSugestTroca();
                     break;
             }
         }
@@ -357,6 +391,7 @@ public class JAluno extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton jButtonEscolherUCs;
     private javax.swing.JButton jButtonLogout;
     private javax.swing.JButton jButtonPedirTroca;
+    private javax.swing.JButton jButtonRefresh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPanePropsTroca;

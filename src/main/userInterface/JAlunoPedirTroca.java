@@ -11,6 +11,7 @@ import main.sgt.exceptions.InvalidUserTypeException;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static main.userInterface.InterfaceUtils.makeComboBoxUCs;
 import static main.userInterface.InterfaceUtils.makeShiftLookUpTable;
@@ -58,8 +59,15 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
             this.dispose();
             return;
         }
-        turnosOfUC.removeAll(turnosUser);
-        turnosOfUC.removeIf(t->!t.ePratico());
+        System.out.println(turnosUser.stream().filter(t->t.getUcId().equals(this.uc)).collect(Collectors.toList()));
+        List<Integer> turnosUserIDs = turnosUser.stream().filter(t->t.getUcId().equals(this.uc)).map(Turno::getId).collect(Collectors.toList());
+        System.out.println(turnosUserIDs);
+        System.out.println(turnosOfUC.stream().map(Turno::getId).collect(Collectors.toList()));
+        turnosOfUC.removeIf(t->!t.ePratico() || turnosUserIDs.contains(t.getId()));
+        System.out.println(turnosOfUC.stream().map(Turno::getId).collect(Collectors.toList()));
+        //        turnosOfUC.removeIf(t->!t.ePratico());
+//        turnosOfUC.removeIf(t->turnosUserIDs.contains(t.getId()));
+
         this.jTableTurnos.setModel(makeShiftLookUpTable(this.jTableTurnos,turnosOfUC));
     }
 
@@ -98,10 +106,10 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -139,7 +147,7 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jComboBoxUCs, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 489, Short.MAX_VALUE)
                                 .addComponent(jButtonPedir))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelUCs)
@@ -172,10 +180,12 @@ public class JAlunoPedirTroca extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonPedirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPedirActionPerformed
-        int turno = this.jTableTurnos.getSelectedRow();
         String uc  = (String) this.jComboBoxUCs.getSelectedItem();
+        int selectedRow = this.jTableTurnos.getSelectedRow();
+        int turno = (int) this.jTableTurnos.getValueAt(selectedRow,0);
         try {
             this.sgt.pedirTroca(uc,turno);
+            ((DefaultTableModel) this.jTableTurnos.getModel()).removeRow(selectedRow);
         } catch (InvalidUserTypeException e) {
             this.dispose();
         }

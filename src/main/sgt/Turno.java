@@ -247,11 +247,11 @@ public class Turno {
      * Adiciona um aluno ao turno
      * @param aluno Identificador do aluno a adicionar
      */
-    void addAluno(String aluno) throws UtilizadorJaExisteException, TurnoCheioException {
+    void addAluno(String aluno, boolean force) throws UtilizadorJaExisteException, TurnoCheioException {
         if (this.alunos.contains(aluno)){
             if(this.id!=0) throw new UtilizadorJaExisteException();
         }else{
-            if(this.alunos.size()<this.vagas) {
+            if(force || this.alunos.size()<this.vagas) {
                 this.alunos.add(aluno);
             }else{
                 throw new TurnoCheioException();

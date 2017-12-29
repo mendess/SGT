@@ -18,7 +18,7 @@ import java.awt.event.WindowEvent;
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "Convert2Lambda", "Anonymous2MethodRef", "TryWithIdenticalCatches"})
 public class JLogin extends javax.swing.JFrame {
-    private final main.sgt.SGT sgt = new main.sgt.SGT();
+    private SGT sgt;
     /**
      * Creates new form Login
      */
@@ -93,6 +93,7 @@ public class JLogin extends javax.swing.JFrame {
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
         try {
+            this.sgt = new SGT();
             this.sgt.login(this.jTextFieldNumero.getText(),this.jPasswordField.getText());
             Utilizador u = this.sgt.getLoggedUser();
             JFrame newFrame;
@@ -120,7 +121,7 @@ public class JLogin extends javax.swing.JFrame {
                 }
             });
         } catch (WrongCredentialsException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_jButtonLoginActionPerformed
 

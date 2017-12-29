@@ -1,9 +1,9 @@
 package main.sgt;
 
-import java.util.Comparator;
 import java.io.Serializable;
+import java.util.Comparator;
 
-public class ComparatorTurnos implements Comparator<Turno>, Serializable
+class ComparatorTurnos implements Comparator<Turno>, Serializable
 {
     public int compare(Turno t1, Turno t2) {
 

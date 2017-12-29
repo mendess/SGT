@@ -4,14 +4,12 @@ import main.dao.*;
 import main.sgt.exceptions.*;
 
 import javax.json.*;
-import javax.json.stream.JsonParsingException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
 
 import static main.sgt.NotifyFlags.*;
 
@@ -133,15 +131,12 @@ public class SGT extends Observable {
                     if(this.loginsAtivos){
                         startTime = System.nanoTime();
                         System.out.println("A verifcar se os turnos estão atribuidos");
-                        boolean b = true;
-                        for(Iterator<Utilizador> iterator = utilizadores.iterator(); b && iterator.hasNext(); ){
-                            Utilizador u = iterator.next();
-                            if(u instanceof Aluno){
-                                if(((Aluno) u).getHorario().isEmpty()){
-                                    b = false;
-                                }
-                            }
-                        }
+                        boolean b = utilizadores.stream()
+                                                .filter(u->u instanceof Aluno)
+                                                .noneMatch(u->((Aluno) u).getHorario().isEmpty() ||
+                                                               ((Aluno) u).getHorario().entrySet()
+                                                                                       .stream()
+                                                                                       .allMatch(e->e.getValue()==0));
                         this.setTurnosAtribuidos(b);
                         System.out.println((System.nanoTime() - startTime) / 1000000 + " milisegundos");
                         if(this.turnosAtribuidos){
@@ -277,7 +272,7 @@ public class SGT extends Observable {
      * @return Se as trocas de turno entre alunos sao permitidas
      */
     public boolean isTrocasPermitidas(){
-        return this.turnosAtribuidos && this.trocasPermitidas;
+        return this.isTurnosAtribuidos() && this.trocasPermitidas;
     }
 
     /**
@@ -352,7 +347,10 @@ public class SGT extends Observable {
             Aluno aluno = (Aluno) this.loggedUser;
             return aluno.getHorario().entrySet()
                     .stream()
-                    .map(e->this.ucs.get(e.getKey()).getTurnos().get(e.getValue()))
+                    .map(e->this.ucs.get(e.getKey()).getTurnos().stream()
+                                                                .filter(t->t.getId()==e.getValue())
+                                                                .findFirst().orElse(null))
+                    .filter(Objects::nonNull)
                     .sorted(new ComparatorTurnos())
                     .collect(Collectors.toList());
         }
@@ -513,7 +511,7 @@ public class SGT extends Observable {
                                                                             TurnoCheioException{
         Utilizador u = this.utilizadores.get(aluno);
         if(u instanceof Aluno){
-            this.trocas.add(this.ucs.get(uc).moveAlunoToTurno((Aluno) u, turno));
+            this.trocas.add(this.ucs.get(uc).moveAlunoToTurno((Aluno) u, turno,false));
         }else{
             throw new InvalidUserTypeException();
         }
@@ -531,7 +529,7 @@ public class SGT extends Observable {
     private void addAlunoTurno(String aluno, String uc, int turno) throws UtilizadorJaExisteException,
                                                                           AlunoNaoEstaInscritoNaUcException,
                                                                           TurnoCheioException{
-        this.ucs.get(uc).moveAlunoToTurno((Aluno) this.utilizadores.get(aluno), turno);
+        this.ucs.get(uc).moveAlunoToTurno((Aluno) this.utilizadores.get(aluno), turno,false);
     }
 
     /**
@@ -718,11 +716,7 @@ public class SGT extends Observable {
                             .findFirst()
                             .orElse(null))
                     .filter(Objects::nonNull)
-                    .map(pedido->new Pedido(pedido.getAlunoNum(),
-                            this.utilizadores.get(pedido.getAlunoNum()).getName(),
-                            pedido.getUc(),
-                            pedido.getTurno(),
-                            pedido.ePratico()))
+                    .map(Pedido::new)
                     .collect(Collectors.toList());
         }
         return null;
@@ -802,7 +796,7 @@ public class SGT extends Observable {
                 this.ucs.put(id, new UC(id, name, acron));
             }
             this.setUcsRegistadas(true);
-        }catch(NullPointerException | JsonParsingException e){
+        }catch(NullPointerException | JsonException e){
             throw new BadlyFormatedFileException();
         }
     }
@@ -851,7 +845,7 @@ public class SGT extends Observable {
 
                 this.utilizadores.put(num, user);
             }
-        }catch(NullPointerException | JsonParsingException e){
+        }catch(NullPointerException | JsonException e){
             throw new BadlyFormatedFileException();
         }
         this.setUsersRegistados(true);
@@ -892,7 +886,7 @@ public class SGT extends Observable {
                     new TurnoDAO().put(new TurnoKey(t), t);
                 }
             }
-        }catch(NullPointerException | JsonParsingException e){
+        }catch(NullPointerException | JsonException e){
             throw new BadlyFormatedFileException();
         }
         this.setTurnosRegistados(true);

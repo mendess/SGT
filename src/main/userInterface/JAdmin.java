@@ -43,7 +43,6 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
         this.sgt.addObserver(this);
         initLists();
         initCheckBoxes();
-        //for(int i=0;i<5;i++) this.checkBoxes[i].setEnabled(false);
     }
 
     private void initLists() {
@@ -70,7 +69,7 @@ public class JAdmin extends javax.swing.JFrame implements Observer {
 
     private void initCheckBoxes() {
         int state;
-        if(!this.sgt.isTrocasPermitidas()){
+        if(this.sgt.isTrocasPermitidas()){
             state = 6;
         }else if(this.sgt.isTurnosAtribuidos()){
             state = 5;
