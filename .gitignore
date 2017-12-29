@@ -29,6 +29,7 @@ build/
 build.xml
 manifest.mf
 SGT.iml
-out/
+out/*
 *test.java
-test/
+!/out/artifacts/SGT_jar/SGT.jar
+!/out/artifacts/inscreverAlunosEmUCs_jar/inscreverAlunosEmUCs.jar
