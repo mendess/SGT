@@ -8,13 +8,11 @@
 \usepackage{multirow}
 \usepackage{geometry}
 \usepackage{pdflscape}
-\usepackage{appendix}
 \usepackage[titletoc]{appendix}
 \geometry{
  a4paper,
  total={150mm,257mm},
- }
-
+}
 
 \titleformat{\chapter}{\normalfont\huge}{\thechapter.}{10pt}{\huge}
 \begin{document}
@@ -124,7 +122,7 @@ Existe ainda um sistema de faltas que pode ser definido através de um relaciona
 \end{figure}
 \vfill
 \thispagestyle{empty}
-\raisebox{}{\makebox[\linewidth]{\thepage}}
+\raisebox{0px}{\makebox[\linewidth]{\thepage}}
 \end{landscape}
 
 \chapter{Use Cases}
@@ -278,18 +276,18 @@ A partir deste, foi também concebido o Diagrama de Classes Físico, adicionando
 \end{figure}
 \vfill
 \thispagestyle{empty}
-\raisebox{}{\makebox[\linewidth]{\thepage}}
+\raisebox{0px}{\makebox[\linewidth]{\thepage}}
 \end{landscape} 
 
 \begin{landscape}
 \begin{figure}[H]
 	\centering 
 	\includegraphics[width=1.6\textwidth]{modelacao/diagramas_de_classe/diagrama_classes.png}  
-	\caption{Diagrama de Classes}
+	\caption{Diagrama de Classes Físico}
 \end{figure}
 \vfill
 \thispagestyle{empty}
-\raisebox{}{\makebox[\linewidth]{\thepage}}
+\raisebox{0px}{\makebox[\linewidth]{\thepage}}
 \end{landscape} 
  
 \chapter{Diagramas de Sequência com Subsistemas}
@@ -507,6 +505,121 @@ De forma geral, é possível concluir que o objetivo  que nos foi proposto foi a
 	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/atribuirturnos.png}  
 \end{figure}
 
+\chapter{Diagramas de Sequencia}
+\section{Login}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/Login.png}  
+	\caption{Especificação do \emph{Use Case} Login}
+\end{figure}
+\section{Escolher UCs}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/EscolherUCs.png}  
+\end{figure}
+
+\section{Consultar UCs em que está inscrito}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/ConsultarUCsInscrito.png}  
+\end{figure}
+
+\section{Consultar os turnos que lhe foram atribuídos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/ConsultarTurnosAtribuidos.png}  
+\end{figure}
+
+\section{Aceitar sugestão de troca}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/AceitarSugestaoTroca.png}  
+\end{figure}
+
+\section{Mudar de turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/MudarTurno.png}  
+\end{figure}
+
+\section{Marcar presenças}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/MarcarPresencas.png}  
+\end{figure}
+
+\section{Consultar turnos que leciona}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/ConsultarTurnosLeciona.png}  
+\end{figure}
+
+\section{Adicionar aluno a um turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/adicionaaluno.png}  
+\end{figure}
+
+\section{Remover aluno a um turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/removealuno.png}  
+\end{figure}
+
+\section{Importar UCs}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/importarUCs.png}  
+\end{figure}
+
+\section{Importar alunos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/importaralunos.png}  
+\end{figure}
+
+\section{Importar turnos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/importarturnos.png}  
+\end{figure}
+
+\section{Ativar logins}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/ativarlogins.png}  
+\end{figure}
+
+\section{Apagar turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/apagarturno.png}  
+\end{figure}
+
+\section{Adicionar turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/adicionarturno.png}  
+\end{figure}
+
+\section{Consultar UC}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/admconsultaUCs.png}  
+\end{figure}
+
+\section{Consultar turnos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/consultarturno.png}  
+\end{figure}
+
+\section{Atribuir Turnos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/use_case_diagram/atribuirturnos.png}  
+\end{figure}
+
 \chapter{\emph{Mockups}}
 \section{Utilizador}
 \begin{figure}[H]
@@ -614,8 +727,3 @@ De forma geral, é possível concluir que o objetivo  que nos foi proposto foi a
 
 \end{appendices}
 \end{document}
-
-
-
-
-
