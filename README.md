@@ -21,7 +21,8 @@ The software developed shift management system where students can enroll in Cour
 The whole system is supported by Relational Database, developed with MySQL.
 
 -----------------
-##Dictionary
+
+## Dictionary
 
 | Portuguese | English |
 | ---------- | ------- |
