@@ -20,6 +20,18 @@ The software developed is a shift management system where students can enroll in
 
 The whole system is supported by Relational Database, developed with MySQL.
 
+## Diagrams
+
+This section won't feature all the diagrams since there are too many of them. It will instead feature the ones that define the system as a whole.
+
+### Use Case
+![UseCaseDiagram](/Report/modelacao/use_case.png)
+### Class Diagram
+![ClassDiagram](/Report/modelacao/diagramas_de_classe/diagrama_classes.png)
+### Package
+![PackageDiagram](/Report/modelacao/PackageDiag.png)
+
+
 -----------------
 
 ## Dictionary
