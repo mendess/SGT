@@ -1,0 +1,621 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{geometry}
+\usepackage{pdflscape}
+\usepackage{appendix}
+\usepackage[titletoc]{appendix}
+\geometry{
+ a4paper,
+ total={150mm,257mm},
+ }
+
+
+\titleformat{\chapter}{\normalfont\huge}{\thechapter.}{10pt}{\huge}
+\begin{document}
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage} % Suppresses displaying the page number on the title page and the subsequent page counts as page 1
+	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for horizontal lines, change thickness here
+	
+	\center % Centre everything on the page
+	
+	%------------------------------------------------
+	%	Headings
+	%------------------------------------------------
+		\vspace{5.0cm}
+	\textsc{\LARGE }\\[1.5cm] % Main heading such as the name of your university/college
+
+	
+
+	
+	%------------------------------------------------
+	%	Title
+	%------------------------------------------------
+	
+	\HRule\\[0.4cm]
+	
+	{\huge\bfseries Relatório do Trabalho Prático}\\[0.4cm] % Title of your document
+    \textsc{\large Sistema de Gestão de Turnos}\\[0.5cm]
+	
+	\HRule\\[0cm]
+	\textsc{\large Desenvolvimento de Sistemas de Software}\\[0.5cm] % Minor heading such as course title
+	\vspace{4.0cm}
+	\date{}
+ 
+
+	\begin{table}[h]
+	\raggedleft
+		\label{my-label}
+		\begin{tabular}{lr}
+		Ana Catarina Lopes Carvalho Sousa A78029 & \includegraphics[height=2cm]{capa/Catarina.png} \\
+		Ana Sofia Gomes Marques A75248           & \includegraphics[height=2cm]{capa/Sofia.png}    \\
+		Matias Nicolau Araújo A76234             & \includegraphics[height=2cm]{capa/Matias.png}   \\
+		Miguel Afonso Machado da Cunha A78478    & \includegraphics[height=2cm]{capa/Miguel.png}   \\
+		Pedro Mendes Félix da Costa A79003       & \includegraphics[height=2cm]{capa/Pedro.png}   \\
+		\end{tabular}
+	\end{table}
+	\vfill
+
+	Dezembro 2017\\
+	Mestrado Integrado em Engenharia Informática
+\end{titlepage}
+\tableofcontents
+\chapter{Introdução}
+
+Este relatório visa apresentar as decisões tomadas durante a realização do
+trabalho prático da Unidade Curricular de Desenvolvimento de Sistemas de Software.
+Procuramos justificar todas as considerações feitas na formulação do problema e na elaboração dos modelos e diagramas que o suportam: Modelo de Domínio, Use Cases (e respetiva especificação), Diagramas de Máquinas de Estado, \emph{mockups}, Diagrama de Classes, Diagrama de Sequência com Submissões, Diagrama de \emph{Package} e Diagrama de Instalação.
+
+Toda a modulação do problema, através de diagramas, esquemas e especificações foi realizada com recurso à linguagem de modelação UML, abordada nesta unidade curricular.
+
+
+
+\chapter{Modelo de Domínio}
+O sistema a implementar destina-se a suportar a configuração e gestão de turnos práticos de um determinado curso de licenciatura ou mestrado integrado.
+
+Neste capítulo são apresentados os requisitos do problema e uma proposta de
+Modelo de Domínio.
+\section{Descrição do Modelo de Domínio}
+O problema proposto é desenvolver um sistema de gestão de turnos práticos. Após uma análise das necessidades e de factos reais, percebeu-se a existência dos seguintes conceitos, a integrar na modelação do problema:  Aluno, Turno, UC (Unidade Curricular), Trocas (de turno(s) que o aluno
+pretende efetuar), Mudança (de turno) e Faltas.
+
+Posto isto, é importante analisar como os conceitos recolhidos se relacionam entre si. Tem-se que:
+\begin{itemize}
+   \item  cada Aluno frequenta 1 ou várias UC’s;
+    \item cada UC possui 1 ou vários turnos;
+    \item cada Turno é frequentado por vários alunos;
+    \item cada Aluno pode frequentar 1 ou vários turnos, dependendo do número de UC’s que frequenta, e se estas têm apenas aulas práticas/ práticas-laboratoriais ou se são constituídas por aulas práticas/práticas-laboratoriais e aulas teóricas. Por exemplo, se um aluno tem apenas uma Unidade Curricular, pode frequentar um ou dois turnos, dependendo das questões levantadas acima; se estiver inscrito a várias UC’s frequenta vários turnos.
+\end{itemize}
+
+
+Os turnos em que os alunos são alocados são previamente definidos pelo Diretor de
+Curso e têm associados um determinado número de vagas, um ou vários dias específicos em que são
+lecionados e um determinado horário constituído por hora de início e hora de fim. Qualquer aluno pode, posteriormente, efetuar várias trocas de turno, desde que encontre outro aluno
+com quem efetuar essa troca.
+
+Por forma a efetivar as trocas, é necessário que o coordenador execute a respetiva
+mudança de turno.
+
+Associado a cada aluno, temos o seu email de aluno e o Nome, elementos que o identificam. Ainda
+no que diz respeito ao Aluno, este pode ter estatuto especial de Trabalhador Estudante e, apenas nesse caso, pode
+efetuar as mudanças de turno que desejar, sem ter a necessidade de trocar com outro
+aluno, desde que exista capacidade no turno que pretende. 
+
+A capacidade de um Turno depende da
+sala em que o é lecionado e do seu tipo; turnos práticos e práticos-laboratoriais têm limite máximo de alunos definido pelo coordenador da respetiva UC.
+
+Existe ainda um sistema de faltas que pode ser definido através de um relacionamento ternário entre um docente que marca zero ou várias faltas, o aluno que comete as faltas, podendo estas ser zero ou várias, e ainda o turno a que as faltas são cometidas, podendo ser cometidas zero ou várias faltas a cada turno.
+
+
+\begin{landscape}
+\section{Modelo de Domínio}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=1.3\textwidth]{modelacao/modelo_dominio.png}  
+	\caption{Modelo de Dominio}
+\end{figure}
+\vfill
+\thispagestyle{empty}
+\raisebox{}{\makebox[\linewidth]{\thepage}}
+\end{landscape}
+
+\chapter{Use Cases}
+O Diagrama de Use Case representa os atores do sistema e as respetivas tarefas de cada um deles.
+Para os \textit{Use Cases} foram considerados seis atores:
+\begin{itemize}
+	\item \textbf{Utilizador:} Todos os outros atores são utilizadores que necessitam de fazer o login para se autenticarem.
+	\item \textbf{Aluno:} Responsável por escolher as UC’s que pretende frequentar e por solicitar o pedido troca de turno, assim como por aceitar sugestões de troca por parte de outros colegas. Pode ainda consultar as UC’s e os turnos em que está inscrito.
+	\item \textbf{Estatuto Especial:} É um Aluno que, para além das ações normais deste ator, pode também realizar trocas de turno sem precisar de trocar com outro colega.
+	\item \textbf{Docente:} Responsável efetuar a marcação de presenças nos turnos que leciona. Pode também consultar as informações que dizem respeito aos turnos por ele lecionados.
+	\item \textbf{Coordenador:} É o docente responsável pela UC e, portanto, é quem efetua as trocas de turnos, tanto para alunos normais, como para alunos com estatuto especial, adicionando e removendo o aluno a determinado turno.
+	\item \textbf{Diretor de Curso:} Responsável por gerir as UC’s, os turnos e os alunos que os frequentam.
+\end{itemize}
+\nopagebreak
+\begin{figure}[H]
+	\centering 
+	\includegraphics[height=220px]{modelacao/use_case.png}  
+	\caption{Diagrama de \emph{Use Case}}
+\end{figure} 
+
+\pagebreak
+\section{Especificação dos Use Cases}
+\subsection{Login}
+O use case Login pertence ao Utilizador e é o único \emph{Use Case} que diz respeito a todos os atores do sistema e que consiste, basicamente, no processo de autenticação necessário para que se possa interagir com o sistema.
+
+O utilizador insere as suas credenciais e o sistema procede à validação das mesmas. Se estas forem válidas, o utilizador fica autenticado, caso contrário, isto é, as credenciais são válidas
+(exceção 1), o sistema informa o utilizador de que uma (ou ambas) das credenciais que inseriu (email ou password) não é válida.
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/Login.png}  
+	\caption{Especificação do \emph{Use Case} Login}
+\end{figure}
+\pagebreak
+\subsection{Pedir Troca}
+O use case Pedir Troca é efetuado pelo Aluno, que, para o poder fazer, tem de estar autenticado no sistema e tem de ter turnos atribuídos.
+
+O Aluno começa por indicar qual o turno para que pretende ir. O sistema verifica se não existe nenhuma sobreposição com outros turnos e informa que o pedido foi registado com sucesso. Caso haja sobreposição (alternativa 1), o sistema avisa o aluno deste facto e permite que ele opte por prosseguir com o pedido ou por cancelá-lo (exceção 2).
+Há ainda a hipótese de o turno indicado pelo aluno não existir (exceção 1), pelo que, nesse caso, o sistema informa o Aluno que o turno escolhido não existe.
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/PedirTroca.png}  
+	\caption{Especificação do \emph{Use Case} Pedir Troca}
+\end{figure}
+
+
+No que diz respeito à especificação dos \emph{Use Case} , optamos por explicar apenas estes, como exemplo. As restantes especificações  podem ser observadas no Anexo A.
+
+
+\chapter {\emph{Mockups}}
+Os protótipos de interface, também conhecidos como \emph{mockups} traduzem os requisitos do sistema, assim como toda a modelação até agora desenvolvida. 
+Apresentamos um exemplo do \emph{mockup} Login, que permite que qualquer utilizador se autentique, apresentando o seu número e a password, e clicando depois no botão Login. Caso os dados inseridos estejam corretos, este fica autenticado, caso contrário, será emitida uma mensagem de erro.
+Os restantes \emph{mockups} podem ser consultados no Anexo B.
+
+\paragraph{}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/login.png}  
+	\caption{\emph{Mockup} Login}
+\end{figure}
+
+
+\chapter{Diagramas de Máquina Estado}
+A elaboração de diagramas de Máquinas de Estado permite modelar o comportamento do sistema como um todo. Estes diagramas são muito importantes, uma vez que permitem modelar todos os estados possíveis do sistema, em particular, o estados da interface gráfica. Para isto, foram modelados seis diagramas.
+\section{Diagrama de Máquina de Estado Principal - Login}
+
+O diagrama de máquina de estado principal \textit{main} consiste no primeiro passo que cada utilizador tem de efetuar antes de poder interagir com o sistema. Quando tenta fazer Login, o utilizador tem de inserir as suas credenciais e, caso estas estejam corretas, acede ao estado correspondente ao seu perfil de utilizador. Sempre que pretender, pode efetuar logout, voltando para o estado \textit{main}.
+\paragraph{}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/diagramas_maq_estado/main_maq_estado.png}  
+	\caption{Diagrama de Máquina de Estado principal - Login}
+\end{figure}
+Existem ainda diagramas para cada um dos nossos atores:
+
+\section{Diagrama de Máquina de Estado Aluno}
+     O aluno pode, dependendo do estado interno em que se encontra, alterar o seu estado de duas formas: se os seus turnos ainda não tiverem sido atribuídos, pode escolher as UCs que pretende frequentar. Por outro lado, se este já possuir turnos poderá registar ou pedidos de troca com outros alunos.
+     No entanto, se os Diretor de curso proibir as trocas, este não pode alterar o seu estado para efetuar qualquer das operações anteriormente referidas.
+    \begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/diagramas_maq_estado/aluno_maq_estado.png}  
+	\caption{Diagrama de Máquina de Estado Aluno}
+    \end{figure}
+\pagebreak
+\section{Diagrama de Máquina de Estado Aluno com Estatuto Especial}  
+    O Aluno com Estatuto Especial é idêntico ao Aluno, excetuando o facto de poder mudar de turno sem ter de efetuar a troca com outro colega, ficando com o turno automaticamente atribuído. Esta operação só pode ser efetuada caso as trocas forem permitidas.   
+       
+    \begin{figure}[H]
+    	\centering 
+    	\includegraphics[width=\textwidth]{modelacao/diagramas_maq_estado/alunoE_maq_estado.png}  
+    	\caption{Diagrama de Máquina de Estado Aluno com Estatuto Especial}
+    \end{figure}
+
+\pagebreak
+\section{Diagrama de Máquina de Estado Docente}
+    O Docente pode consultar as UC e os respetivos turnos que leciona. Pode ainda efetuar a marcação de presenças a esses turnos numa determinada aula.
+   
+    \begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/diagramas_maq_estado/docente_maq_estado.png}  
+	\caption{Diagrama de Máquina de Estado Docente}
+    \end{figure}
+
+\pagebreak
+\section{Diagrama de Máquina de Estado Coordenador}
+    O Coordenador é em tudo semelhante ao Docente, acrescentando apenas o facto de este ser o responsável pelas trocas de turnos e assim poder adicionar e remover alunos aos turnos da UC que rege.
+   
+    \begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/diagramas_maq_estado/coordenador_maq_estado.png}  
+	\caption{Diagrama de Máquina de Estado coordenador}
+    \end{figure}
+
+\pagebreak
+\section{Diagrama de Máquina de Estado Diretor de Curso}
+    O Diretor de curso tem a responsabilidade de povoar o sistema com as UCs, os utilizadores e o turnos, ativar os logins do utilizadores, atribuir turnos aos utilizadores e de desativar as trocas. Todas estas operações tem de ser efetuadas numa determinada ordem e o diagrama de maquina de estado deste reflete esta necessidade, apenas podendo mudar para um determinado estado interno se todas a operações de que este depende tiverem sido efetuadas com sucesso.
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_maq_estado/dc_map_estado.png}  
+	\caption{Diagrama de Máquina de Estado Diretor de Curso}
+\end{figure}
+
+\chapter{Diagrama de Package}
+Existem três packages principais no nosso sistema: 
+\begin{itemize}
+    \item \textbf{userInterface} - implementa a interface gráfica com que o utilizador final vai interagir e faz uso do padrão de desenvolvimento \textit{Observer, Observable} para o seu funcionamento.
+    \item \textbf{sgt} - Contém a lógica de negócio da aplicação, controla todas as operações do sistema e implementa \textit{Observable};
+    \item \textbf{dao} - Mapeia os objetos de uma base de dados relacional em emph{MySQL} para classes em Java.
+\end{itemize}
+O diagrama seguinte representa então esses packages e as relações entre eles.
+
+\paragraph{}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/PackageDiag.png}  
+	\caption{diagrama de package}
+\end{figure}
+
+\chapter{Diagramas de Classes}
+Depois de analisados os diagramas anteriores, foi elaborado o seguinte Diagrama de Classes Lógico, que representa a estrutura das classes e a relação entre elas, definindo os métodos necessários para o funcionamento do sistema.
+
+A partir deste, foi também concebido o Diagrama de Classes Físico, adicionando os \textit{Data Access Object (DAO)}, que já contempla as alterações necessárias para a incorporação da base de dados. Nesta transição, foi decidido que que os pedidos deviam ser imediatamente carregados da base de dados e, como tal, a acompanhar o \textit{DAO} de pedidos, temos também estes representados em memória.
+
+\begin{landscape}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=1.5\textwidth]{modelacao/diagramas_de_classe/diagrama_classes_logico.png}  
+	\caption{Diagrama de Classes Lógico}
+\end{figure}
+\vfill
+\thispagestyle{empty}
+\raisebox{}{\makebox[\linewidth]{\thepage}}
+\end{landscape} 
+
+\begin{landscape}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=1.6\textwidth]{modelacao/diagramas_de_classe/diagrama_classes.png}  
+	\caption{Diagrama de Classes}
+\end{figure}
+\vfill
+\thispagestyle{empty}
+\raisebox{}{\makebox[\linewidth]{\thepage}}
+\end{landscape} 
+ 
+\chapter{Diagramas de Sequência com Subsistemas}
+No que diz respeito aos Diagramas de Sequência com Submissões, escolhemos fazer apenas os exemplos que seguem em baixo, uma vez que são aqueles que traduzem as funcionalidades mais essenciais da nossa aplicação.
+
+\section{Realizar Troca}
+Estes diagramas modelam uma parte essencial da aplicação desenvolvida: a troca de turno entre dois alunos. Esta faz uso de vários outro métodos também modelados para atingir este efeitos. No entanto, alguns deles são usados também noutros \textit{use cases}. Por exemplo, o \textbf{addAluno} e o \textbf{removeAluno} (fig \ref{fig:addAluno} e \ref{fig:removeAluno}) são utilizadas, respetivamente, quando o Coordenador deseja adicionar ou retirar um aluno de um turno.
+
+No que respeita ao \textbf{realizarTroca} em si, primeiro infere-se, através do Pedido, a UC dentro da qual a troca será efetuada e, de seguida, trocam-se os alunos entre si, movendo cada um para o turno do outro.
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_de_sequencia/realizarTroca/realizarTroca.png}
+	\caption{Diagrama de sequencia do método $$SGT\#realizarTroca$$}
+\end{figure}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_de_sequencia/realizarTroca/trocarAlunos.png}
+	\caption{Diagrama de sequencia do método $$UC\#trocarAlunos$$}
+\end{figure}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_de_sequencia/realizarTroca/moveAlunoToTurno.png}
+	\caption{Diagrama de sequencia do método $$UC\#moveAlunoToTurno$$}
+	\label{fig:moveAlunoToTurno}
+\end{figure}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_de_sequencia/realizarTroca/addAluno.png}  
+	\caption{Diagrama de sequencia do método $$Turno\#addAluno$$}
+	\label{fig:addAluno}
+\end{figure}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_de_sequencia/realizarTroca/removerAluno.png}
+	\caption{Diagrama de sequencia do método $$Turno\#removerAluno$$}
+	\label{fig:removeAluno}
+\end{figure}
+
+\section{Atribuir Turnos}
+Este diagrama traduz a modelação do método que distribui os turnos pelos alunos.
+O sistema tenta, para cada UC a que cada aluno está inscrito, encontrar um turno cujo horário lhe permita frequentar as aulas.
+
+Estão também modelados alguns métodos auxiliares, como o \textbf{horarioConflicts} e a seu auxiliar \textbf{turnoConflicts} (\ref{fig:horarioConflicts} e \ref{fig:turnoConflicts}), que verificam, respetivamente, se um turno tem sobreposição com um horário (conjunto de turnos) e se um turno tem sobreposição com outro.
+Este métodos são depois usados pela interface gráfica para avisar o utilizador que está a tentar mudar para um turno que entra em conflito com o seu horário.
+
+Se não houver vagas em nenhum dos turnos de uma UC, o sistema cria uma exceção para reportar esta situação. Da mesma forma, se, para algum aluno, não existir um turno em que ele possa ser inserido, o método cria uma exceção para comunicar o problema.
+
+Ao ser implementado o método sofreu pequenas alterações. Foi tomada a decisão de ordenar as UCs e alunos, respeitando os seguintes critérios de ordenação:
+para as UC, primeiro considera-se o  decrescente número de aulas que cada turno tem por semana e, depois, o crescente número de turnos; para os alunos, considera-se o número decrescente de UCs a que estão inscritos.
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_de_sequencia/assignShifts/assignShifts.png}
+	\caption{Diagrama de sequencia do método $SGT\#assignShifts$}
+	\label{fig:assignShifts}
+\end{figure}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_de_sequencia/assignShifts/horarioConflicts.png}
+	\caption{Diagrama de sequencia do método $$SGT\#horarioConflicts$$}
+	\label{fig:horarioConflicts}
+\end{figure}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_de_sequencia/assignShifts/turnoConflicts.png}
+	\caption{Diagrama de sequencia do método $$SGT\#turnoConflicts$$}
+	\label{fig:turnoConflicts}
+\end{figure}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diagramas_de_sequencia/assignShifts/inscrever.png}
+	\caption{Diagrama de sequencia do método $$Aluno\#inscrever$$}
+	\label{fig:inscrever}
+\end{figure}
+
+\chapter{Diagrama de Instalação}
+Tendo em conta que a aplicação desenvolvida foi planeada para apenas interagir com a base de dados e que é instalada numa única máquina, ou seja, numa unica máquina (\textit{localhost}) temos apenas dois componentes: a aplicação desenvolvida em Java e a base de dados desenvolvida em MySQL, pelo que o Diagrama de Instalação se traduz no seguinte:
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.9\textwidth]{modelacao/diag_instalacao.png}  
+	\caption{Diagrama de Instalação}
+\end{figure}
+
+\chapter{Base de Dados}
+Para suportar a aplicação, foi desenvolvida a Base de Dados representada pelo seguinte modelo lógico.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{ModeloLogicoBD.png}
+    \caption{Modelo Lógico da Base de Dados}
+    \label{fig:modeloLogicoBD}
+\end{figure}
+
+\chapter{Conclusão e trabalho futuro}
+
+Com a realização deste trabalho, podemos concluir que a modelação de uma aplicação tem uma importância tão grande quanto a escrita do seu código fonte, permitindo uma simplificação e melhor compreensão por parte de quem a desenvolve. Sem esta, a sua implementação seria muito mais complicada. 
+ 
+Através da realização de um diagrama de domínio somos capazes de traduzir o problema proposto. Da mesma forma, a especificação dos use cases ajuda-nos a perceber quais as funcionalidades da aplicação e as permissões de cada utilizador. Os diagramas de classe servem como um valioso \textit{mapa} do sistema, na medida em que permitem compreender melhor as responsabilidades de cada classe. Os diagramas de sequência de sistema servem como auxiliares para a construção do código, uma vez que neles é possível definir os métodos e a sequência das operações que representam as funcionalidades da aplicação. Por fim o diagrama de instalação, neste caso, traduz a ligação entre a base de dados e a aplicação em Java.
+
+De forma geral, é possível concluir que o objetivo  que nos foi proposto foi alcançado com sucesso. Foi desenvolvida uma aplicação que responde aos requisitos impostos e que permite uma gestão eficiente dos turnos. No entanto, há um aspeto que não foi implementado com sucesso: a visualização do histórico dos turnos que o diretor de curso seria capaz de fazer, pois, apesar deste histórico ser mantido pelo sistema, não o integramos na interface gráfica e, portanto, não é possível de visualizar.  Poderiam ainda ser melhorados alguns aspetos da interface gráfica, de forma a torná-la mais \textit{user friendly}.
+
+
+\begin{appendices}
+\chapter{Especificação dos Use Cases}
+\section{Login}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/Login.png}  
+	\caption{Especificação do \emph{Use Case} Login}
+\end{figure}
+\section{Escolher UCs}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/EscolherUCs.png}  
+\end{figure}
+
+\section{Consultar UCs em que está inscrito}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/ConsultarUCsInscrito.png}  
+\end{figure}
+
+\section{Consultar os turnos que lhe foram atribuídos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/ConsultarTurnosAtribuidos.png}  
+\end{figure}
+
+\section{Aceitar sugestão de troca}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/AceitarSugestaoTroca.png}  
+\end{figure}
+
+\section{Mudar de turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/MudarTurno.png}  
+\end{figure}
+
+\section{Marcar presenças}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/MarcarPresencas.png}  
+\end{figure}
+
+\section{Consultar turnos que leciona}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/ConsultarTurnosLeciona.png}  
+\end{figure}
+
+\section{Adicionar aluno a um turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/adicionaaluno.png}  
+\end{figure}
+
+\section{Remover aluno a um turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/removealuno.png}  
+\end{figure}
+
+\section{Importar UCs}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/importarUCs.png}  
+\end{figure}
+
+\section{Importar alunos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/importaralunos.png}  
+\end{figure}
+
+\section{Importar turnos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/importarturnos.png}  
+\end{figure}
+
+\section{Ativar logins}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/ativarlogins.png}  
+\end{figure}
+
+\section{Apagar turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/apagarturno.png}  
+\end{figure}
+
+\section{Adicionar turno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/adicionarturno.png}  
+\end{figure}
+
+\section{Consultar UC}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/admconsultaUCs.png}  
+\end{figure}
+
+\section{Consultar turnos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/consultarturno.png}  
+\end{figure}
+
+\section{Atribuir Turnos}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=\textwidth]{modelacao/especificacao_use_case/atribuirturnos.png}  
+\end{figure}
+
+\chapter{\emph{Mockups}}
+\section{Utilizador}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/login.png}  
+\end{figure}
+
+\section{Aluno}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/aluno11111.png}  
+\end{figure}
+	
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/aluno11110.png}  
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/alunopedirtroca.png}  
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/alunoescolherucs.png}  
+\end{figure}
+
+\section{Aluno com estatuto especial}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/alunoe11111.png}  
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/alunoe11110.png}  
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/alunoemudarturno.png}
+\end{figure}
+
+
+\section{Docente}
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/docente.png}  
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/marcarpresencas.png}  
+\end{figure}
+
+
+\section{Coordenador}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{modelacao/mockups/coordenador.png}
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/coordenadorgeriralunos.png}  
+\end{figure}
+
+\section{Diretor de Curso}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/admin00000.png}  
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/admin10000.png}  
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{modelacao/mockups/admin11000.png}
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/admin11100.png}  
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/admin11110.png}  
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/admin11111.png}  
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\includegraphics[width=0.7\textwidth]{modelacao/mockups/adminconsultarucs.png}  
+\end{figure}
+
+\end{appendices}
+\end{document}
+
+
+
+
+
