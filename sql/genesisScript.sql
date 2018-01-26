@@ -294,9 +294,12 @@ CREATE TABLE IF NOT EXISTS `SGT`.`Pedido` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-CREATE USER	'aplicacao'@'localhost'
+CREATE USER IF NOT EXISTS 'aplicacao'@'localhost'
   IDENTIFIED BY 'ap123';
 GRANT SELECT, INSERT, UPDATE, DELETE ON SGT.* TO 'aplicacao'@'localhost';
+
+INSERT INTO Utilizador VALUES ('D97981','Andre Diogo','password','swap.dss.uminho@gmail.com',FALSE);
+INSERT INTO DiretorDeCurso VALUES ('D97981',FALSE);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
